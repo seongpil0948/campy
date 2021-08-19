@@ -1,0 +1,32 @@
+name: campy
+description: A new Flutter project.
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# https://developer.android.com/studio/publish/versioning
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  provider: ^5.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# following page: https://dart.dev/tools/pub/pubspec
+# The following section is specific to Flutter.
+flutter:
+  uses-material-design: true
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # TODO: Test required https://flutter.dev/assets-and-images/#resolution-aware.
+  # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+    - assets/images/
+    - assets/mocks/camping_places.json
