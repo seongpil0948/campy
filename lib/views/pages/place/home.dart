@@ -52,7 +52,40 @@ class PlaceHomeScreen extends StatelessWidget {
                 Container(
                   height: mq.size.height / 3,
                   child: Text("$mq"),
-                )
+                ),
+                Container(
+                  height: mq.size.height / 3,
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Image.asset('assets/mocks/images/feed_2000x2000.jpg'),
+                        Row(children: [
+                          Icon(Icons.ac_unit),
+                          Icon(Icons.ac_unit),
+                          Icon(Icons.ac_unit),
+                          Icon(Icons.ac_unit)
+                        ]),
+                        Row(children: [
+                          Icon(Icons.ac_unit),
+                          const Text('Revolution is coming...'),
+                          Icon(Icons.ac_unit),
+                          const Text('Revolution is coming...'),
+                        ])
+                      ],
+                    ),
+                  ),
+                ),
+                GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                    ),
+                    itemCount: 6,
+                    itemBuilder: (ctx, idx) {
+                      return Image.asset(
+                          'assets/mocks/images/feed_2000x2000.jpg');
+                    })
               ],
             ),
           ),

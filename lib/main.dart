@@ -15,7 +15,7 @@ class PyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: MaterialApp(
-          home: Router(routerDelegate: PyRouterDelegate(PyAppState())),
+          home: Router(routerDelegate: PyRouterDelegate(PyState())),
         ));
   }
 }

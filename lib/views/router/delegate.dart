@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class PyRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
-  PyAppState appState;
+  PyState appState;
   PyRouterDelegate(this.appState) {
     appState.addListener(() {
       notifyListeners(); // call all listeners when change appState

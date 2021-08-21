@@ -3,12 +3,12 @@ import 'path.dart';
 
 final defaultPage = PageAction.place();
 
-class PyAppState extends ChangeNotifier {
+class PyState extends ChangeNotifier {
   PageAction currPageAction;
   // === Singleton ===
-  PyAppState._onlyOne() : currPageAction = defaultPage;
-  static final PyAppState _instance = PyAppState._onlyOne();
-  factory PyAppState() {
+  PyState._onlyOne() : currPageAction = defaultPage;
+  static final PyState _instance = PyState._onlyOne();
+  factory PyState() {
     return _instance;
   }
   // === Singleton End ===
