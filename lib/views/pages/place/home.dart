@@ -58,7 +58,10 @@ class PlaceHomeScreen extends StatelessWidget {
                   child: Card(
                     child: Column(
                       children: [
-                        Image.asset('assets/mocks/images/feed_2000x2000.jpg'),
+                        Image.asset(
+                          'assets/mocks/images/feed_2000x2000.jpg',
+                          height: mq.size.height / 5,
+                        ),
                         Row(children: [
                           Icon(Icons.ac_unit),
                           Icon(Icons.ac_unit),
@@ -75,17 +78,20 @@ class PlaceHomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                    ),
-                    itemCount: 6,
-                    itemBuilder: (ctx, idx) {
-                      return Image.asset(
-                          'assets/mocks/images/feed_2000x2000.jpg');
-                    })
+                Container(
+                  child: GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                      ),
+                      itemCount: 6,
+                      itemBuilder: (ctx, idx) {
+                        return Image.asset(
+                            'assets/mocks/images/feed_2000x2000.jpg');
+                      }),
+                )
               ],
             ),
           ),

@@ -1,3 +1,5 @@
+import 'package:campy/views/pages/common/login.dart';
+import 'package:campy/views/pages/common/splash.dart';
 import 'package:campy/views/pages/feed/index.dart';
 import 'package:campy/views/pages/place/index.dart';
 import 'package:campy/views/pages/store/index.dart';
@@ -23,30 +25,38 @@ class PyRouterDelegate extends RouterDelegate
   PyPathConfig get currPageConfig => _pages.last.arguments as PyPathConfig;
 
   List<Page> buildPages() {
-    switch (appState.currPageAction.state) {
-      case PageState.none:
-        break;
-      case PageState.addPage:
-        _setPageAction(appState.currPageAction);
-        addPage(appState.currPageAction.page);
-        break;
-      case PageState.pop:
-        pop();
-        break;
-      case PageState.replace:
-        _setPageAction(appState.currPageAction);
-        replace(appState.currPageAction.page);
-        break;
-      case PageState.replaceAll:
-        _setPageAction(appState.currPageAction);
-        replaceAll(appState.currPageAction.page);
-        break;
-      case PageState.addAll:
-        addAll(appState.currPageAction.pages);
-        break;
-      default:
-        appState.resetCurrentAction();
-        break;
+    if (!appState.readyToMain) {
+      if (!appState.endSplash) {
+        _addPageData(SplashView(key: ValueKey("_splash_")), splashPathConfig);
+      } else if (!appState.authRepo.isAuthentic) {
+        _addPageData(LoginView(key: ValueKey("_login_")), loginPathConfig);
+      }
+    } else {
+      switch (appState.currPageAction.state) {
+        case PageState.none:
+          break;
+        case PageState.addPage:
+          _setPageAction(appState.currPageAction);
+          addPage(appState.currPageAction.page);
+          break;
+        case PageState.pop:
+          pop();
+          break;
+        case PageState.replace:
+          _setPageAction(appState.currPageAction);
+          replace(appState.currPageAction.page);
+          break;
+        case PageState.replaceAll:
+          _setPageAction(appState.currPageAction);
+          replaceAll(appState.currPageAction.page);
+          break;
+        case PageState.addAll:
+          addAll(appState.currPageAction.pages);
+          break;
+        default:
+          appState.resetCurrentAction();
+          break;
+      }
     }
 
     return List.of(_pages);
@@ -133,7 +143,11 @@ class PyRouterDelegate extends RouterDelegate
         _addPageData(FeedCategoryView(key: ValueKey("_feed_")), feedPathConfig);
         break;
       case Views.PlaceCategory:
-        _addPageData(PlaceCategoryView(), placePathConfig);
+        _addPageData(
+            PlaceCategoryView(
+              key: ValueKey("_place_"),
+            ),
+            placePathConfig);
         break;
       case Views.StoreCategory:
         _addPageData(

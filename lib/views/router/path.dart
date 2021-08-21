@@ -1,6 +1,8 @@
+const String SplashPath = '/splash';
 const String FeedPath = '/feed';
 const String PlacePath = '/place';
 const String StorePath = '/store';
+const String LoginPath = '/store';
 
 enum PageState { none, addPage, addAll, pop, replace, replaceAll }
 
@@ -11,7 +13,9 @@ enum Views {
   StoreCategory,
   ProductDetail,
   PlaceDetail,
-  UnknownPage
+  UnknownPage,
+  SplashPage,
+  LoginPage,
 }
 
 class PageAction {
@@ -98,4 +102,16 @@ PyPathConfig storePathConfig = PyPathConfig(
     key: 'Store',
     path: StorePath,
     uiCtgr: Views.StoreCategory,
+    currentPageAction: null);
+
+PyPathConfig splashPathConfig = PyPathConfig(
+    key: 'Splash',
+    path: SplashPath,
+    uiCtgr: Views.SplashPage,
+    currentPageAction: null);
+
+PyPathConfig loginPathConfig = PyPathConfig(
+    key: 'Login',
+    path: LoginPath,
+    uiCtgr: Views.LoginPage,
     currentPageAction: null);
