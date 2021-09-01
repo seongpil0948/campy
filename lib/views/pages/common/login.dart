@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({Key? key}) : super(key: key);
-  final appState = PyState();    
+  final appState = PyState();
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +13,12 @@ class LoginView extends StatelessWidget {
         child: Column(
           children: [
             Text("로그인페이지"),
-            ElevatedButton(onPressed: () {
-              appState.authRepo.login();
-              print("$appState");
-            } , child: Text("로그인하기"))
+            ElevatedButton(
+                onPressed: () {
+                  appState.authRepo.login();
+                  print("$appState");
+                },
+                child: Text("로그인하기"))
           ],
         ),
       ),

@@ -1,24 +1,19 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
-enum StatusBarTo {
-  Transparent,
-  Restore,
-  Disable,
-  Ignore
-}
+enum StatusBarTo { Transparent, Restore, Disable, Ignore }
 
-void handleStatusBar({StatusBarTo to=StatusBarTo.Ignore}) {
+void handleStatusBar({StatusBarTo to = StatusBarTo.Ignore}) {
   switch (to) {
-    case StatusBarTo.Disable: 
+    case StatusBarTo.Disable:
       SystemChrome.setEnabledSystemUIOverlays([]);
       break;
-    case StatusBarTo.Transparent: 
+    case StatusBarTo.Transparent:
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        ));
+        statusBarColor: Colors.transparent,
+      ));
       break;
-    case StatusBarTo.Restore: 
+    case StatusBarTo.Restore:
       SystemChrome.restoreSystemUIOverlays();
       break;
     case StatusBarTo.Ignore:

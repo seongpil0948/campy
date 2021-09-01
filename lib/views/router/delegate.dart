@@ -13,7 +13,7 @@ class PyRouterDelegate extends RouterDelegate
   PyRouterDelegate(this.appState) {
     appState.authRepo.addListener(() {
       notifyListeners();
-     });
+    });
     appState.addListener(() {
       notifyListeners(); // call all listeners when change appState
     });
