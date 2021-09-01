@@ -15,3 +15,12 @@ class AuthRepository extends ChangeNotifier {
 
   void login() => _updateLoginStatus(true);
 }
+
+enum LoginStyle {
+  Social
+}
+
+enum SocialLoginWith {
+  Google,
+  Facebook
+}

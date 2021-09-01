@@ -15,26 +15,21 @@ class PyApp extends StatelessWidget {
       future: Firebase.initializeApp(),
       builder: (ctx, snapshot) {
         if (snapshot.hasData) {
-                return MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: MaterialApp(
-            home: Router(routerDelegate: PyRouterDelegate(PyState())),
-          ));
-        }
-        else if (snapshot.hasError) {
+          return MaterialApp(
+              title: 'Camping & Piknic',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              home: MaterialApp(
+                home: Router(routerDelegate: PyRouterDelegate(PyState())),
+              ));
+        } else if (snapshot.hasError) {
           print("=== Flutter Initialize Error ===");
           return Wrong();
         } else {
           return CircularProgressIndicator();
         }
-
       },
-
     );
   }
 }
-
-
