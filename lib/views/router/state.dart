@@ -30,4 +30,9 @@ class PyState extends ChangeNotifier {
   void resetCurrentAction() {
     currPageAction = PageAction.feed();
   }
+
+  @override
+  String toString() {
+    return "currPageAction: $currPageAction \n authRepo: $authRepo \n readyToMain: $readyToMain";
+  }
 }

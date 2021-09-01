@@ -11,6 +11,9 @@ class PyRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   PyState appState;
   PyRouterDelegate(this.appState) {
+    appState.authRepo.addListener(() {
+      notifyListeners();
+     });
     appState.addListener(() {
       notifyListeners(); // call all listeners when change appState
     });
