@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:881986361143:android:9220abd91d2e71b4dbecb2",
+        "mobilesdk_app_id": "1:881986361143:android:d69aef310cd6bb05dbecb2",
         "android_client_info": {
-          "package_name": "com.sp.campy"
+          "package_name": "com.example.campy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "881986361143-cudb5cs11d5r74t8m62cg3l7i3nkraa4.apps.googleusercontent.com",
+          "client_id": "881986361143-rn7qo2m9dn0b3a34j6hj8mo9n48h28mq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.sp.campy",
+            "package_name": "com.example.campy",
             "certificate_hash": "4e4cf1358e3f440d3e4eac2b40534acd8c59b86f"
           }
         },
