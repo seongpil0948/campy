@@ -15,11 +15,14 @@ class LoginView extends StatelessWidget {
           children: [
             Text("로그인페이지"),
             ElevatedButton(
-                onPressed: () {
-                  appState.authRepo
-                      .login(LoginStyle.Social, SocialLoginWith.Google);
-                },
-                child: Text("구글"))
+                onPressed: () => appState.authRepo
+                    .login(LoginStyle.Social, SocialLoginWith.Google),
+                child: Text("Google Login")),
+            ElevatedButton(
+              onPressed: () => appState.authRepo
+                  .login(LoginStyle.Social, SocialLoginWith.Facebook),
+              child: Text("Facebook Login"),
+            ),
           ],
         ),
       ),

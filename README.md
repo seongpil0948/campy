@@ -18,5 +18,12 @@ samples, guidance on mobile development, and a full API reference.
 
 #TODO:
 
-* IOS App install in with firebase
-* IOS additinal setting for https://pub.dev/packages/google_sign_in
+* Dev
+  * Create User from muti User PlatForm include avatar
+  * merge with feed and place
+  * IOS 
+    * App install in with firebase
+    * additinal setting for https://pub.dev/packages/google_sign_in
+    * additinal setting for Facebook
+* Release
+  * additinal setting for Facebook

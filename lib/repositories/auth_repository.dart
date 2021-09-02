@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository extends ChangeNotifier {
@@ -25,13 +26,20 @@ class AuthRepository extends ChangeNotifier {
   }
 
   void login(LoginStyle style, SocialLoginWith social) async {
-    UserCredential c;
-    switch (style) {
-      case LoginStyle.Social:
-        c = await loginWithGoogle();
-        break;
+    UserCredential? c;
+    if (style == LoginStyle.Social) {
+      switch (social) {
+        case SocialLoginWith.Google:
+          c = await loginWithGoogle();
+          break;
+        case SocialLoginWith.Facebook:
+          c = await loginWithFacebook();
+          break;
+        case SocialLoginWith.Ignore:
+          break;
+      }
     }
-    print("Result of Login Credential: $c ");
+    print("Result of Login Credential: $c");
     _updateLoginStatus(true);
   }
 
@@ -40,7 +48,7 @@ class AuthRepository extends ChangeNotifier {
     if (user == null) {
       logout();
     } else {
-      print('User is signed in!');
+      print('User: $user is signed in!');
     }
   }
 }
@@ -67,4 +75,16 @@ Future<UserCredential> loginWithGoogle() async {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
   throw ("=== Google Login Fail ===");
+}
+
+Future<UserCredential> loginWithFacebook() async {
+  // Trigger the sign-in flow
+  final LoginResult loginResult = await FacebookAuth.instance.login();
+
+  // Create a credential from the access token
+  final OAuthCredential facebookAuthCredential =
+      FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+  // Once signed in, return the UserCredential
+  return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 }
