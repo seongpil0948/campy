@@ -63,6 +63,11 @@ class PyPathConfig {
   String? feedId;
   String? placeId;
 
+  @override
+  String toString() {
+    return "PyPathConfig: key: $key,  path: $path, uiCtgr$uiCtgr, currentPageAction: $currentPageAction";
+  }
+
   PyPathConfig(
       {required this.key,
       required this.path,

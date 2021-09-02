@@ -1,3 +1,4 @@
+import 'package:campy/repositories/auth_repository.dart';
 import 'package:campy/views/router/state.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +16,10 @@ class LoginView extends StatelessWidget {
             Text("로그인페이지"),
             ElevatedButton(
                 onPressed: () {
-                  appState.authRepo.login();
-                  print("$appState");
+                  appState.authRepo
+                      .login(LoginStyle.Social, SocialLoginWith.Google);
                 },
-                child: Text("로그인하기"))
+                child: Text("구글"))
           ],
         ),
       ),

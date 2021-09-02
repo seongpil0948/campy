@@ -1,4 +1,4 @@
-import 'package:campy/models/place.dart';
+import 'package:campy/views/router/state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:campy/providers/place.dart';
@@ -12,6 +12,7 @@ class PlaceHomeScreen extends StatelessWidget {
     var _placeProvider = Provider.of<CampPlaceProvider>(ctx, listen: false);
     _placeProvider.getPlaces();
     var mq = MediaQuery.of(ctx);
+    final appState = PyState();
 
     return Consumer<CampPlaceProvider>(builder: (ctx, placeProvider, child) {
       if (placeProvider.places.length > 20) {
@@ -50,9 +51,14 @@ class PlaceHomeScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: mq.size.height / 3,
+                  height: mq.size.height / 4,
                   child: Text("$mq"),
                 ),
+                ElevatedButton(
+                    onPressed: () {
+                      appState.authRepo.logout();
+                    },
+                    child: Text("로그아웃")),
                 Container(
                   height: mq.size.height / 3,
                   child: Card(

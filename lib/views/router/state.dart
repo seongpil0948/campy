@@ -21,6 +21,9 @@ class PyState extends ChangeNotifier {
       endSplash = true;
       notifyListeners();
     });
+    authRepo.addListener(() {
+      notifyListeners();
+    });
   }
   static final PyState _instance = PyState._onlyOne();
   factory PyState() {
