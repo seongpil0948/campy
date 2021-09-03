@@ -4,7 +4,7 @@ import 'package:campy/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'path.dart';
 
-final defaultPage = PageAction.place();
+final defaultPage = PageAction.feed();
 
 class PyState extends ChangeNotifier {
   late PageAction currPageAction;

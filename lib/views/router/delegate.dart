@@ -1,7 +1,6 @@
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/splash.dart';
 import 'package:campy/views/pages/feed/index.dart';
-import 'package:campy/views/pages/place/index.dart';
 import 'package:campy/views/pages/store/index.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:campy/views/router/state.dart';
@@ -141,13 +140,6 @@ class PyRouterDelegate extends RouterDelegate
       case Views.FeedCategory:
         _addPageData(FeedCategoryView(key: ValueKey("_feed_")), feedPathConfig);
         break;
-      case Views.PlaceCategory:
-        _addPageData(
-            PlaceCategoryView(
-              key: ValueKey("_place_"),
-            ),
-            placePathConfig);
-        break;
       case Views.StoreCategory:
         _addPageData(
             StoreCategoryView(key: ValueKey("_store_")), storePathConfig);
@@ -202,9 +194,6 @@ class PyRouterDelegate extends RouterDelegate
     switch (action.page.uiCtgr) {
       case Views.FeedCategory:
         feedPathConfig.currentPageAction = action;
-        break;
-      case Views.PlaceCategory:
-        placePathConfig.currentPageAction = action;
         break;
       case Views.StoreCategory:
         storePathConfig.currentPageAction = action;

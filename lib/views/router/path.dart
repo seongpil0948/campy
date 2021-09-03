@@ -1,6 +1,5 @@
 const String SplashPath = '/splash';
 const String FeedPath = '/feed';
-const String PlacePath = '/place';
 const String StorePath = '/store';
 const String LoginPath = '/login';
 
@@ -9,10 +8,8 @@ enum PageState { none, addPage, addAll, pop, replace, replaceAll }
 enum Views {
   FeedCategory,
   FeedDetail,
-  PlaceCategory,
   StoreCategory,
   ProductDetail,
-  PlaceDetail,
   UnknownPage,
   SplashPage,
   LoginPage,
@@ -26,11 +23,6 @@ class PageAction {
     state = PageState.addPage;
     page = feedPathConfig;
     pages = [feedPathConfig];
-  }
-  PageAction.place() {
-    state = PageState.addPage;
-    page = placePathConfig;
-    pages = [placePathConfig];
   }
   PageAction.store() {
     state = PageState.addPage;
@@ -47,11 +39,6 @@ class PageAction {
     page = PyPathConfig.feedDetail(feedId: feedId);
     pages = [PyPathConfig.feedDetail(feedId: feedId)];
   }
-  PageAction.placeDetail(placeId) {
-    state = PageState.addPage;
-    page = PyPathConfig.placeDetail(placeId: placeId);
-    pages = [PyPathConfig.placeDetail(placeId: placeId)];
-  }
 }
 
 class PyPathConfig {
@@ -61,7 +48,6 @@ class PyPathConfig {
   PageAction? currentPageAction;
   String? productId;
   String? feedId;
-  String? placeId;
 
   @override
   String toString() {
@@ -84,23 +70,12 @@ class PyPathConfig {
       : this.key = 'ProductDetail',
         this.path = StorePath + '/products/$productId',
         this.uiCtgr = Views.ProductDetail;
-
-  PyPathConfig.placeDetail({required this.placeId})
-      : this.key = 'PlaceDetail',
-        this.path = '/place/$placeId',
-        this.uiCtgr = Views.PlaceDetail;
 }
 
 PyPathConfig feedPathConfig = PyPathConfig(
     key: 'Feed',
     path: FeedPath,
     uiCtgr: Views.FeedCategory,
-    currentPageAction: null);
-
-PyPathConfig placePathConfig = PyPathConfig(
-    key: 'Place',
-    path: PlacePath,
-    uiCtgr: Views.PlaceCategory,
     currentPageAction: null);
 
 PyPathConfig storePathConfig = PyPathConfig(
