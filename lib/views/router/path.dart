@@ -2,7 +2,7 @@ const String SplashPath = '/splash';
 const String FeedPath = '/feed';
 const String PlacePath = '/place';
 const String StorePath = '/store';
-const String LoginPath = '/store';
+const String LoginPath = '/login';
 
 enum PageState { none, addPage, addAll, pop, replace, replaceAll }
 

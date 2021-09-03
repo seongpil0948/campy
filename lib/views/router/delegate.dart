@@ -16,9 +16,8 @@ class PyRouterDelegate extends RouterDelegate
     });
   }
 
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   @override
-  GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
+  GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
 
   final List<Page> _pages = [];
   List<MaterialPage> get pages => List.unmodifiable(_pages);
