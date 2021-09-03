@@ -33,5 +33,3 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/images/
-    - assets/mocks/camping_places.json
-    - assets/mocks/images/feed_2000x2000.jpg
