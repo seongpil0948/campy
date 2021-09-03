@@ -7,7 +7,7 @@ class LoginView extends StatelessWidget {
   final appState = PyState();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return SafeArea(
         child: Scaffold(
       body: Center(

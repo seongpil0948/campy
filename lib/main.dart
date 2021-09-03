@@ -10,7 +10,7 @@ void main() {
 
 class PyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (ctx, snapshot) {
@@ -25,7 +25,7 @@ class PyApp extends StatelessWidget {
               ));
         } else if (snapshot.hasError) {
           print("=== Flutter Initialize Error ===");
-          return Wrong();
+          return WrongView(key: ValueKey("Wrong"));
         } else {
           return CircularProgressIndicator();
         }

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-class Wrong extends StatelessWidget {
-  const Wrong({
+class WrongView extends StatelessWidget {
+  const WrongView({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text("Something Wrong..."),
+  Widget build(BuildContext ctx) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          child: Center(
+            child: Text("Something WrongView"),
+          ),
+        ),
+      ),
     );
   }
 }
