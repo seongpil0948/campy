@@ -6,7 +6,7 @@ import 'package:campy/views/router/path.dart';
 import 'package:campy/views/router/state.dart';
 import 'package:flutter/material.dart';
 
-class PyRouterDelegate extends RouterDelegate
+class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   PyState appState;
   PyRouterDelegate(this.appState) {

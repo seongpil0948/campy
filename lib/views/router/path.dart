@@ -2,6 +2,8 @@ const String SplashPath = '/splash';
 const String FeedPath = '/feed';
 const String StorePath = '/store';
 const String LoginPath = '/login';
+const String UnKnownPath = '/unknown';
+const String RootPath = "/";
 
 enum PageState { none, addPage, addAll, pop, replace, replaceAll }
 
@@ -94,4 +96,10 @@ PyPathConfig loginPathConfig = PyPathConfig(
     key: 'Login',
     path: LoginPath,
     uiCtgr: Views.LoginPage,
+    currentPageAction: null);
+
+PyPathConfig unknownPathConfig = PyPathConfig(
+    key: 'Unknown',
+    path: UnKnownPath,
+    uiCtgr: Views.UnknownPage,
     currentPageAction: null);
