@@ -19,7 +19,6 @@ class FeedCategoryView extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              ElevatedButton(onPressed: () {}, child: Text("sad")),
               FeedWidget(),
               FeedWidget(),
               FeedWidget(),
