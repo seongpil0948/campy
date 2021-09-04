@@ -1,14 +1,25 @@
+import 'package:campy/views/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatelessWidget {
   SplashView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext ctx) {
-    return Image.network(
-      "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg",
-      fit: BoxFit.fill,
-      // height: mq.size.height / 3,
-      // width: mq.size.width,
+    final mq = MediaQuery.of(ctx);
+    print("devicePixelRatio: ${mq.devicePixelRatio}");
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        Image.asset(
+          "assets/images/splash_back_${fileNumberByRatio(mq.devicePixelRatio)}.png",
+          fit: BoxFit.fill,
+          height: mq.size.height,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: mq.size.width / 3.2),
+          child: Image.asset("assets/images/splash_fore.png"),
+        ),
+      ],
     );
   }
 }
