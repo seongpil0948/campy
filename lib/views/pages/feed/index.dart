@@ -6,10 +6,30 @@ class FeedCategoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
+    final mq = MediaQuery.of(ctx);
     return Scaffold(
         appBar: AppBar(
           title: const Text('fuck Demo'),
         ),
+        drawer: Drawer(
+            child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+                child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: mq.size.height / 2.5),
+              child: Column(
+                children: [Text("data")],
+              ),
+            )),
+            ListTile(
+              title: Text("캠핑플레이스"),
+            ),
+            ListTile(
+              title: Text("스토어"),
+            ),
+          ],
+        )),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
