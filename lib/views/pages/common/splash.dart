@@ -6,7 +6,7 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
-    print("devicePixelRatio: ${mq.devicePixelRatio}");
+    print("----------- Media Q ------->: ${mq.devicePixelRatio}");
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
