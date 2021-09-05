@@ -19,10 +19,13 @@ abstract class PyThemeInterface with ChangeNotifier {
 class PyTheme extends PyThemeInterface {
   ThemeData get lightTheme {
     final primaryColor = Colors.blue.shade900; //1
+    final origin = ThemeData.light();
     return ThemeData(
       brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.white,
-      textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
+      textTheme: TextTheme(
+          bodyText2: TextStyle(color: Colors.white),
+          overline: origin.textTheme.overline!.copyWith(color: Colors.white)),
       appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.black),
           textTheme: TextTheme(
@@ -32,6 +35,7 @@ class PyTheme extends PyThemeInterface {
           elevation: 0),
       // visualDensity: VisualDensity(vertical: 0.5, horizontal: 0.5),
       accentColor: primaryColor,
+      primaryColor: primaryColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           primary: primaryColor,

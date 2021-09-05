@@ -12,6 +12,7 @@ class _PyAppBarTextFieldState extends State<PyAppBarTextField> {
 
   @override
   Widget build(BuildContext ctx) {
+    Scaffold.of(ctx).openDrawer();
     return TextField(
       textAlign: TextAlign.center,
       style: Theme.of(ctx).textTheme.caption,
