@@ -1,3 +1,4 @@
+import 'package:campy/views/layouts/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:campy/views/router/state.dart';
 
@@ -7,10 +8,11 @@ class FeedCategoryView extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
+    final toolbarH = mq.size.height / 6;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('fuck Demo'),
-        ),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(toolbarH),
+            child: PyAppBar(toolbarH: toolbarH)),
         drawer: Drawer(
             child: ListView(
           padding: EdgeInsets.zero,
