@@ -75,9 +75,10 @@ class LoginButton extends StatelessWidget {
   final Function tap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return InkWell(
-        onTap: () => tap,
+        onTap: () => tap(),
+        splashColor: Theme.of(ctx).primaryColor,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: mq.size.width / 7),
           child: Image.asset(aImg),
