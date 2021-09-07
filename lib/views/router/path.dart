@@ -1,5 +1,6 @@
 const String SplashPath = '/splash';
 const String FeedPath = '/feed';
+const String FeedPostPath = '/feed/post';
 const String StorePath = '/store';
 const String LoginPath = '/login';
 const String UnKnownPath = '/unknown';
@@ -10,6 +11,7 @@ enum PageState { none, addPage, addAll, pop, replace, replaceAll }
 enum Views {
   FeedCategory,
   FeedDetail,
+  FeedPost,
   StoreCategory,
   ProductDetail,
   UnknownPage,
@@ -40,6 +42,11 @@ class PageAction {
     state = PageState.addPage;
     page = PyPathConfig.feedDetail(feedId: feedId);
     pages = [PyPathConfig.feedDetail(feedId: feedId)];
+  }
+  PageAction.feedPost() {
+    state = PageState.addPage;
+    page = feedPostPathConfig;
+    pages = [feedPostPathConfig];
   }
 }
 
@@ -78,6 +85,12 @@ PyPathConfig feedPathConfig = PyPathConfig(
     key: 'Feed',
     path: FeedPath,
     uiCtgr: Views.FeedCategory,
+    currentPageAction: null);
+
+PyPathConfig feedPostPathConfig = PyPathConfig(
+    key: 'FeedPost',
+    path: FeedPostPath,
+    uiCtgr: Views.FeedPost,
     currentPageAction: null);
 
 PyPathConfig storePathConfig = PyPathConfig(

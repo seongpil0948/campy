@@ -1,6 +1,8 @@
 import 'package:campy/views/components/structs/feed/feed.dart';
 import 'package:campy/views/layouts/appbar.dart';
 import 'package:campy/views/layouts/drawer.dart';
+import 'package:campy/views/router/path.dart';
+import 'package:campy/views/router/state.dart';
 import 'package:flutter/material.dart';
 
 class FeedCategoryView extends StatelessWidget {
@@ -18,7 +20,9 @@ class FeedCategoryView extends StatelessWidget {
         drawer: PyDrawer(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            PyState().currPageAction = PageAction.feedPost();
+          },
           child: Icon(Icons.add),
           shape: CircleBorder(),
         ),

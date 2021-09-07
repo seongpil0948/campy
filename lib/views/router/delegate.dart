@@ -1,6 +1,7 @@
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/splash.dart';
 import 'package:campy/views/pages/feed/index.dart';
+import 'package:campy/views/pages/feed/post.dart';
 import 'package:campy/views/pages/store/index.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:campy/views/router/state.dart';
@@ -139,6 +140,10 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     switch (pageConfig.uiCtgr) {
       case Views.FeedCategory:
         _addPageData(FeedCategoryView(key: ValueKey("_feed_")), feedPathConfig);
+        break;
+      case Views.FeedPost:
+        _addPageData(
+            FeedPostView(key: ValueKey("_feed_post")), feedPostPathConfig);
         break;
       case Views.StoreCategory:
         _addPageData(
