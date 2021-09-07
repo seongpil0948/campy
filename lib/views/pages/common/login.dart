@@ -32,14 +32,18 @@ class LoginView extends StatelessWidget {
                 mq: mq,
                 w: Text("캠피 서비스 이용을 위해 SNS 로그인을 해주세요"),
               ),
-              ElevatedButton(
-                  onPressed: () => appState.authRepo
-                      .login(LoginStyle.Social, SocialLoginWith.Google),
-                  child: Text("Google Login")),
-              ElevatedButton(
-                onPressed: () => appState.authRepo
+              LoginButton(
+                mq: mq,
+                aImg: "assets/images/google_login.png",
+                tap: () => appState.authRepo
+                    .login(LoginStyle.Social, SocialLoginWith.Google),
+              ),
+              SizedBox(height: 10),
+              LoginButton(
+                mq: mq,
+                aImg: "assets/images/facebook_login.png",
+                tap: () => appState.authRepo
                     .login(LoginStyle.Social, SocialLoginWith.Facebook),
-                child: Text("Facebook Login"),
               ),
               VmarginContainer(
                 mq: mq,
@@ -58,6 +62,29 @@ class LoginView extends StatelessWidget {
   }
 }
 
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    Key? key,
+    required this.mq,
+    required this.aImg,
+    required this.tap,
+  }) : super(key: key);
+
+  final MediaQueryData mq;
+  final String aImg;
+  final Function tap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () => tap,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: mq.size.width / 7),
+          child: Image.asset(aImg),
+        ));
+  }
+}
+
 class VmarginContainer extends StatelessWidget {
   const VmarginContainer({Key? key, required this.mq, required this.w})
       : super(key: key);
@@ -68,7 +95,7 @@ class VmarginContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.symmetric(vertical: 30),
       child: w,
     );
   }
