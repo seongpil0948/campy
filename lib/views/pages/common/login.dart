@@ -36,14 +36,14 @@ class LoginView extends StatelessWidget {
                 mq: mq,
                 aImg: "assets/images/google_login.png",
                 tap: () => appState.authRepo
-                    .login(LoginStyle.Social, SocialLoginWith.Google),
+                    .socialLogin(LoginStyle.Social, SocialLoginWith.Google),
               ),
               SizedBox(height: 10),
               LoginButton(
                 mq: mq,
                 aImg: "assets/images/facebook_login.png",
                 tap: () => appState.authRepo
-                    .login(LoginStyle.Social, SocialLoginWith.Facebook),
+                    .socialLogin(LoginStyle.Social, SocialLoginWith.Facebook),
               ),
               VmarginContainer(
                 mq: mq,

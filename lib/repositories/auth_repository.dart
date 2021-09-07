@@ -1,3 +1,4 @@
+import 'package:campy/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -6,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthRepository extends ChangeNotifier {
   bool _isAuthentic = false;
   FirebaseAuth _fireAuth = FirebaseAuth.instance;
+  PyUser? currUser;
 
   AuthRepository() {
     print("Initial Auth $_fireAuth.");
@@ -23,9 +25,10 @@ class AuthRepository extends ChangeNotifier {
     print(
         'FirebaseAuth: $_fireAuth _isAuthentic: $_isAuthentic User is currently signed out!');
     _updateLoginStatus(false);
+    currUser = null;
   }
 
-  void login(LoginStyle style, SocialLoginWith social) async {
+  void socialLogin(LoginStyle style, SocialLoginWith social) async {
     UserCredential? c;
     if (style == LoginStyle.Social) {
       switch (social) {
@@ -39,7 +42,6 @@ class AuthRepository extends ChangeNotifier {
           break;
       }
     }
-    print("Result of Login Credential: $c");
     _updateLoginStatus(true);
   }
 
@@ -48,7 +50,8 @@ class AuthRepository extends ChangeNotifier {
     if (user == null) {
       logout();
     } else {
-      print('User: $user is signed in!');
+      currUser = PyUser(socialUser: user);
+      print('\nCurrent User: $currUser is signed in!\n');
     }
   }
 }

@@ -9,4 +9,9 @@ class PyUser {
   List<PyUser> followers = [];
   List<PyUser> follows = [];
   PyUser({required this.socialUser});
+
+  @override
+  String toString() {
+    return "PyUser: Social: $socialUser \n feeds: $feeds \n followers: $followers \n follows: $follows";
+  }
 }
