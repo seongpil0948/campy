@@ -1,8 +1,5 @@
 import 'package:campy/views/components/structs/feed/feed.dart';
-import 'package:campy/views/layouts/appbar.dart';
-import 'package:campy/views/layouts/drawer.dart';
-import 'package:campy/views/router/path.dart';
-import 'package:campy/views/router/state.dart';
+import 'package:campy/views/layouts/pyffold.dart';
 import 'package:flutter/material.dart';
 
 class FeedCategoryView extends StatelessWidget {
@@ -10,23 +7,10 @@ class FeedCategoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final mq = MediaQuery.of(ctx);
-    final toolbarH = mq.size.height / 6;
-
-    return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(toolbarH),
-            child: PyAppBar(toolbarH: toolbarH)),
-        drawer: PyDrawer(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            PyState().currPageAction = PageAction.feedPost();
-          },
-          child: Icon(Icons.add),
-          shape: CircleBorder(),
-        ),
-        body: SingleChildScrollView(
+    return Pyffold(
+      fButton: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               FeedWidget(),
@@ -34,6 +18,8 @@ class FeedCategoryView extends StatelessWidget {
               FeedWidget(),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

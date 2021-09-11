@@ -1,3 +1,4 @@
+import 'package:campy/views/layouts/pyffold.dart';
 import 'package:flutter/material.dart';
 
 class FeedPostView extends StatelessWidget {
@@ -5,8 +6,14 @@ class FeedPostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Post Feed Page"),
-    );
+    return Pyffold(
+        fButton: false,
+        body: Container(
+          child: Center(
+              child: Text(
+            "Post Feed Page",
+            style: TextStyle(color: Colors.black),
+          )),
+        ));
   }
 }

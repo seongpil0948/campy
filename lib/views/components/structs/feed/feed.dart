@@ -1,4 +1,3 @@
-import 'package:campy/views/router/state.dart';
 import 'package:flutter/material.dart';
 
 class FeedWidget extends StatelessWidget {
@@ -9,7 +8,6 @@ class FeedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     var mq = MediaQuery.of(ctx);
-    final appState = PyState();
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: mq.size.height / 40, horizontal: mq.size.width / 25),

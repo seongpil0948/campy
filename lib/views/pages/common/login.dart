@@ -1,14 +1,15 @@
+import 'package:campy/providers/state.dart';
 import 'package:campy/repositories/auth_repository.dart';
-import 'package:campy/views/router/state.dart';
 import 'package:campy/views/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({Key? key}) : super(key: key);
-  final appState = PyState();
 
   @override
   Widget build(BuildContext ctx) {
+    final appState = ctx.read<PyState>();
     var mq = MediaQuery.of(ctx);
     return Scaffold(
       body: Stack(children: [

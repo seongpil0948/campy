@@ -28,13 +28,10 @@ class PyTheme extends PyThemeInterface {
           overline: origin.textTheme.overline!.copyWith(color: Colors.white)),
       appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.black),
-          textTheme: TextTheme(
-            headline6: TextStyle(color: Colors.black),
-          ),
+          toolbarTextStyle: TextStyle(color: Colors.black),
           backgroundColor: Colors.white,
           elevation: 0),
       // visualDensity: VisualDensity(vertical: 0.5, horizontal: 0.5),
-      accentColor: primaryColor,
       primaryColor: primaryColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

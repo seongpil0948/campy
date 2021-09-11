@@ -1,20 +1,16 @@
+import 'package:campy/providers/state.dart';
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/splash.dart';
 import 'package:campy/views/pages/feed/index.dart';
 import 'package:campy/views/pages/feed/post.dart';
 import 'package:campy/views/pages/store/index.dart';
 import 'package:campy/views/router/path.dart';
-import 'package:campy/views/router/state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
-  PyState appState;
-  PyRouterDelegate(this.appState) {
-    appState.addListener(() {
-      notifyListeners(); // call all listeners when change appState
-    });
-  }
+  PyRouterDelegate();
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
@@ -23,37 +19,38 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   List<MaterialPage> get pages => List.unmodifiable(_pages);
   PyPathConfig get currPageConfig => _pages.last.arguments as PyPathConfig;
 
-  List<Page> buildPages() {
-    if (!appState.readyToMain) {
-      if (!appState.endSplash) {
+  List<Page> buildPages(BuildContext ctx) {
+    final state = ctx.watch<PyState>();
+    if (!state.readyToMain) {
+      if (!state.endSplash) {
         _addPageData(SplashView(key: ValueKey("_splash_")), splashPathConfig);
-      } else if (!appState.authRepo.isAuthentic) {
+      } else if (!state.authRepo.isAuthentic) {
         _addPageData(LoginView(key: ValueKey("_login_")), loginPathConfig);
       }
     } else {
-      switch (appState.currPageAction.state) {
+      switch (state.currPageAction.state) {
         case PageState.none:
           break;
         case PageState.addPage:
-          _setPageAction(appState.currPageAction);
-          addPage(appState.currPageAction.page);
+          _setPageAction(state.currPageAction);
+          addPage(state.currPageAction.page);
           break;
         case PageState.pop:
           pop();
           break;
         case PageState.replace:
-          _setPageAction(appState.currPageAction);
-          replace(appState.currPageAction.page);
+          _setPageAction(state.currPageAction);
+          replace(state.currPageAction.page);
           break;
         case PageState.replaceAll:
-          _setPageAction(appState.currPageAction);
-          replaceAll(appState.currPageAction.page);
+          _setPageAction(state.currPageAction);
+          replaceAll(state.currPageAction.page);
           break;
         case PageState.addAll:
-          addAll(appState.currPageAction.pages);
+          addAll(state.currPageAction.pages);
           break;
         default:
-          appState.resetCurrentAction();
+          state.resetCurrentAction();
           break;
       }
     }
@@ -65,7 +62,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   Widget build(BuildContext ctx) {
     return Navigator(
       key: navigatorKey,
-      pages: buildPages(),
+      pages: buildPages(ctx),
       onPopPage: _onPopPage,
     );
   }
