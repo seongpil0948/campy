@@ -1,9 +1,9 @@
+import 'package:campy/models/user.dart';
 import 'package:flutter/material.dart';
 
 class FeedWidget extends StatelessWidget {
-  const FeedWidget({
-    Key? key,
-  }) : super(key: key);
+  final PyUser user;
+  FeedWidget({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -29,32 +29,15 @@ class FeedWidget extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "data",
-                      ),
+                          backgroundImage: NetworkImage(user.profileImage)),
+                      SizedBox(width: 10),
+                      Text("data"),
                     ],
                   ),
-                  Text(
-                    "data",
-                  ),
-                  Text(
-                    "data",
-                    // FIXME: Theme
-                  ),
-                  Text(
-                    "data",
-                    // FIXME: Theme
-                  ),
-                  Text(
-                    "data",
-                    // FIXME: Theme
-                  ),
+                  Text("data"),
+                  Text("data"),
+                  Text("data"),
+                  Text("data"),
                 ],
               ),
             )

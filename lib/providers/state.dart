@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth_repository.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class PyState extends ChangeNotifier {
   bool endSplash = false;
 
   bool get readyToMain => endSplash && authRepo.isAuthentic;
+  PyUser? get currUser => authRepo.currUser;
 
   PageAction get currPageAction => _currPageAction;
   set currPageAction(PageAction act) {

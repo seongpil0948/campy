@@ -24,7 +24,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     if (!state.readyToMain) {
       if (!state.endSplash) {
         _addPageData(SplashView(key: ValueKey("_splash_")), splashPathConfig);
-      } else if (!state.authRepo.isAuthentic) {
+      } else if (!state.authRepo.isAuthentic || state.currUser == null) {
         _addPageData(LoginView(key: ValueKey("_login_")), loginPathConfig);
       }
     } else {
