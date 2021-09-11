@@ -10,20 +10,33 @@ class PyAppBar extends StatelessWidget {
   final double toolbarH;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
+    final mq = MediaQuery.of(ctx);
     return AppBar(
+      leading: Container(),
       toolbarHeight: toolbarH,
-      flexibleSpace: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 25, 0),
-            child: CircleAvatar(
+      flexibleSpace: Padding(
+        padding: EdgeInsets.fromLTRB(10, mq.padding.top / 2, 25, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.menu,
+                size: 35,
+              ),
+              onPressed: () {
+                Scaffold.of(ctx).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(ctx).openAppDrawerTooltip,
+            ),
+            Spacer(),
+            CircleAvatar(
               backgroundImage: NetworkImage(
                   "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottom: PreferredSize(
           preferredSize: Size.fromHeight(toolbarH / 2),
@@ -32,7 +45,7 @@ class PyAppBar extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(height: toolbarH / 4, child: PyAppBarTextField()),
+                Container(height: toolbarH / 2.5, child: PyAppBarTextField()),
                 Container(
                     margin: EdgeInsets.fromLTRB(0, 2, 0, 10), child: Divider())
               ],

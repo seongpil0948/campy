@@ -109,6 +109,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   // _removePage on the last page of the app, you would see a blank screen.
   @override
   Future<bool> popRoute() {
+    print("====== pop Route : ${canPop()} ===== ");
     if (canPop()) {
       _removePage(_pages.last as MaterialPage);
       return Future.value(true);

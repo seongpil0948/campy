@@ -2,12 +2,14 @@ import 'package:campy/config.dart';
 import 'package:campy/providers/state.dart';
 import 'package:campy/views/pages/common/wrong.dart';
 import 'package:campy/views/router/parser.dart';
+import 'package:campy/views/utils/system_ui.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:campy/views/router/delegate.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  handleStatusBar(to: StatusBarTo.Transparent);
   runApp(PyApp());
 }
 
