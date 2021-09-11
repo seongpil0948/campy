@@ -9,15 +9,13 @@ class FeedCategoryView extends StatelessWidget {
   Widget build(BuildContext ctx) {
     return Pyffold(
       fButton: true,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              FeedWidget(),
-              FeedWidget(),
-              FeedWidget(),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FeedWidget(),
+            FeedWidget(),
+            FeedWidget(),
+          ],
         ),
       ),
     );

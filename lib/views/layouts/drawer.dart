@@ -14,93 +14,90 @@ class PyDrawer extends StatelessWidget {
         child: ListView(
       padding: EdgeInsets.zero,
       children: [
-        Container(
-          constraints: BoxConstraints(minHeight: mq.size.height / 3),
-          child: DrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(ctx).primaryColor),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Image(
-                          image: AssetImage("assets/images/bell.png"),
-                          width: 50,
-                          height: 50,
-                        ),
-                        onPressed: () {},
+        DrawerHeader(
+            decoration: BoxDecoration(color: Theme.of(ctx).primaryColor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Image(
+                        image: AssetImage("assets/images/bell.png"),
+                        width: 50,
+                        height: 50,
                       ),
-                      Spacer(),
-                      Image.asset(
-                        'assets/images/logo_w_1.png',
-                        fit: BoxFit.contain,
-                        height: 60,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(5, 5, 0, 12),
-                    child: Text(
-                      "Campy",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
-                          fontSize: 16),
+                      onPressed: () {},
                     ),
+                    Spacer(),
+                    Image.asset(
+                      'assets/images/logo_w_1.png',
+                      fit: BoxFit.contain,
+                      height: 60,
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 5, 0, 12),
+                  child: Text(
+                    "Campy",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                        fontSize: 16),
                   ),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                            "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                ),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                          "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "USER NAME",
+                          style: Theme.of(ctx).textTheme.overline,
+                        ),
+                        Container(
+                            margin: const EdgeInsets.only(top: 7),
+                            height: 23,
+                            child: PyWhiteButton(
+                                widget: Text(
+                              "My Places",
+                              style:
+                                  TextStyle(color: Theme.of(ctx).primaryColor),
+                            ))),
+                      ],
+                    )
+                  ],
+                ),
+                Container(
+                    margin: const EdgeInsets.only(top: 15),
+                    height: 35,
+                    child: PyWhiteButton(
+                        widget: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (var i in ["포스팅 4", "팔로워 3,130", "팔로우 3,130"])
                           Text(
-                            "USER NAME",
-                            style: Theme.of(ctx).textTheme.overline,
-                          ),
-                          Container(
-                              margin: const EdgeInsets.only(top: 7),
-                              height: 23,
-                              child: PyWhiteButton(
-                                  widget: Text(
-                                "My Places",
-                                style: TextStyle(
-                                    color: Theme.of(ctx).primaryColor),
-                              ))),
-                        ],
-                      )
-                    ],
-                  ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      height: 35,
-                      child: PyWhiteButton(
-                          widget: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          for (var i in ["포스팅 4", "팔로워 3,130", "팔로우 3,130"])
-                            Text(
-                              i,
-                              style: TextStyle(
-                                  color: Theme.of(ctx).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12),
-                            )
-                        ],
-                      )))
-                ],
-              )),
-        ),
+                            i,
+                            style: TextStyle(
+                                color: Theme.of(ctx).primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          )
+                      ],
+                    )))
+              ],
+            )),
         ListTile(
           title: Text("캠핑플레이스"),
         ),
