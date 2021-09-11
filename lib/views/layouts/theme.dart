@@ -23,7 +23,11 @@ class PyTheme extends PyThemeInterface {
     return ThemeData(
       brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.white,
+      cardTheme: CardTheme(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
       textTheme: TextTheme(
+          bodyText1: TextStyle(color: Colors.black),
           bodyText2: TextStyle(color: Colors.white),
           overline: origin.textTheme.overline!.copyWith(color: Colors.white)),
       appBarTheme: AppBarTheme(
