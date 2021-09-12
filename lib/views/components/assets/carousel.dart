@@ -25,7 +25,7 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
   Widget carouselLayout(BuildContext ctx, Widget child) {
     final mq = MediaQuery.of(ctx);
     return Container(
-      height: mq.size.height / 4,
+      height: mq.size.height / 3,
       child: child,
     );
   }
@@ -35,8 +35,6 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
         CarouselSlider.builder(
             itemCount: _uploadFiles.length + 1,
             itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
-              print(
-                  "_uploadFileslength: ${_uploadFiles.length} \n pageViewIndex:$idx");
               if (idx == _uploadFiles.length) {
                 return carouselLayout(
                     ctx,

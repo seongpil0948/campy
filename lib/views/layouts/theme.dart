@@ -22,6 +22,9 @@ class PyTheme extends PyThemeInterface {
     final origin = ThemeData.light();
     return ThemeData(
       brightness: Brightness.light,
+      primaryColor: primaryColor,
+      cardColor: Colors.grey[100],
+      colorScheme: ColorScheme.light().copyWith(secondary: Colors.grey),
       scaffoldBackgroundColor: Colors.white,
       cardTheme: CardTheme(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -36,7 +39,6 @@ class PyTheme extends PyThemeInterface {
           backgroundColor: Colors.white,
           elevation: 0),
       // visualDensity: VisualDensity(vertical: 0.5, horizontal: 0.5),
-      primaryColor: primaryColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           primary: primaryColor,
