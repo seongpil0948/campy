@@ -29,7 +29,9 @@ class _VideoWState extends State<VideoW> {
     if (_controller.value.isInitialized) {
       _controller.play();
       return InkWell(
-        onTap: () => _controller.play(),
+        onTap: () => _controller.value.isPlaying
+            ? _controller.pause()
+            : _controller.play(),
         child: AspectRatio(
           aspectRatio: _controller.value.aspectRatio,
           child: VideoPlayer(_controller),

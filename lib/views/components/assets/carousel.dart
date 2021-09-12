@@ -58,11 +58,6 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
               aspectRatio: 2.0,
               enableInfiniteScroll: false,
             )),
-        ElevatedButton(
-          onPressed: () => buttonCarouselController.nextPage(
-              duration: Duration(milliseconds: 300), curve: Curves.linear),
-          child: Text('→'),
-        )
       ]);
   pressAssetButton(bool isVideo) async {
     if (isVideo) {
