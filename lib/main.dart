@@ -3,10 +3,13 @@ import 'package:campy/providers/state.dart';
 import 'package:campy/views/pages/common/wrong.dart';
 import 'package:campy/views/router/parser.dart';
 import 'package:campy/views/utils/system_ui.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:campy/views/router/delegate.dart';
 import 'package:provider/provider.dart';
+
+const USE_FIRESTORE_EMULATOR = false;
 
 void main() {
   handleStatusBar(to: StatusBarTo.Transparent);
@@ -20,6 +23,9 @@ class PyApp extends StatelessWidget {
       future: Firebase.initializeApp(),
       builder: (ctx, snapshot) {
         if (snapshot.hasData) {
+          if (USE_FIRESTORE_EMULATOR) {
+            FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+          }
           return ChangeNotifierProvider(
             create: (ctx) => PyState(),
             child: MaterialApp.router(
