@@ -19,15 +19,16 @@ abstract class PyThemeInterface with ChangeNotifier {
 class PyTheme extends PyThemeInterface {
   ThemeData get lightTheme {
     final primaryColor = Colors.blue.shade900; //1
+    final secondColor = Colors.grey; //1
     final origin = ThemeData.light();
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: primaryColor,
       cardColor: Colors.grey[100],
-      colorScheme: ColorScheme.light().copyWith(secondary: Colors.grey),
+      colorScheme: ColorScheme.light().copyWith(secondary: secondColor),
       scaffoldBackgroundColor: Colors.white,
       cardTheme: CardTheme(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
       textTheme: TextTheme(
           bodyText1: TextStyle(color: Colors.black),
@@ -62,6 +63,8 @@ class PyTheme extends PyThemeInterface {
           borderSide: BorderSide(width: OvalBorderWidth, color: primaryColor),
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: primaryColor, foregroundColor: Colors.white),
       buttonTheme: ButtonThemeData(
         // 4
         shape: RoundedRectangleBorder(

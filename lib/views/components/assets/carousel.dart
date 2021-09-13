@@ -22,13 +22,6 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
   List<XFileType> fileTypes = [];
 
   final ImagePicker _picker = ImagePicker();
-  Widget carouselLayout(BuildContext ctx, Widget child) {
-    final mq = MediaQuery.of(ctx);
-    return Container(
-      height: mq.size.height / 3,
-      child: child,
-    );
-  }
 
   @override
   Widget build(BuildContext ctx) => Column(children: <Widget>[
@@ -36,24 +29,22 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
             itemCount: _uploadFiles.length + 1,
             itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
               if (idx == _uploadFiles.length) {
-                return carouselLayout(
-                    ctx,
-                    AssetUploadCard(
-                        photoPressed: () => pressAssetButton(false),
-                        videoPressed: () => pressAssetButton(true)));
+                return AssetUploadCard(
+                    photoPressed: () => pressAssetButton(false),
+                    videoPressed: () => pressAssetButton(true));
               }
               final file = File(_uploadFiles[idx].path);
               switch (fileTypes[idx]) {
                 case XFileType.Image:
-                  return carouselLayout(ctx, Image.file(file));
+                  return Image.file(file);
                 case XFileType.Video:
                   return VideoW(file: file);
               }
             },
             options: CarouselOptions(
               enlargeCenterPage: true,
-              viewportFraction: 0.9,
-              aspectRatio: 2.0,
+              viewportFraction: 1.0,
+              aspectRatio: 1.6,
               enableInfiniteScroll: false,
             )),
       ]);

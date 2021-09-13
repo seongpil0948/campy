@@ -1,4 +1,5 @@
 import 'package:campy/views/components/assets/carousel.dart';
+import 'package:campy/views/components/select/single.dart';
 import 'package:campy/views/layouts/pyffold.dart';
 import 'package:flutter/material.dart';
 
@@ -9,61 +10,129 @@ class FeedPostView extends StatefulWidget {
 }
 
 class _FeedPostViewState extends State<FeedPostView> {
+  var _titleController = TextEditingController();
+  var _contentController = TextEditingController();
+  var _tagsController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    _tagsController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
+    String? kind;
+    String? price;
+    String? around;
+    List<String> tags = [];
+
     return Pyffold(
         fButton: false,
         body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                height: mq.size.height / 3,
+                height: mq.size.height / 3.1,
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: PyAssetCarousel(),
               ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    PySingleSelect(
+                        model: kind,
+                        hint: "캠핑 종류",
+                        items: ["오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
+                    PySingleSelect(model: price, hint: "가격 정보", items: [
+                      "5만원 이하",
+                      "10만원 이하",
+                      "15만원 이하 ",
+                      "20만원 이하",
+                      "20만원 이상"
+                    ]),
+                    PySingleSelect(
+                        model: around,
+                        hint: "주변 정보",
+                        items: ["마트 없음", "관광코스 없음", "계곡 없음", "산 없음"]),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                child: TextField(
+                  keyboardType: TextInputType.text,
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3, color: Theme.of(ctx).cardColor),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      labelText: "제목을 입력해주세요"),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                child: TextField(
+                  keyboardType: TextInputType.text,
+                  controller: _contentController,
+                  decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3, color: Theme.of(ctx).cardColor),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      labelText: "사진에 대한 내용을 입력해주세요"),
+                  maxLines: 10,
+                ),
+              ),
               Row(
-                children: [Container(height: 200, child: PySingleSelect())],
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: ctx,
+                            builder: (ctx) {
+                              return Dialog(
+                                child: TextField(
+                                  controller: _tagsController,
+                                  keyboardType: TextInputType.text,
+                                ),
+                              );
+                            });
+                      },
+                      child: Text("#태그추가"))
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          print("""
+                          _titleController.text: ${_titleController.text}\n
+                          _contentController: ${_contentController.text}\n
+                          _tagsController: ${_tagsController.text}\n
+                        """);
+                        },
+                        child: Center(
+                          child: Text("올리기"),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               )
             ],
           ),
         ));
-  }
-}
-
-class PySingleSelect extends StatefulWidget {
-  const PySingleSelect({Key? key}) : super(key: key);
-
-  @override
-  State<PySingleSelect> createState() => _PySingleSelectState();
-}
-
-/// This is the private State class that goes with PySingleSelect.
-class _PySingleSelectState extends State<PySingleSelect> {
-  String dropdownValue = '오토 캠핑';
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      alignment: AlignmentDirectional.topStart,
-      hint: Text("캠핑종류"),
-      icon: const Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      // style: const TextStyle(color: Colors.deepPurple),
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownValue = newValue!;
-        });
-      },
-      items: <String>["오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
   }
 }
