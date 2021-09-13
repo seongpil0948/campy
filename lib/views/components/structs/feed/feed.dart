@@ -1,9 +1,9 @@
-import 'package:campy/models/user.dart';
+import 'package:campy/models/feed.dart';
 import 'package:flutter/material.dart';
 
 class FeedWidget extends StatelessWidget {
-  final PyUser user;
-  FeedWidget({Key? key, required this.user}) : super(key: key);
+  FeedInfo info;
+  FeedWidget({Key? key, required this.info}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -29,7 +29,8 @@ class FeedWidget extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                          backgroundImage: NetworkImage(user.profileImage)),
+                          backgroundImage:
+                              NetworkImage(info.writer.profileImage)),
                       SizedBox(width: 10),
                       Text("data"),
                     ],

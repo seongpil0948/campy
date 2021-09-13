@@ -1,7 +1,9 @@
+import 'package:campy/models/user.dart';
 import 'package:flutter/material.dart';
 
 class FeedInfo {
   const FeedInfo({
+    required this.writer,
     required this.isfavorite,
     required this.feedId,
     required this.img,
@@ -12,6 +14,7 @@ class FeedInfo {
     required this.shareCount,
     required this.bookmarkCount,
   });
+  final PyUser writer;
   final bool isfavorite;
   final String feedId;
   final String hashTags;

@@ -10,15 +10,13 @@ class FeedCategoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    List<PyUser> users = [ctx.watch<PyState>().currUser!];
+    PyUser user = ctx.watch<PyState>().currUser!;
     return Pyffold(
       fButton: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            FeedWidget(user: users[0]),
-            FeedWidget(user: users[0]),
-            FeedWidget(user: users[0]),
+            // FeedWidget(user: users[0]),
           ],
         ),
       ),
