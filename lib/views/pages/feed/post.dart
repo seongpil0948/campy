@@ -1,7 +1,12 @@
+import 'package:campy/models/feed.dart';
+import 'package:campy/providers/state.dart';
+import 'package:campy/repositories/store/init.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/components/select/single.dart';
 import 'package:campy/views/layouts/pyffold.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/src/provider.dart';
 
 class FeedPostView extends StatefulWidget {
   FeedPostView({Key? key}) : super(key: key);
@@ -12,13 +17,13 @@ class FeedPostView extends StatefulWidget {
 class _FeedPostViewState extends State<FeedPostView> {
   var _titleController = TextEditingController();
   var _contentController = TextEditingController();
-  var _tagsController = TextEditingController();
+  var _hashTagsController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();
-    _tagsController.dispose();
+    _hashTagsController.dispose();
     super.dispose();
   }
 
@@ -28,7 +33,9 @@ class _FeedPostViewState extends State<FeedPostView> {
     String? kind;
     String? price;
     String? around;
-    List<String> tags = [];
+    List<String> hashTags = [];
+    List<XFile> uploadFiles = [];
+    List<XFileType> fileTypes = [];
 
     return Pyffold(
         fButton: false,
@@ -38,7 +45,8 @@ class _FeedPostViewState extends State<FeedPostView> {
               Container(
                 height: mq.size.height / 3.1,
                 margin: EdgeInsets.symmetric(horizontal: 10),
-                child: PyAssetCarousel(),
+                child: PyAssetCarousel(
+                    uploadFiles: uploadFiles, fileTypes: fileTypes),
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
@@ -101,7 +109,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                             builder: (ctx) {
                               return Dialog(
                                 child: TextField(
-                                  controller: _tagsController,
+                                  controller: _hashTagsController,
                                   keyboardType: TextInputType.text,
                                 ),
                               );
@@ -120,8 +128,29 @@ class _FeedPostViewState extends State<FeedPostView> {
                           print("""
                           _titleController.text: ${_titleController.text}\n
                           _contentController: ${_contentController.text}\n
-                          _tagsController: ${_tagsController.text}\n
-                        """);
+                          _hashTagsController: ${_hashTagsController.text}\n
+                          """);
+                          final c = getCollection(Collections.Feeds);
+                          var finfo = FeedInfo(
+                              writer: ctx.read<PyState>().currUser!,
+                              isfavorite: false,
+                              feedId: null,
+                              files: uploadFiles,
+                              fileTypes: fileTypes,
+                              title: _titleController.text,
+                              content: _contentController.text,
+                              hashTags: _hashTagsController.text,
+                              likeCount: 0,
+                              commentCount: 0,
+                              shareCount: 0,
+                              bookmarkCount: 0);
+
+                          c
+                              .add(finfo)
+                              .then((value) => print("$finfo is Added"))
+                              .catchError((error) =>
+                                  print("Failed to add Feed: $error"));
+                          ;
                         },
                         child: Center(
                           child: Text("올리기"),

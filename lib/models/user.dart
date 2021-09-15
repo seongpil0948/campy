@@ -1,4 +1,3 @@
-import 'package:campy/config.dart';
 import 'package:campy/models/feed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -20,9 +19,9 @@ class PyUser {
   PyUser({required User user})
       : displayName = user.displayName!,
         email = user.email!,
-        emailVerified = user.emailVerified!,
+        emailVerified = user.emailVerified,
         phoneNumber = user.phoneNumber!,
-        metadata = user.metadata!,
+        metadata = user.metadata,
         photoURL = user.photoURL!,
         providerData = user.providerData,
         refreshToken = user.refreshToken!,

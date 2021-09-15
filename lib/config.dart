@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 final appTheme = PyTheme();
 
 class PyDefault {
-  static const profileImage = 'assets/images/mock.jpg';
+  static const DocId = "campy-a23ed";
   const PyDefault();
 }

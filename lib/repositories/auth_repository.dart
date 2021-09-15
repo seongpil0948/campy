@@ -50,7 +50,7 @@ class AuthRepository extends ChangeNotifier {
     if (user == null) {
       logout();
     } else {
-      currUser = PyUser(socialUser: user);
+      currUser = PyUser(user: user);
       _updateLoginStatus(true);
       print('\nCurrent User: $currUser is signed in!\n');
     }
