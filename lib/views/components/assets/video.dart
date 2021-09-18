@@ -6,7 +6,7 @@ import 'package:video_player/video_player.dart';
 class VideoW extends StatefulWidget {
   @override
   _VideoWState createState() => _VideoWState();
-  File file;
+  final File file;
 
   VideoW({required this.file});
 }

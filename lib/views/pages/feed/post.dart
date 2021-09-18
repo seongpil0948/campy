@@ -1,13 +1,13 @@
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/providers/auth.dart';
-import 'package:campy/providers/state.dart';
 import 'package:campy/repositories/store/init.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/components/select/single.dart';
-import 'package:campy/views/layouts/pyffold.dart';
+import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class FeedPostView extends StatefulWidget {
@@ -38,6 +38,7 @@ class _FeedPostViewState extends State<FeedPostView> {
     String? kind;
     String? price;
     String? around;
+    // ignore: unused_local_variable
     List<String> hashTags = [];
     List<XFile> uploadFiles = [];
     List<XFileType> fileTypes = [];
@@ -144,12 +145,12 @@ class _FeedPostViewState extends State<FeedPostView> {
                         hashTags: _hashTagsController.text,
                       );
 
-                      c
-                          .add(finfo.toJson())
-                          .then((value) => print("$finfo is Added"))
-                          .catchError(
-                              (error) => print("Failed to add Feed: $error"));
-                      ;
+                      c.doc().set(finfo.toJson()).then((value) {
+                        print("$finfo is Added");
+                        // print("Value: $value");
+                      }).catchError((error) {
+                        print("Failed to add Feed: $error");
+                      });
                     },
                     child: Center(
                       child: Text("올리기"),

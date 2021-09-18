@@ -1,4 +1,3 @@
-import 'package:campy/config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum Collections {

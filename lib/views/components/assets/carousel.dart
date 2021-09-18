@@ -7,8 +7,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PyAssetCarousel extends StatefulWidget {
-  List<XFile> uploadFiles;
-  List<XFileType> fileTypes;
+  final List<XFile> uploadFiles;
+  final List<XFileType> fileTypes;
   PyAssetCarousel(
       {Key? key, required this.uploadFiles, required this.fileTypes})
       : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:campy/providers/state.dart';
-import 'package:campy/views/layouts/pyffold.dart';
+import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

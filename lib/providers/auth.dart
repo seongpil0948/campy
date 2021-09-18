@@ -46,14 +46,13 @@ class PyAuth extends ChangeNotifier {
   }
 
   void socialLogin(LoginStyle style, SocialLoginWith social) async {
-    UserCredential? c;
     if (style == LoginStyle.Social) {
       switch (social) {
         case SocialLoginWith.Google:
-          c = await authRepo.loginWithGoogle();
+          await authRepo.loginWithGoogle();
           break;
         case SocialLoginWith.Facebook:
-          c = await authRepo.loginWithFacebook();
+          await authRepo.loginWithFacebook();
           break;
         case SocialLoginWith.Ignore:
           break;

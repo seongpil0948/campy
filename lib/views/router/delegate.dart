@@ -7,6 +7,7 @@ import 'package:campy/views/pages/feed/post.dart';
 import 'package:campy/views/pages/store/index.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class PyRouterDelegate extends RouterDelegate<PyPathConfig>

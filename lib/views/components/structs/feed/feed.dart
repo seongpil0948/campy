@@ -2,7 +2,7 @@ import 'package:campy/models/feed.dart';
 import 'package:flutter/material.dart';
 
 class FeedWidget extends StatelessWidget {
-  FeedInfo info;
+  final FeedInfo info;
   FeedWidget({Key? key, required this.info}) : super(key: key);
 
   @override

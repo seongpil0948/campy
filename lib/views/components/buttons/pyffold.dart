@@ -3,8 +3,8 @@ import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
 
 class Pyffold extends StatelessWidget {
-  Widget body;
-  Widget? fButton;
+  final Widget body;
+  final Widget? fButton;
 
   Pyffold({
     Key? key,

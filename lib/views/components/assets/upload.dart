@@ -4,8 +4,8 @@ class AssetUploadCard extends StatelessWidget {
   AssetUploadCard(
       {Key? key, required this.photoPressed, required this.videoPressed})
       : super(key: key);
-  void Function() photoPressed;
-  void Function() videoPressed;
+  final void Function() photoPressed;
+  final void Function() videoPressed;
 
   @override
   Widget build(BuildContext ctx) {

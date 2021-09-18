@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PyWhiteButton extends StatelessWidget {
-  Widget? widget;
+  final Widget? widget;
   PyWhiteButton({
     Key? key,
     this.widget,
