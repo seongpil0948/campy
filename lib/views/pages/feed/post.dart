@@ -1,4 +1,6 @@
 import 'package:campy/models/feed.dart';
+import 'package:campy/models/user.dart';
+import 'package:campy/providers/auth.dart';
 import 'package:campy/providers/state.dart';
 import 'package:campy/repositories/store/init.dart';
 import 'package:campy/views/components/assets/carousel.dart';
@@ -29,6 +31,9 @@ class _FeedPostViewState extends State<FeedPostView> {
 
   @override
   Widget build(BuildContext ctx) {
+    final auth = ctx.watch<PyAuth>();
+    print("Curr Auth in Feed Posting: $auth");
+    PyUser writer = auth.currUser!;
     final mq = MediaQuery.of(ctx);
     String? kind;
     String? price;
@@ -38,130 +43,124 @@ class _FeedPostViewState extends State<FeedPostView> {
     List<XFileType> fileTypes = [];
 
     return Pyffold(
-        fButton: false,
         body: SingleChildScrollView(
-          child: Column(
+      child: Column(
+        children: [
+          Container(
+            height: mq.size.height / 3.1,
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child:
+                PyAssetCarousel(uploadFiles: uploadFiles, fileTypes: fileTypes),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                PySingleSelect(
+                    model: kind,
+                    hint: "캠핑 종류",
+                    items: ["오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
+                PySingleSelect(model: price, hint: "가격 정보", items: [
+                  "5만원 이하",
+                  "10만원 이하",
+                  "15만원 이하 ",
+                  "20만원 이하",
+                  "20만원 이상"
+                ]),
+                PySingleSelect(
+                    model: around,
+                    hint: "주변 정보",
+                    items: ["마트 없음", "관광코스 없음", "계곡 없음", "산 없음"]),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              controller: _titleController,
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 3, color: Theme.of(ctx).cardColor),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  labelText: "제목을 입력해주세요"),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              controller: _contentController,
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 3, color: Theme.of(ctx).cardColor),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  labelText: "사진에 대한 내용을 입력해주세요"),
+              maxLines: 10,
+            ),
+          ),
+          Row(
             children: [
-              Container(
-                height: mq.size.height / 3.1,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: PyAssetCarousel(
-                    uploadFiles: uploadFiles, fileTypes: fileTypes),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PySingleSelect(
-                        model: kind,
-                        hint: "캠핑 종류",
-                        items: ["오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
-                    PySingleSelect(model: price, hint: "가격 정보", items: [
-                      "5만원 이하",
-                      "10만원 이하",
-                      "15만원 이하 ",
-                      "20만원 이하",
-                      "20만원 이상"
-                    ]),
-                    PySingleSelect(
-                        model: around,
-                        hint: "주변 정보",
-                        items: ["마트 없음", "관광코스 없음", "계곡 없음", "산 없음"]),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-                child: TextField(
-                  keyboardType: TextInputType.text,
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 3, color: Theme.of(ctx).cardColor),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      labelText: "제목을 입력해주세요"),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-                child: TextField(
-                  keyboardType: TextInputType.text,
-                  controller: _contentController,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 3, color: Theme.of(ctx).cardColor),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      labelText: "사진에 대한 내용을 입력해주세요"),
-                  maxLines: 10,
-                ),
-              ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: ctx,
-                            builder: (ctx) {
-                              return Dialog(
-                                child: TextField(
-                                  controller: _hashTagsController,
-                                  keyboardType: TextInputType.text,
-                                ),
-                              );
-                            });
-                      },
-                      child: Text("#태그추가"))
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          print("""
+              TextButton(
+                  onPressed: () {
+                    showDialog(
+                        context: ctx,
+                        builder: (ctx) {
+                          return Dialog(
+                            child: TextField(
+                              controller: _hashTagsController,
+                              keyboardType: TextInputType.text,
+                            ),
+                          );
+                        });
+                  },
+                  child: Text("#태그추가"))
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      print("""
                           _titleController.text: ${_titleController.text}\n
                           _contentController: ${_contentController.text}\n
                           _hashTagsController: ${_hashTagsController.text}\n
                           """);
-                          final c = getCollection(Collections.Feeds);
-                          var finfo = FeedInfo(
-                              writer: ctx.read<PyState>().currUser!,
-                              isfavorite: false,
-                              feedId: null,
-                              files: uploadFiles,
-                              fileTypes: fileTypes,
-                              title: _titleController.text,
-                              content: _contentController.text,
-                              hashTags: _hashTagsController.text,
-                              likeCount: 0,
-                              commentCount: 0,
-                              shareCount: 0,
-                              bookmarkCount: 0);
+                      final c = getCollection(Collections.Feeds);
+                      var finfo = FeedInfo(
+                        writer: writer,
+                        isfavorite: false,
+                        feedId: null,
+                        files: uploadFiles,
+                        fileTypes: fileTypes,
+                        title: _titleController.text,
+                        content: _contentController.text,
+                        hashTags: _hashTagsController.text,
+                      );
 
-                          c
-                              .add(finfo)
-                              .then((value) => print("$finfo is Added"))
-                              .catchError((error) =>
-                                  print("Failed to add Feed: $error"));
-                          ;
-                        },
-                        child: Center(
-                          child: Text("올리기"),
-                        ),
-                      ),
+                      c
+                          .add(finfo.toJson())
+                          .then((value) => print("$finfo is Added"))
+                          .catchError(
+                              (error) => print("Failed to add Feed: $error"));
+                      ;
+                    },
+                    child: Center(
+                      child: Text("올리기"),
                     ),
-                  )
-                ],
+                  ),
+                ),
               )
             ],
-          ),
-        ));
+          )
+        ],
+      ),
+    ));
   }
 }

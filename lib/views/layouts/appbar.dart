@@ -1,4 +1,4 @@
-import 'package:campy/providers/state.dart';
+import 'package:campy/providers/auth.dart';
 import 'package:campy/views/components/inputs/appbar_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -14,7 +14,7 @@ class PyAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
-    final state = ctx.watch<PyState>();
+    final auth = ctx.watch<PyAuth>();
     return AppBar(
       leading: Container(),
       toolbarHeight: toolbarH,
@@ -35,8 +35,8 @@ class PyAppBar extends StatelessWidget {
             ),
             Spacer(),
             CircleAvatar(
-              backgroundImage: NetworkImage(state.currUser != null
-                  ? state.currUser!.profileImage
+              backgroundImage: NetworkImage(auth.currUser != null
+                  ? auth.currUser!.profileImage
                   : "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
             ),
           ],

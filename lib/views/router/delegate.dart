@@ -1,3 +1,4 @@
+import 'package:campy/providers/auth.dart';
 import 'package:campy/providers/state.dart';
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/splash.dart';
@@ -21,12 +22,11 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
 
   List<Page> buildPages(BuildContext ctx) {
     final state = ctx.watch<PyState>();
-    if (!state.readyToMain) {
-      if (!state.endSplash) {
-        _addPageData(SplashView(key: ValueKey("_splash_")), splashPathConfig);
-      } else if (!state.authRepo.isAuthentic || state.currUser == null) {
-        _addPageData(LoginView(key: ValueKey("_login_")), loginPathConfig);
-      }
+    final auth = ctx.watch<PyAuth>();
+    if (!state.endSplash) {
+      _addPageData(SplashView(key: ValueKey("_splash_")), splashPathConfig);
+    } else if (!auth.isAuthentic || auth.currUser == null) {
+      _addPageData(LoginView(key: ValueKey("_login_")), loginPathConfig);
     } else {
       switch (state.currPageAction.state) {
         case PageState.none:

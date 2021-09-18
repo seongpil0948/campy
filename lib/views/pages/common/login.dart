@@ -1,3 +1,4 @@
+import 'package:campy/providers/auth.dart';
 import 'package:campy/providers/state.dart';
 import 'package:campy/repositories/auth_repository.dart';
 import 'package:campy/views/utils/responsive.dart';
@@ -11,6 +12,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext ctx) {
     final appState = ctx.read<PyState>();
     var mq = MediaQuery.of(ctx);
+    final auth = ctx.read<PyAuth>();
     return Scaffold(
       body: Stack(children: [
         Image.asset(
@@ -36,15 +38,15 @@ class LoginView extends StatelessWidget {
               LoginButton(
                 mq: mq,
                 aImg: "assets/images/google_login.png",
-                tap: () => appState.authRepo
-                    .socialLogin(LoginStyle.Social, SocialLoginWith.Google),
+                tap: () =>
+                    auth.socialLogin(LoginStyle.Social, SocialLoginWith.Google),
               ),
               SizedBox(height: 10),
               LoginButton(
                 mq: mq,
                 aImg: "assets/images/facebook_login.png",
-                tap: () => appState.authRepo
-                    .socialLogin(LoginStyle.Social, SocialLoginWith.Facebook),
+                tap: () => auth.socialLogin(
+                    LoginStyle.Social, SocialLoginWith.Facebook),
               ),
               VmarginContainer(
                 mq: mq,

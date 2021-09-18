@@ -3,32 +3,28 @@ import 'package:campy/views/components/assets/carousel.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FeedInfo {
-  const FeedInfo({
-    required this.writer,
-    required this.isfavorite,
-    required this.feedId,
-    required this.files,
-    required this.fileTypes,
-    required this.title,
-    required this.content,
-    required this.hashTags,
-    required this.likeCount,
-    required this.commentCount,
-    required this.shareCount,
-    required this.bookmarkCount,
-  });
+  FeedInfo(
+      {required this.writer,
+      required this.isfavorite,
+      required this.feedId,
+      required this.files,
+      required this.fileTypes,
+      required this.title,
+      required this.content,
+      hashTags})
+      : hashTags = hashTags;
   final PyUser writer;
   final bool isfavorite;
   final String? feedId;
-  final String hashTags;
   final List<XFile> files;
   final List<XFileType> fileTypes;
   final String title;
   final String content;
-  final int likeCount;
-  final int commentCount;
-  final int shareCount;
-  final int bookmarkCount;
+  String hashTags;
+  int likeCount = 0;
+  int commentCount = 0;
+  int shareCount = 0;
+  int bookmarkCount = 0;
 
   @override
   String toString() {
@@ -44,10 +40,10 @@ class FeedInfo {
         title = j['title'],
         content = j['content'],
         hashTags = j['hashTags'],
-        likeCount = j['likeCount'],
-        commentCount = j['commentCount'],
-        shareCount = j['shareCount'],
-        bookmarkCount = j['bookmarkCount'];
+        likeCount = j['likeCount'] ?? 0,
+        commentCount = j['commentCount'] ?? 0,
+        shareCount = j['shareCount'] ?? 0,
+        bookmarkCount = j['bookmarkCount'] ?? 0;
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),

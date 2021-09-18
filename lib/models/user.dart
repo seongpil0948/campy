@@ -2,30 +2,30 @@ import 'package:campy/models/feed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class PyUser {
-  String displayName;
-  String email;
+  String? displayName;
+  String? email;
   bool emailVerified;
-  String phoneNumber;
+  String? phoneNumber;
   UserMetadata metadata;
   String photoURL;
   List<UserInfo> providerData;
-  String refreshToken;
-  String tenantId;
+  String? refreshToken;
+  String? tenantId;
   int hash;
   String get profileImage => photoURL;
   List<FeedInfo> feeds = [];
   List<PyUser> followers = [];
   List<PyUser> follows = [];
   PyUser({required User user})
-      : displayName = user.displayName!,
-        email = user.email!,
+      : displayName = user.displayName,
+        email = user.email,
         emailVerified = user.emailVerified,
-        phoneNumber = user.phoneNumber!,
+        phoneNumber = user.phoneNumber,
         metadata = user.metadata,
         photoURL = user.photoURL!,
         providerData = user.providerData,
-        refreshToken = user.refreshToken!,
-        tenantId = user.tenantId!,
+        refreshToken = user.refreshToken,
+        tenantId = user.tenantId,
         hash = user.hashCode;
 
   // @override

@@ -1,4 +1,5 @@
 import 'package:campy/config.dart';
+import 'package:campy/providers/auth.dart';
 import 'package:campy/providers/state.dart';
 import 'package:campy/views/pages/common/wrong.dart';
 import 'package:campy/views/router/parser.dart';
@@ -26,8 +27,13 @@ class PyApp extends StatelessWidget {
           if (USE_FIRESTORE_EMULATOR) {
             FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
           }
-          return ChangeNotifierProvider(
-            create: (ctx) => PyState(),
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (ctx) => PyState(),
+              ),
+              ChangeNotifierProvider(create: (ctx) => PyAuth())
+            ],
             child: MaterialApp.router(
               title: 'Camping & Piknic',
               theme: appTheme.lightTheme,
