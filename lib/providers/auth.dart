@@ -15,7 +15,7 @@ class PyAuth extends ChangeNotifier {
     if (isAuthentic && _currUser == null) {
       var user = _fireAuth.currentUser;
       if (user != null) {
-        _currUser = PyUser(user: user);
+        _currUser = PyUser(user: user, userId: user.providerData[0].uid!);
       }
     }
     return _currUser;
@@ -27,8 +27,7 @@ class PyAuth extends ChangeNotifier {
   }
 
   void logout() {
-    print(
-        'FirebaseAuth: $_fireAuth _isAuthentic: $_isAuthentic User is currently signed out!');
+    print("signed out!");
     _updateLoginStatus(false);
     _currUser = null;
   }
@@ -39,7 +38,7 @@ class PyAuth extends ChangeNotifier {
       logout();
     } else {
       if (_currUser != null) return;
-      _currUser = PyUser(user: user);
+      _currUser = PyUser(user: user, userId: user.providerData[0].uid!);
       _updateLoginStatus(true);
       print('\nCurrent User: $_currUser is signed in!\n');
     }
@@ -59,6 +58,11 @@ class PyAuth extends ChangeNotifier {
       }
     }
     _updateLoginStatus(true);
+  }
+
+  @override
+  String toString() {
+    return ">>> PyAuth: isAuthentic: $isAuthentic \n Curr User: $currUser";
   }
 
   // === Singleton ===

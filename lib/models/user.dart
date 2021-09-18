@@ -2,13 +2,14 @@ import 'package:campy/models/feed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class PyUser {
+  String userId;
   String? displayName;
   String? email;
   bool emailVerified;
   String? phoneNumber;
-  UserMetadata metadata;
+  UserMetadata? metadata;
   String photoURL;
-  List<UserInfo> providerData;
+  List<UserInfo>? providerData;
   String? refreshToken;
   String? tenantId;
   int hash;
@@ -16,7 +17,7 @@ class PyUser {
   List<FeedInfo> feeds = [];
   List<PyUser> followers = [];
   List<PyUser> follows = [];
-  PyUser({required User user})
+  PyUser({required User user, required this.userId})
       : displayName = user.displayName,
         email = user.email,
         emailVerified = user.emailVerified,
@@ -28,19 +29,25 @@ class PyUser {
         tenantId = user.tenantId,
         hash = user.hashCode;
 
-  // @override
-  // String toString() {
-  //   return "PyUser: Social: $ \n feeds: $feeds \n followers: $followers \n follows: $follows";
-  // }
+  @override
+  String toString() {
+    return """
+    PyUser: name: $displayName \n 
+    providerData: $providerData \n 
+    tenantId: $tenantId \n
+    feeds: $feeds \n 
+    followers: $followers \n 
+    follows: $follows
+    """;
+  }
 
   PyUser.fromJson(Map<String, dynamic> j)
-      : displayName = j['displayName'],
+      : userId = j['userId'],
+        displayName = j['displayName'],
         email = j['email'],
         emailVerified = j['emailVerified'],
         phoneNumber = j['phoneNumber'],
-        metadata = j['metadata'],
         photoURL = j['photoURL'],
-        providerData = j['providerData'],
         refreshToken = j['refreshToken'],
         tenantId = j['tenantId'],
         hash = j['hashCode'],
@@ -48,13 +55,12 @@ class PyUser {
         follows = j['follows'];
 
   Map<String, dynamic> toJson() => {
+        'userId': userId,
         'displayName': displayName,
         'email': email,
         'emailVerified': emailVerified,
         'phoneNumber': phoneNumber,
-        'metadata': metadata,
         'photoURL': photoURL,
-        'providerData': providerData,
         'refreshToken': refreshToken,
         'tenantId': tenantId,
         'hashCode': hashCode,

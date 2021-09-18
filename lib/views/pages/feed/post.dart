@@ -128,11 +128,6 @@ class _FeedPostViewState extends State<FeedPostView> {
                   padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
                   child: ElevatedButton(
                     onPressed: () {
-                      print("""
-                          _titleController.text: ${_titleController.text}\n
-                          _contentController: ${_contentController.text}\n
-                          _hashTagsController: ${_hashTagsController.text}\n
-                          """);
                       final c = getCollection(Collections.Feeds);
                       var finfo = FeedInfo(
                         writer: writer,
@@ -144,12 +139,13 @@ class _FeedPostViewState extends State<FeedPostView> {
                         content: _contentController.text,
                         hashTags: _hashTagsController.text,
                       );
-
-                      c.doc().set(finfo.toJson()).then((value) {
+                      final fjson = finfo.toJson();
+                      print("Try to Insert to Firestore Feed Info $fjson");
+                      c.doc().set(fjson).then((value) {
                         print("$finfo is Added");
                         // print("Value: $value");
                       }).catchError((error) {
-                        print("Failed to add Feed: $error");
+                        print("Failed to add Feed: ${error.toString()}");
                       });
                     },
                     child: Center(

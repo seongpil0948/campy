@@ -1,6 +1,7 @@
 import 'package:campy/models/user.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io' as i;
 
 class FeedInfo {
   FeedInfo(
@@ -28,14 +29,14 @@ class FeedInfo {
 
   @override
   String toString() {
-    return "\n >>>>> User: $writer 's Feed: $title \n $hashTags \n $files \n <<<<<";
+    return "\n >>>>> User: $writer 's FeedInfo: \n Title$title \n tags: $hashTags \n Files: $files \n <<<<<";
   }
 
   FeedInfo.fromJson(Map<String, dynamic> j)
       : writer = PyUser.fromJson(j),
         isfavorite = j['isfavorite'],
         feedId = j['id'],
-        files = j['files'],
+        files = j['files'].map((i.File f) => XFile(f.path)),
         fileTypes = j['fileTypes'],
         title = j['title'],
         content = j['content'],
@@ -49,7 +50,7 @@ class FeedInfo {
         'writer': writer.toJson(),
         'isfavorite': isfavorite,
         'feedId': feedId,
-        'files': files,
+        'files': files.map((f) => i.File(f.path)),
         'fileTypes': fileTypes,
         'title': title,
         'content': content,
