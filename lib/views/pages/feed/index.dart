@@ -1,4 +1,4 @@
-import 'package:campy/providers/state.dart';
+import 'package:campy/models/state.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,6 @@ class FeedFab extends StatelessWidget {
     return Consumer<PyState>(builder: (ctx, state, child) {
       return FloatingActionButton(
         onPressed: () {
-          print("Prev State: $state");
           state.currPageAction = PageAction.feedPost();
         },
         child: Icon(Icons.add),

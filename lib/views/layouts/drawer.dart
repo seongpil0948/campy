@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:campy/providers/state.dart';
+import 'package:campy/models/state.dart';
 import 'package:campy/views/components/buttons/white.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';

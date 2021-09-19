@@ -1,23 +1,19 @@
-import 'dart:io';
-
 import 'package:campy/views/components/assets/upload.dart';
 import 'package:campy/views/components/assets/video.dart';
+import 'package:campy/views/utils/io.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore: implementation_imports
+import 'package:provider/src/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class PyAssetCarousel extends StatefulWidget {
-  final List<XFile> uploadFiles;
-  final List<XFileType> fileTypes;
-  PyAssetCarousel(
-      {Key? key, required this.uploadFiles, required this.fileTypes})
-      : super(key: key);
+  PyAssetCarousel({Key? key}) : super(key: key);
 
   @override
   _PyAssetCarouselState createState() => _PyAssetCarouselState();
 }
-
-enum XFileType { Video, Image }
 
 class _PyAssetCarouselState extends State<PyAssetCarousel> {
   CarouselController buttonCarouselController = CarouselController();
@@ -25,23 +21,28 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
 
   @override
   Widget build(BuildContext ctx) {
-    var uploadFiles = widget.uploadFiles;
-    var fileTypes = widget.fileTypes;
+    var fs = ctx.watch<List<PyFile>>();
     return Column(children: <Widget>[
       CarouselSlider.builder(
-          itemCount: uploadFiles.length + 1,
+          itemCount: fs.length + 1,
           itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
-            if (idx == uploadFiles.length) {
+            if (idx == fs.length) {
               return AssetUploadCard(
-                  photoPressed: () => pressAssetButton(false),
-                  videoPressed: () => pressAssetButton(true));
+                  photoPressed: () => pressAssetButton(false, ctx),
+                  videoPressed: () => pressAssetButton(true, ctx));
             }
-            final file = File(uploadFiles[idx].path);
-            switch (fileTypes[idx]) {
-              case XFileType.Image:
-                return Image.file(file);
-              case XFileType.Video:
-                return VideoW(file: file);
+            var f = fs[idx];
+            switch (f.ftype) {
+              case PyFileType.Image:
+                return f.file != null
+                    ? Image.file(f.file!)
+                    : Image.network(f.url!);
+
+              case PyFileType.Video:
+                final c = f.file != null
+                    ? VideoPlayerController.file(f.file!)
+                    : VideoPlayerController.network(f.url!);
+                return VideoW(controller: c);
             }
           },
           options: CarouselOptions(
@@ -53,25 +54,20 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
     ]);
   }
 
-  pressAssetButton(bool isVideo) async {
+  pressAssetButton(bool isVideo, BuildContext ctx) async {
+    var fs = ctx.read<List<PyFile>>();
     if (isVideo) {
       final asset = await _picker.pickVideo(source: ImageSource.gallery);
-      setState(() {
-        if (asset != null) {
-          widget.uploadFiles.add(asset);
-          widget.fileTypes.add(XFileType.Video);
-        }
-      });
+      if (asset != null) {
+        fs.add(PyFile.fromXfile(f: asset, ftype: PyFileType.Video));
+      }
       return null;
     }
     final imgs = await _picker.pickMultiImage();
-    setState(() {
-      if (imgs != null) {
-        for (var i in imgs) {
-          widget.uploadFiles.add(i);
-          widget.fileTypes.add(XFileType.Image);
-        }
+    if (imgs != null) {
+      for (var i in imgs) {
+        fs.add(PyFile.fromXfile(f: i, ftype: PyFileType.Image));
       }
-    });
+    }
   }
 }

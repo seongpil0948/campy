@@ -1,4 +1,4 @@
-import 'package:campy/providers/state.dart';
+import 'package:campy/models/state.dart';
 import 'package:flutter/material.dart';
 import 'path.dart';
 

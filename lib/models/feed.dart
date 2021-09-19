@@ -1,7 +1,5 @@
 import 'package:campy/models/user.dart';
-import 'package:campy/views/components/assets/carousel.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io' as i;
+import 'package:campy/views/utils/io.dart';
 
 class FeedInfo {
   FeedInfo(
@@ -9,7 +7,6 @@ class FeedInfo {
       required this.isfavorite,
       required this.feedId,
       required this.files,
-      required this.fileTypes,
       required this.title,
       required this.content,
       hashTags})
@@ -17,8 +14,7 @@ class FeedInfo {
   final PyUser writer;
   final bool isfavorite;
   final String? feedId;
-  final List<XFile> files;
-  final List<XFileType> fileTypes;
+  final List<String> files;
   final String title;
   final String content;
   String hashTags;
@@ -36,8 +32,7 @@ class FeedInfo {
       : writer = PyUser.fromJson(j),
         isfavorite = j['isfavorite'],
         feedId = j['id'],
-        files = j['files'].map((i.File f) => XFile(f.path)),
-        fileTypes = j['fileTypes'],
+        files = j['files'].map((f) => PyFile.fromJson(j)),
         title = j['title'],
         content = j['content'],
         hashTags = j['hashTags'],
@@ -50,8 +45,7 @@ class FeedInfo {
         'writer': writer.toJson(),
         'isfavorite': isfavorite,
         'feedId': feedId,
-        'files': files.map((f) => i.File(f.path)),
-        'fileTypes': fileTypes,
+        'files': files,
         'title': title,
         'content': content,
         'hashTags': hashTags,

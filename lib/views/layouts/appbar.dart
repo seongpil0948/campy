@@ -1,4 +1,4 @@
-import 'package:campy/providers/auth.dart';
+import 'package:campy/models/auth.dart';
 import 'package:campy/views/components/inputs/appbar_text_field.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports

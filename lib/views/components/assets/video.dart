@@ -1,23 +1,19 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoW extends StatefulWidget {
+  final VideoPlayerController controller;
   @override
   _VideoWState createState() => _VideoWState();
-  final File file;
 
-  VideoW({required this.file});
+  VideoW({required this.controller});
 }
 
 class _VideoWState extends State<VideoW> {
-  late VideoPlayerController _controller;
-
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(widget.file)
+    widget.controller
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
@@ -26,6 +22,7 @@ class _VideoWState extends State<VideoW> {
 
   @override
   Widget build(BuildContext context) {
+    var _controller = widget.controller;
     if (_controller.value.isInitialized) {
       _controller.play();
       return InkWell(
@@ -45,6 +42,6 @@ class _VideoWState extends State<VideoW> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    widget.controller.dispose();
   }
 }

@@ -1,5 +1,5 @@
-import 'package:campy/providers/auth.dart';
-import 'package:campy/providers/state.dart';
+import 'package:campy/models/auth.dart';
+import 'package:campy/models/state.dart';
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/splash.dart';
 import 'package:campy/views/pages/feed/index.dart';

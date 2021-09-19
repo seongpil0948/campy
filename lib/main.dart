@@ -1,6 +1,6 @@
 import 'package:campy/config.dart';
-import 'package:campy/providers/auth.dart';
-import 'package:campy/providers/state.dart';
+import 'package:campy/models/auth.dart';
+import 'package:campy/models/state.dart';
 import 'package:campy/views/pages/common/wrong.dart';
 import 'package:campy/views/router/parser.dart';
 import 'package:campy/views/utils/system_ui.dart';
