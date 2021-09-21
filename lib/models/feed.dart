@@ -9,14 +9,21 @@ class FeedInfo {
       required this.files,
       required this.title,
       required this.content,
-      hashTags})
-      : hashTags = hashTags;
+      required this.placeAround,
+      required this.placePrice,
+      required this.campKind,
+      required List<String> hashTags})
+      : hashTags = hashTags.join(" ");
   final PyUser writer;
   final bool isfavorite;
   final String? feedId;
   final List<PyFile> files;
   final String title;
   final String content;
+  final String placeAround;
+  final int placePrice;
+  final String campKind;
+
   String hashTags;
   int likeCount = 0;
   int commentCount = 0;
@@ -35,6 +42,9 @@ class FeedInfo {
         files = j['files'].map((f) => PyFile.fromJson(j)),
         title = j['title'],
         content = j['content'],
+        placeAround = j['placeAround'],
+        placePrice = j['placePrice'],
+        campKind = j['campKind'],
         hashTags = j['hashTags'],
         likeCount = j['likeCount'] ?? 0,
         commentCount = j['commentCount'] ?? 0,
@@ -48,6 +58,9 @@ class FeedInfo {
         'files': files.map((f) => f.toJson()),
         'title': title,
         'content': content,
+        'placeAround': placeAround,
+        'placePrice': placePrice,
+        'campKind': campKind,
         'hashTags': hashTags,
         'likeCount': likeCount,
         'commentCount': commentCount,

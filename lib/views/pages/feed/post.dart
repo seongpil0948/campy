@@ -21,7 +21,6 @@ class FeedPostView extends StatefulWidget {
 class _FeedPostViewState extends State<FeedPostView> {
   var _titleController = TextEditingController();
   var _contentController = TextEditingController();
-  var _hashTagsController = TextEditingController();
   String? kind;
   String? price;
   String? around;
@@ -33,7 +32,6 @@ class _FeedPostViewState extends State<FeedPostView> {
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();
-    _hashTagsController.dispose();
     super.dispose();
   }
 
@@ -108,6 +106,11 @@ class _FeedPostViewState extends State<FeedPostView> {
             ),
             Row(
               children: [
+                for (var tag in hashTags)
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("#$tag"),
+                  ),
                 TextButton(
                     onPressed: () {
                       showDialog(
@@ -115,8 +118,17 @@ class _FeedPostViewState extends State<FeedPostView> {
                           builder: (ctx) {
                             return Dialog(
                               child: TextField(
-                                controller: _hashTagsController,
                                 keyboardType: TextInputType.text,
+                                onSubmitted: (String val) {
+                                  print("Hash Values $val");
+                                  setState(() {
+                                    for (var t in val.split(" ")) {
+                                      if (!hashTags.contains(t)) {
+                                        hashTags.add(t);
+                                      }
+                                    }
+                                  });
+                                },
                               ),
                             );
                           });
@@ -157,7 +169,10 @@ class _FeedPostViewState extends State<FeedPostView> {
                           files: paths,
                           title: _titleController.text,
                           content: _contentController.text,
-                          hashTags: _hashTagsController.text,
+                          placeAround: around ?? '',
+                          placePrice: int.parse(price ?? '-1'),
+                          campKind: kind ?? '',
+                          hashTags: hashTags,
                         );
                         final fjson = finfo.toJson();
                         print("Try to Insert to Firestore Feed Info $fjson");
