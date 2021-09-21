@@ -131,13 +131,20 @@ class _FeedPostViewState extends State<FeedPostView> {
                     padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
                     child: ElevatedButton(
                       onPressed: () {
-                        List<String> paths = [];
+                        List<PyFile> paths = [];
                         for (var f in files) {
                           uploadFilePathsToFirebase(
-                                  f, ctx.watch<PyAuth>().currUser!.userId)
-                              .then((path) {
-                            if (path != null) {
-                              paths.add(path);
+                                  f,
+                                  Provider.of<PyAuth>(ctx, listen: false)
+                                      .currUser!
+                                      .userId)
+                              .then((info) {
+                            if (info != null &&
+                                info.containsKey('url') &&
+                                info.containsKey('pymime')) {
+                              var file = PyFile.fromCdn(
+                                  url: info['url'], ftype: info['pymime']);
+                              paths.add(file);
                             }
                           });
                         }
@@ -157,7 +164,8 @@ class _FeedPostViewState extends State<FeedPostView> {
                         c.doc().set(fjson).then((value) {
                           print("======== Feed Added =========");
                         }).catchError((error) {
-                          print("Failed to add Feed: ${error.toString()}");
+                          print(
+                              "!!!Failed to add Feed!!!: ${error.toString()}");
                         });
                       },
                       child: Center(

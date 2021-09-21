@@ -14,7 +14,7 @@ class FeedInfo {
   final PyUser writer;
   final bool isfavorite;
   final String? feedId;
-  final List<String> files;
+  final List<PyFile> files;
   final String title;
   final String content;
   String hashTags;
@@ -45,7 +45,7 @@ class FeedInfo {
         'writer': writer.toJson(),
         'isfavorite': isfavorite,
         'feedId': feedId,
-        'files': files,
+        'files': files.map((f) => f.toJson()),
         'title': title,
         'content': content,
         'hashTags': hashTags,

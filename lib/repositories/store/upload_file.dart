@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:campy/views/utils/io.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-Future<String?> uploadFilePathsToFirebase(PyFile f, String userId) async {
+Future<Map?> uploadFilePathsToFirebase(PyFile f, String userId) async {
   final path = 'uploads/$userId/${f.file!.path.split("/").last}';
   // /uploads/$p
   var storeRef = FirebaseStorage.instance.ref().child(path);
@@ -32,7 +32,11 @@ Future<String?> uploadFilePathsToFirebase(PyFile f, String userId) async {
   // We can still optionally use the Future alongside the stream.
   try {
     await task;
-    return storeRef.getDownloadURL();
+    var meta = await storeRef.getMetadata();
+    return {
+      "url": storeRef.getDownloadURL(),
+      "pymime": meta.customMetadata!['pymime']
+    };
   } on FirebaseException catch (e) {
     if (e.code == 'permission-denied') {
       print('User does not have permission to upload to this reference.');
