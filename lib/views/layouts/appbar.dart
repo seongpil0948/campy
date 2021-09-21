@@ -20,27 +20,30 @@ class PyAppBar extends StatelessWidget {
       leading: Container(),
       toolbarHeight: toolbarH,
       flexibleSpace: Padding(
-        padding: EdgeInsets.fromLTRB(10, mq.padding.top / 2, 25, 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.menu,
-                size: 35,
+        padding: EdgeInsets.fromLTRB(10, mq.padding.top, 25, 0),
+        child: Container(
+          margin: EdgeInsets.only(top: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                  size: 35,
+                ),
+                onPressed: () {
+                  Scaffold.of(ctx).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(ctx).openAppDrawerTooltip,
               ),
-              onPressed: () {
-                Scaffold.of(ctx).openDrawer();
-              },
-              tooltip: MaterialLocalizations.of(ctx).openAppDrawerTooltip,
-            ),
-            Spacer(),
-            CircleAvatar(
-              backgroundImage: NetworkImage(auth.currUser != null
-                  ? auth.currUser!.profileImage
-                  : "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
-            ),
-          ],
+              Spacer(),
+              CircleAvatar(
+                backgroundImage: NetworkImage(auth.currUser != null
+                    ? auth.currUser!.profileImage
+                    : "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
+              ),
+            ],
+          ),
         ),
       ),
       bottom: PreferredSize(
@@ -50,7 +53,7 @@ class PyAppBar extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(height: toolbarH / 2.5, child: PyAppBarTextField()),
+                Container(height: toolbarH / 3, child: PyAppBarTextField()),
                 Container(
                     margin: EdgeInsets.fromLTRB(0, 2, 0, 10), child: Divider())
               ],

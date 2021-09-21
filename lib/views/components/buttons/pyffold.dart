@@ -15,7 +15,7 @@ class Pyffold extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
-    final toolbarH = mq.size.height / 8;
+    final toolbarH = mq.size.height / 6;
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(toolbarH),
