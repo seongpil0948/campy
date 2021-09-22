@@ -174,7 +174,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                           }
                         }
 
-                        final c = getCollection(Collections.Feeds);
+                        final c = getCollection(Collections.Users);
                         var finfo = FeedInfo(
                           writer: writer,
                           isfavorite: false,
@@ -189,7 +189,12 @@ class _FeedPostViewState extends State<FeedPostView> {
                         );
                         final fjson = finfo.toJson();
                         print("Try to Insert to Firestore Feed Info $fjson");
-                        c.doc().set(fjson).then((value) {
+                        c
+                            .doc(writer.userId)
+                            .collection("feeds")
+                            .doc()
+                            .set(fjson)
+                            .then((value) {
                           print("======== Feed Added =========");
                         }).catchError((error) {
                           print(
