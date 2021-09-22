@@ -34,7 +34,7 @@ Future<Map?> uploadFilePathsToFirebase(PyFile f, String userId) async {
     await task;
     var meta = await storeRef.getMetadata();
     return {
-      "url": storeRef.getDownloadURL(),
+      "url": await storeRef.getDownloadURL(),
       "pymime": meta.customMetadata!['pymime']
     };
   } on FirebaseException catch (e) {

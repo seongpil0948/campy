@@ -13,17 +13,26 @@ extension ParseToString on PyFileType {
 class PyFile {
   File? file;
   String? url;
-  PyFileType ftype;
+  late PyFileType ftype;
 
   PyFile.fromXfile({required XFile f, required this.ftype})
       : this.file = File(f.path);
 
-  PyFile.fromCdn({required String this.url, required this.ftype});
+  PyFile.fromCdn({required String this.url, required String fileType}) {
+    switch (fileType) {
+      case "Image":
+        ftype = PyFileType.Image;
+        break;
+      case "Video":
+        ftype = PyFileType.Video;
+        break;
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         'url': url,
         'file': file?.path,
-        'ftype': ftype,
+        'ftype': ftype.toCustomString(),
       };
 
   PyFile.fromJson(j)

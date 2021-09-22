@@ -55,7 +55,7 @@ class FeedInfo {
         'writer': writer.toJson(),
         'isfavorite': isfavorite,
         'feedId': feedId,
-        'files': files.map((f) => f.toJson()),
+        'files': files.map((f) => f.toJson()).toList(),
         'title': title,
         'content': content,
         'placeAround': placeAround,

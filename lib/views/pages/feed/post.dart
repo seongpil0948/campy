@@ -58,18 +58,33 @@ class _FeedPostViewState extends State<FeedPostView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   PySingleSelect(
-                      model: kind,
+                      onChange: (newVal) {
+                        setState(() {
+                          kind = newVal;
+                        });
+                      },
                       hint: "캠핑 종류",
                       items: ["오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
-                  PySingleSelect(model: price, hint: "가격 정보", items: [
-                    "5만원 이하",
-                    "10만원 이하",
-                    "15만원 이하 ",
-                    "20만원 이하",
-                    "20만원 이상"
-                  ]),
                   PySingleSelect(
-                      model: around,
+                      onChange: (newVal) {
+                        setState(() {
+                          price = newVal?.split("만원")[0];
+                        });
+                      },
+                      hint: "가격 정보",
+                      items: [
+                        "5만원 이하",
+                        "10만원 이하",
+                        "15만원 이하 ",
+                        "20만원 이하",
+                        "20만원 이상"
+                      ]),
+                  PySingleSelect(
+                      onChange: (newVal) {
+                        setState(() {
+                          around = newVal;
+                        });
+                      },
                       hint: "주변 정보",
                       items: ["마트 없음", "관광코스 없음", "계곡 없음", "산 없음"]),
                 ],
@@ -142,23 +157,21 @@ class _FeedPostViewState extends State<FeedPostView> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         List<PyFile> paths = [];
                         for (var f in files) {
-                          uploadFilePathsToFirebase(
-                                  f,
-                                  Provider.of<PyAuth>(ctx, listen: false)
-                                      .currUser!
-                                      .userId)
-                              .then((info) {
-                            if (info != null &&
-                                info.containsKey('url') &&
-                                info.containsKey('pymime')) {
-                              var file = PyFile.fromCdn(
-                                  url: info['url'], ftype: info['pymime']);
-                              paths.add(file);
-                            }
-                          });
+                          var info = await uploadFilePathsToFirebase(
+                              f,
+                              Provider.of<PyAuth>(ctx, listen: false)
+                                  .currUser!
+                                  .userId);
+                          if (info != null &&
+                              info.containsKey('url') &&
+                              info.containsKey('pymime')) {
+                            var file = PyFile.fromCdn(
+                                url: info['url'], fileType: info['pymime']);
+                            paths.add(file);
+                          }
                         }
 
                         final c = getCollection(Collections.Feeds);

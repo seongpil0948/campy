@@ -1,45 +1,37 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class PySingleSelect extends StatefulWidget {
+class PySingleSelect extends StatelessWidget {
   final List<String> items;
   final String hint;
-  String? model;
+  final void Function(String?)? onChange;
   PySingleSelect(
-      {Key? key, required this.hint, required this.items, required this.model})
+      {Key? key,
+      required this.hint,
+      required this.items,
+      required this.onChange})
       : super(key: key);
 
   @override
-  State<PySingleSelect> createState() => _PySingleSelectState();
-}
-
-/// This is the private State class that goes with PySingleSelect.
-class _PySingleSelectState extends State<PySingleSelect> {
-  @override
   Widget build(BuildContext ctx) {
+    final mq = MediaQuery.of(ctx);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: Container(
         color: Theme.of(ctx).cardColor,
-        height: 50,
         child: DropdownButton<String>(
           hint: Padding(
             padding: const EdgeInsets.only(left: 12.0),
-            child: Text(widget.hint),
+            child: Text(hint),
           ),
           underline: Container(),
-          menuMaxHeight: 300,
+          menuMaxHeight: mq.size.height / 2,
           dropdownColor: Theme.of(ctx).cardColor,
           borderRadius: BorderRadius.circular(10),
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,
           // style: const TextStyle(color: Colors.deepPurple),
-          onChanged: (String? newVal) {
-            setState(() {
-              widget.model = newVal;
-            });
-          },
-          items: widget.items.map<DropdownMenuItem<String>>((String value) {
+          onChanged: onChange,
+          items: items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Center(child: Text(value)),
