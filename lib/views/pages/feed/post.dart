@@ -7,6 +7,7 @@ import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/components/select/single.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/utils/io.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: implementation_imports
@@ -174,7 +175,8 @@ class _FeedPostViewState extends State<FeedPostView> {
                           }
                         }
 
-                        final c = getCollection(Collections.Users);
+                        final doc =
+                            getCollection(Collections.Users).doc(writer.userId);
                         var finfo = FeedInfo(
                           writer: writer,
                           isfavorite: false,
@@ -187,15 +189,14 @@ class _FeedPostViewState extends State<FeedPostView> {
                           campKind: kind ?? '',
                           hashTags: hashTags,
                         );
-                        final fjson = finfo.toJson();
-                        print("Try to Insert to Firestore Feed Info $fjson");
-                        c
-                            .doc(writer.userId)
+                        // If you don't add a field to the document it will be orphaned.
+                        doc.set(writer.toJson(), SetOptions(merge: true));
+                        doc
                             .collection("feeds")
                             .doc()
-                            .set(fjson)
+                            .set(finfo.toJson())
                             .then((value) {
-                          print("======== Feed Added =========");
+                          print(">>> Feed Added <<<");
                         }).catchError((error) {
                           print(
                               "!!!Failed to add Feed!!!: ${error.toString()}");
