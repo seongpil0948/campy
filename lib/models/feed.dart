@@ -36,10 +36,10 @@ class FeedInfo {
   }
 
   FeedInfo.fromJson(Map<String, dynamic> j)
-      : writer = PyUser.fromJson(j),
+      : writer = PyUser.fromJson(j['writer']),
         isfavorite = j['isfavorite'],
         feedId = j['id'],
-        files = j['files'].map((f) => PyFile.fromJson(j)),
+        files = j['files'].map<PyFile>((f) => PyFile.fromJson(f)).toList(),
         title = j['title'],
         content = j['content'],
         placeAround = j['placeAround'],

@@ -1,3 +1,5 @@
+import 'package:campy/models/feed.dart';
+import 'package:campy/models/user.dart';
 import 'package:campy/repositories/store/init.dart';
 import 'package:campy/views/components/buttons/fabs.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
@@ -6,36 +8,55 @@ import 'package:flutter/material.dart';
 
 class FeedCategoryView extends StatelessWidget {
   FeedCategoryView({Key? key}) : super(key: key);
-  final _usersStream = getCollection(Collections.Users)
-      .doc('107244136590105907240')
-      .collection("feeds")
-      .snapshots();
+
+  Future<List<FeedInfo>> getFeeds(List<String> userIds) async {
+    List<FeedInfo> allFeeds = [];
+    final userC = getCollection(Collections.Users);
+    for (var _id in userIds) {
+      var feeds = await userC.doc(_id).collection("feeds").get();
+      var feedInfos = feeds.docs.map((f) => FeedInfo.fromJson(f.data()));
+      allFeeds.addAll(feedInfos);
+    }
+    return allFeeds;
+  }
 
   @override
   Widget build(BuildContext ctx) {
-    getCollection(Collections.Users) // TODO: Feeds By Users
-        .get()
-        .then((val) => print("====== 1 =====> ${val.docs[1].data()}"));
+    final _usersStream = getCollection(Collections.Users).snapshots();
+    // .then((user) => user.docs.map((x) => x.data()));
     return Pyffold(
         fButton: FeedFab(),
         body: StreamBuilder<QuerySnapshot>(
             stream: _usersStream,
-            builder: (BuildContext ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
+            builder:
+                (BuildContext ctx1, AsyncSnapshot<QuerySnapshot> userSnapShot) {
+              if (userSnapShot.hasError) {
+                return Text('Something went wrong of Users');
+              } else if (userSnapShot.connectionState ==
+                  ConnectionState.waiting) {
+                return Text("Loading of Users");
               }
+              final users = userSnapShot.data!.docs.map((userDoc) =>
+                  PyUser.fromJson(userDoc.data()! as Map<String, dynamic>));
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading");
-              }
-              return ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                  var data = doc.data()! as Map<String, dynamic>;
-                  return ListTile(
-                    title: Text(" >>> \n $data \n <<<"),
-                  );
-                }).toList(),
-              );
+              return FutureBuilder(
+                  future: getFeeds(users.map((u) => u.userId).toList()),
+                  builder: (BuildContext ctx2,
+                      AsyncSnapshot<List<FeedInfo>> feedSnapshot) {
+                    if (feedSnapshot.hasError) {
+                      return Text('Something went wrong of Feeds');
+                    } else if (feedSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Text("Loading of Feeds");
+                    }
+                    return ListView(
+                      children: feedSnapshot.data!
+                          .map((feedInfo) => ListTile(
+                                title: Text(" >>> \n $feedInfo \n <<<"),
+                              ))
+                          .toList(),
+                    );
+                  });
             }));
   }
 }

@@ -51,8 +51,9 @@ class PyUser {
         refreshToken = j['refreshToken'],
         tenantId = j['tenantId'],
         hash = j['hashCode'],
-        followers = j['followers'],
-        follows = j['follows'];
+        followers =
+            j['followers'].map<PyUser>((f) => PyUser.fromJson(j)).toList(),
+        follows = j['follows'].map<PyUser>((f) => PyUser.fromJson(j)).toList();
 
   Map<String, dynamic> toJson() => {
         'userId': userId,
@@ -64,7 +65,7 @@ class PyUser {
         'refreshToken': refreshToken,
         'tenantId': tenantId,
         'hashCode': hashCode,
-        'followers': followers,
-        'follows': follows,
+        'followers': followers.map((f) => f.toJson()).toList(),
+        'follows': follows.map((f) => f.toJson()).toList(),
       };
 }

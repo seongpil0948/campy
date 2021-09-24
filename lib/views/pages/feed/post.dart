@@ -120,7 +120,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                 maxLines: 10,
               ),
             ),
-            Row(
+            Wrap(
               children: [
                 for (var tag in hashTags)
                   TextButton(

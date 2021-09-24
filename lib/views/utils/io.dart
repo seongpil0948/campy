@@ -10,6 +10,17 @@ extension ParseToString on PyFileType {
   }
 }
 
+PyFileType fileTypeFromString(String ftype) {
+  switch (ftype) {
+    case "Video":
+      return PyFileType.Video;
+    case "Image":
+      return PyFileType.Image;
+    default:
+      return PyFileType.Image;
+  }
+}
+
 class PyFile {
   File? file;
   String? url;
@@ -37,5 +48,5 @@ class PyFile {
 
   PyFile.fromJson(j)
       : url = j['url'],
-        ftype = j['ftype'];
+        ftype = fileTypeFromString(j['ftype']);
 }
