@@ -35,10 +35,10 @@ class FeedInfo {
     return "\n >>>>> User: $writer 's FeedInfo: \n Title$title \n tags: $hashTags \n Files: $files \n <<<<<";
   }
 
-  FeedInfo.fromJson(Map<String, dynamic> j)
+  FeedInfo.fromJson(Map<String, dynamic> j, String documentId)
       : writer = PyUser.fromJson(j['writer']),
         isfavorite = j['isfavorite'],
-        feedId = j['id'],
+        feedId = documentId,
         files = j['files'].map<PyFile>((f) => PyFile.fromJson(f)).toList(),
         title = j['title'],
         content = j['content'],
