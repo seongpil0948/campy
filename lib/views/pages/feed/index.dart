@@ -57,36 +57,52 @@ class FeedCategoryView extends StatelessWidget {
                             f.ftype == PyFileType.Image && f.url != null);
 
                         return Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
+                          margin: EdgeInsets.all(20),
+                          height: mq.size.height / 3,
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(30),
                               child: Stack(children: [
                                 CachedNetworkImage(
+                                    // FIXME: 동영상일때는 썸네일을 보여줄 수 있도록
+                                    fit: BoxFit.fill,
+                                    width: mq.size.width,
                                     imageUrl: imgs.length > 0
                                         ? imgs.first.url!
                                         : feedInfo.writer.photoURL),
                                 Positioned(
+                                    bottom: mq.size.height / 30,
+                                    left: mq.size.width / 15,
                                     child: Column(
-                                  children: [
-                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        CircleAvatar(
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                                    feedInfo.writer.photoURL)),
-                                        Text(feedInfo.writer.email ?? "")
+                                        Row(
+                                          children: [
+                                            CircleAvatar(
+                                                radius: 15,
+                                                backgroundImage:
+                                                    CachedNetworkImageProvider(
+                                                        feedInfo
+                                                            .writer.photoURL)),
+                                            SizedBox(width: 10),
+                                            Text(feedInfo.writer.email ?? "")
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          feedInfo.content,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text(feedInfo.title,
+                                            style: Theme.of(ctx2)
+                                                .textTheme
+                                                .headline3
+                                                ?.copyWith(
+                                                    color: Colors.white)),
+                                        Text(feedInfo.hashTags
+                                            .replaceAll(" ", " #"))
                                       ],
-                                    ),
-                                    Text(
-                                      feedInfo.content,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(feedInfo.title),
-                                    Text(
-                                        feedInfo.hashTags.replaceAll(" ", " #"))
-                                  ],
-                                ))
+                                    ))
                               ])),
                         );
                       }).toList(),
