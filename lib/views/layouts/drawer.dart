@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/views/components/buttons/white.dart';
 import 'package:campy/views/router/path.dart';
@@ -60,7 +61,7 @@ class PyDrawer extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: NetworkImage(
+                    backgroundImage: CachedNetworkImageProvider(
                         "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
                   ),
                   SizedBox(

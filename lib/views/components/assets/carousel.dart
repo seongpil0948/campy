@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/views/components/assets/upload.dart';
 import 'package:campy/views/components/assets/video.dart';
 import 'package:campy/views/utils/io.dart';
@@ -36,7 +37,7 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
               case PyFileType.Image:
                 return f.file != null
                     ? Image.file(f.file!)
-                    : Image.network(f.url!);
+                    : CachedNetworkImage(imageUrl: f.url!);
 
               case PyFileType.Video:
                 final c = f.file != null

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/feed.dart';
 import 'package:flutter/material.dart';
 
@@ -29,8 +30,8 @@ class FeedWidget extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(info.writer.profileImage)),
+                          backgroundImage: CachedNetworkImageProvider(
+                              info.writer.profileImage)),
                       SizedBox(width: 10),
                       Text("data"),
                     ],

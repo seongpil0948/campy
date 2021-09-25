@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/store/init.dart';
@@ -24,7 +25,7 @@ class FeedCategoryView extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final _usersStream = getCollection(Collections.Users).snapshots();
-    // .then((user) => user.docs.map((x) => x.data()));
+    final mq = MediaQuery.of(ctx);
     return Pyffold(
         fButton: FeedFab(),
         body: StreamBuilder<QuerySnapshot>(
@@ -55,32 +56,39 @@ class FeedCategoryView extends StatelessWidget {
                         final imgs = feedInfo.files.where((f) =>
                             f.ftype == PyFileType.Image && f.url != null);
 
-                        return ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Stack(children: [
-                              Image.network(imgs.length > 0
-                                  ? imgs.first.url!
-                                  : feedInfo.writer.photoURL),
-                              Positioned(
-                                  child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              feedInfo.writer.photoURL)),
-                                      Text(feedInfo.writer.email ?? "")
-                                    ],
-                                  ),
-                                  Text(
-                                    feedInfo.content,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(feedInfo.title),
-                                  Text(feedInfo.hashTags.replaceAll(" ", " #"))
-                                ],
-                              ))
-                            ]));
+                        return Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Stack(children: [
+                                CachedNetworkImage(
+                                    imageUrl: imgs.length > 0
+                                        ? imgs.first.url!
+                                        : feedInfo.writer.photoURL),
+                                Positioned(
+                                    child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    feedInfo.writer.photoURL)),
+                                        Text(feedInfo.writer.email ?? "")
+                                      ],
+                                    ),
+                                    Text(
+                                      feedInfo.content,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(feedInfo.title),
+                                    Text(
+                                        feedInfo.hashTags.replaceAll(" ", " #"))
+                                  ],
+                                ))
+                              ])),
+                        );
                       }).toList(),
                     );
                   });

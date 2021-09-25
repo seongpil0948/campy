@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/auth.dart';
 import 'package:campy/views/components/inputs/appbar_text_field.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,8 @@ class PyAppBar extends StatelessWidget {
               ),
               Spacer(),
               CircleAvatar(
-                backgroundImage: NetworkImage(auth.currUser != null
+                backgroundImage: CachedNetworkImageProvider(auth.currUser !=
+                        null
                     ? auth.currUser!.profileImage
                     : "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
               ),
