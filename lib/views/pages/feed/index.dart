@@ -3,6 +3,7 @@ import 'package:campy/models/user.dart';
 import 'package:campy/repositories/store/init.dart';
 import 'package:campy/views/components/buttons/fabs.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
+import 'package:campy/views/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -50,11 +51,37 @@ class FeedCategoryView extends StatelessWidget {
                       return Text("Loading of Feeds");
                     }
                     return ListView(
-                      children: feedSnapshot.data!
-                          .map((feedInfo) => ListTile(
-                                title: Text(" >>> \n $feedInfo \n <<<"),
+                      children: feedSnapshot.data!.map((feedInfo) {
+                        final imgs = feedInfo.files.where((f) =>
+                            f.ftype == PyFileType.Image && f.url != null);
+
+                        return ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Stack(children: [
+                              Image.network(imgs.length > 0
+                                  ? imgs.first.url!
+                                  : feedInfo.writer.photoURL),
+                              Positioned(
+                                  child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              feedInfo.writer.photoURL)),
+                                      Text(feedInfo.writer.email ?? "")
+                                    ],
+                                  ),
+                                  Text(
+                                    feedInfo.content,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(feedInfo.title),
+                                  Text(feedInfo.hashTags.replaceAll(" ", " #"))
+                                ],
                               ))
-                          .toList(),
+                            ]));
+                      }).toList(),
                     );
                   });
             }));
