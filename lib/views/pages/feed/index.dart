@@ -6,7 +6,7 @@ import 'package:campy/repositories/store/init.dart';
 import 'package:campy/views/components/buttons/fabs.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/router/path.dart';
-import 'package:campy/views/utils/io.dart';
+import 'package:campy/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';

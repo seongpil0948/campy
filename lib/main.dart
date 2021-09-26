@@ -3,7 +3,7 @@ import 'package:campy/models/auth.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/views/pages/common/wrong.dart';
 import 'package:campy/views/router/parser.dart';
-import 'package:campy/views/utils/system_ui.dart';
+import 'package:campy/utils/system_ui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

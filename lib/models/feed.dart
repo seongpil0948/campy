@@ -1,5 +1,5 @@
 import 'package:campy/models/user.dart';
-import 'package:campy/views/utils/io.dart';
+import 'package:campy/utils/io.dart';
 
 class FeedInfo {
   FeedInfo(

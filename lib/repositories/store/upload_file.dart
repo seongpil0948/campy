@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:campy/views/utils/io.dart';
+import 'package:campy/utils/io.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 Future<Map?> uploadFilePathsToFirebase(PyFile f, String userId) async {

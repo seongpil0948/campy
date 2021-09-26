@@ -1,4 +1,4 @@
-import 'package:campy/views/utils/responsive.dart';
+import 'package:campy/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatelessWidget {
