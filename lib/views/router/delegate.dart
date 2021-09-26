@@ -2,6 +2,7 @@ import 'package:campy/models/auth.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/splash.dart';
+import 'package:campy/views/pages/feed/detail.dart';
 import 'package:campy/views/pages/feed/index.dart';
 import 'package:campy/views/pages/feed/post.dart';
 import 'package:campy/views/pages/store/index.dart';
@@ -142,7 +143,11 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
         break;
       case Views.FeedPost:
         _addPageData(
-            FeedPostView(key: ValueKey("_feed_post")), feedPostPathConfig);
+            FeedPostView(key: ValueKey("_feed_post_")), feedPostPathConfig);
+        break;
+      case Views.FeedDetail:
+        _addPageData(
+            FeedDetailView(key: ValueKey("_feed_detail_")), pageConfig);
         break;
       case Views.StoreCategory:
         _addPageData(

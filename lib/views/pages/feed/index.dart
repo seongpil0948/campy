@@ -120,12 +120,3 @@ class FeedCategoryView extends StatelessWidget {
             }));
   }
 }
-
-class PyFeedList extends StatelessWidget {
-  const PyFeedList({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}

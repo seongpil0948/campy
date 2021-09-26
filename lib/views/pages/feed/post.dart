@@ -1,4 +1,5 @@
 import 'package:campy/models/feed.dart';
+import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/models/auth.dart';
 import 'package:campy/repositories/store/init.dart';
@@ -6,6 +7,7 @@ import 'package:campy/repositories/store/upload_file.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/components/select/single.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
+import 'package:campy/views/router/path.dart';
 import 'package:campy/views/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -197,6 +199,8 @@ class _FeedPostViewState extends State<FeedPostView> {
                             .set(finfo.toJson())
                             .then((value) {
                           print(">>> Feed Added <<<");
+                          ctx.read<PyState>().currPageAction =
+                              PageAction.feed();
                         }).catchError((error) {
                           print(
                               "!!!Failed to add Feed!!!: ${error.toString()}");
