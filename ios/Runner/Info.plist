@@ -32,7 +32,7 @@
 		</dict>
 		<dict>
 			<key>CFBundleIdentifier</key>
-			<string>com.example.campy</string>
+			<string>com.campy.sns</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 		</dict>

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>881986361143-0jja88mfhkkaj8dqlpomdq46jdc7k4qg.apps.googleusercontent.com</string>
+	<string>881986361143-qst3v3b4rthcil3p9jht8teti5qeodb0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.881986361143-0jja88mfhkkaj8dqlpomdq46jdc7k4qg</string>
+	<string>com.googleusercontent.apps.881986361143-qst3v3b4rthcil3p9jht8teti5qeodb0</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>881986361143-cudb5cs11d5r74t8m62cg3l7i3nkraa4.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.campy</string>
+	<string>com.campy.sns</string>
 	<key>PROJECT_ID</key>
 	<string>campy-a23ed</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:881986361143:ios:b3a9d5149aa2b1ecdbecb2</string>
+	<string>1:881986361143:ios:d9c414d739934724dbecb2</string>
 </dict>
 </plist>
