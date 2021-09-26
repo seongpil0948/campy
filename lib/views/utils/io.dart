@@ -1,5 +1,8 @@
 import 'dart:io';
-
+import 'package:campy/views/components/assets/video.dart';
+import 'package:video_player/video_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 enum PyFileType { Video, Image }
@@ -49,4 +52,25 @@ class PyFile {
   PyFile.fromJson(j)
       : url = j['url'],
         ftype = fileTypeFromString(j['ftype']);
+}
+
+Widget loadFile({required PyFile f, required BuildContext ctx}) {
+  final mq = MediaQuery.of(ctx);
+  switch (f.ftype) {
+    case PyFileType.Image:
+      return f.file != null
+          ? Image.file(f.file!)
+          : CachedNetworkImage(
+              imageUrl: f.url!,
+              fit: BoxFit.cover,
+              width: mq.size.width,
+              height: mq.size.height,
+            );
+
+    case PyFileType.Video:
+      final c = f.file != null
+          ? VideoPlayerController.file(f.file!)
+          : VideoPlayerController.network(f.url!);
+      return VideoW(controller: c);
+  }
 }

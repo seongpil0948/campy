@@ -16,7 +16,7 @@ class LoginView extends StatelessWidget {
         Image.asset(
           // background image
           "assets/images/splash_back_${fileNumberByRatio(mq.devicePixelRatio)}.png",
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
           height: mq.size.height,
         ),
         Center(

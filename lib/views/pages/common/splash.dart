@@ -11,7 +11,7 @@ class SplashView extends StatelessWidget {
       children: [
         Image.asset(
           "assets/images/splash_back_${fileNumberByRatio(mq.devicePixelRatio)}.png",
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
           height: mq.size.height,
         ),
         Padding(

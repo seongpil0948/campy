@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campy/models/feed.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ final defaultPage = PageAction.feed();
 class PyState extends ChangeNotifier {
   late PageAction _currPageAction;
   bool endSplash = false;
+  FeedInfo? selectedFeed;
 
   PageAction get currPageAction => _currPageAction;
   set currPageAction(PageAction act) {

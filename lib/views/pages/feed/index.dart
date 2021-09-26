@@ -61,8 +61,10 @@ class FeedCategoryView extends StatelessWidget {
 
                         return GestureDetector(
                           onTap: () {
-                            ctx2.read<PyState>().currPageAction =
+                            final state = ctx2.read<PyState>();
+                            state.currPageAction =
                                 PageAction.feedDetail(feedInfo.feedId);
+                            state.selectedFeed = feedInfo;
                           },
                           child: Container(
                             margin: EdgeInsets.all(20),
@@ -72,7 +74,7 @@ class FeedCategoryView extends StatelessWidget {
                                 child: Stack(children: [
                                   CachedNetworkImage(
                                       // FIXME: 동영상일때는 썸네일을 보여줄 수 있도록
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                       width: mq.size.width,
                                       imageUrl: imgs.length > 0
                                           ? imgs.first.url!

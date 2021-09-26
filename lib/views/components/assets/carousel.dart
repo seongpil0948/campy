@@ -1,15 +1,37 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/views/components/assets/upload.dart';
-import 'package:campy/views/components/assets/video.dart';
+
 import 'package:campy/views/utils/io.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
-import 'package:video_player/video_player.dart';
+
+final pyCarouselOption = CarouselOptions(
+  enlargeCenterPage: true,
+  viewportFraction: 1.0,
+  aspectRatio: 1.6,
+  enableInfiniteScroll: false,
+);
+
+class PyCarousel extends StatelessWidget {
+  List<PyFile> fs;
+  PyCarousel({Key? key, required this.fs}) : super(key: key);
+
+  @override
+  Widget build(BuildContext ctx) {
+    return CarouselSlider.builder(
+        itemCount: fs.length,
+        itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
+          var f = fs[idx];
+          return loadFile(f: f, ctx: ctx);
+        },
+        options: pyCarouselOption);
+  }
+}
 
 class PyAssetCarousel extends StatefulWidget {
+  // For Feed Postring
   PyAssetCarousel({Key? key}) : super(key: key);
 
   @override
@@ -33,25 +55,9 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
                   videoPressed: () => pressAssetButton(true, ctx));
             }
             var f = fs[idx];
-            switch (f.ftype) {
-              case PyFileType.Image:
-                return f.file != null
-                    ? Image.file(f.file!)
-                    : CachedNetworkImage(imageUrl: f.url!);
-
-              case PyFileType.Video:
-                final c = f.file != null
-                    ? VideoPlayerController.file(f.file!)
-                    : VideoPlayerController.network(f.url!);
-                return VideoW(controller: c);
-            }
+            return loadFile(f: f, ctx: ctx);
           },
-          options: CarouselOptions(
-            enlargeCenterPage: true,
-            viewportFraction: 1.0,
-            aspectRatio: 1.6,
-            enableInfiniteScroll: false,
-          )),
+          options: pyCarouselOption),
     ]);
   }
 
