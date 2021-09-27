@@ -1,22 +1,21 @@
 import 'package:campy/models/user.dart';
 
+import 'common.dart';
+
 // TODO: DateTime
+// TODO: to, from Json
 // TODO: DateTime apply to other models
 
-enum ContentType { Feed, Store, Comment }
-
-class Comment {
+class Comment with PyDateMixin {
   final PyUser writer;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final String content;
   final List<Comment> reply = [];
   final ContentType ctype;
+  String content;
 
-  Comment(
-      {required this.writer,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.content,
-      required this.ctype});
+  Comment({required this.writer, required this.content, required this.ctype});
+
+  void update({required String content}) {
+    this.content = content;
+    updateTime();
+  }
 }

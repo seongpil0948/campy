@@ -1,7 +1,9 @@
 import 'package:campy/models/user.dart';
 import 'package:campy/utils/io.dart';
 
-class FeedInfo {
+import 'common.dart';
+
+class FeedInfo with PyDateMixin {
   FeedInfo(
       {required this.writer,
       required this.isfavorite,

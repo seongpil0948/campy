@@ -1,7 +1,9 @@
 import 'package:campy/models/feed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class PyUser {
+import 'common.dart';
+
+class PyUser with PyDateMixin {
   String userId;
   String? displayName;
   String? email;
@@ -37,7 +39,9 @@ class PyUser {
     tenantId: $tenantId \n
     feeds: $feeds \n 
     followers: $followers \n 
-    follows: $follows
+    follows: $follows \n
+    createdAt: $createdAt 
+    updatedAt: $updatedAt 
     """;
   }
 
@@ -65,6 +69,8 @@ class PyUser {
         'refreshToken': refreshToken,
         'tenantId': tenantId,
         'hashCode': hashCode,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
         'followers': followers.map((f) => f.toJson()).toList(),
         'follows': follows.map((f) => f.toJson()).toList(),
       };
