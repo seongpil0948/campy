@@ -2,10 +2,6 @@ import 'package:campy/models/user.dart';
 
 import 'common.dart';
 
-// TODO: DateTime
-// TODO: to, from Json
-// TODO: DateTime apply to other models
-
 class Comment with PyDateMixin {
   final PyUser writer;
   final List<Comment> reply = [];

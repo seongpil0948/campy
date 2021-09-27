@@ -17,6 +17,7 @@ class PyUser with PyDateMixin {
   int hash;
   String get profileImage => photoURL;
   List<FeedInfo> feeds = [];
+  List<String> favoriteFeeds = [];
   List<PyUser> followers = [];
   List<PyUser> follows = [];
   PyUser({required User user, required this.userId})

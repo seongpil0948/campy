@@ -3,6 +3,7 @@ import 'package:campy/utils/io.dart';
 
 import 'common.dart';
 
+// TODO: count to object
 class FeedInfo with PyDateMixin {
   FeedInfo(
       {required this.writer,
