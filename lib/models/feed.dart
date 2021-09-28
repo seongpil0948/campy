@@ -1,3 +1,4 @@
+import 'package:campy/models/comment.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/utils/io.dart';
 
@@ -26,12 +27,11 @@ class FeedInfo with PyDateMixin {
   final String placeAround;
   final int placePrice;
   final String campKind;
-
   String hashTags;
-  int likeCount = 0;
-  int commentCount = 0;
-  int shareCount = 0;
-  int bookmarkCount = 0;
+  List<String> likeUserIds = [];
+  List<String> sharedUserIds = [];
+  List<String> bookmarkedUserIds = [];
+  List<Comment> comments = [];
 
   @override
   String toString() {
@@ -49,10 +49,11 @@ class FeedInfo with PyDateMixin {
         placePrice = j['placePrice'],
         campKind = j['campKind'],
         hashTags = j['hashTags'],
-        likeCount = j['likeCount'] ?? 0,
-        commentCount = j['commentCount'] ?? 0,
-        shareCount = j['shareCount'] ?? 0,
-        bookmarkCount = j['bookmarkCount'] ?? 0;
+        likeUserIds = j['likeUserIds'],
+        sharedUserIds = j['sharedUserIds'],
+        bookmarkedUserIds = j['bookmarkedUserIds'],
+        // FIXME: 현재 받아올때마다 DocumentID를 함께 가져오긴 하지만 이건 문제가 있다.
+        comments = j['comments'].map<Comment>((c) => Comment.fromJson(c, null));
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),
@@ -65,9 +66,9 @@ class FeedInfo with PyDateMixin {
         'placePrice': placePrice,
         'campKind': campKind,
         'hashTags': hashTags,
-        'likeCount': likeCount,
-        'commentCount': commentCount,
-        'shareCount': shareCount,
-        'bookmarkCount': bookmarkCount,
+        'likeUserIds': likeUserIds,
+        'sharedUserIds': sharedUserIds,
+        'bookmarkedUserIds': bookmarkedUserIds,
+        'comments': comments.map((c) => c.toJson()).toList(),
       };
 }
