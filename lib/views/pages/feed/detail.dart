@@ -38,8 +38,7 @@ class FeedDetailView extends StatelessWidget {
                                 onPressed: () {
                                   // FIXME: 전체적 변경 사항있을경우 파이어 베이스로 업데이트 해주는 코드 필요
                                   if (feed.feedId != null)
-                                    _currUser.favoriteFeeds
-                                        .remove(feed.feedId!);
+                                    _currUser.favoriteFeeds.remove(feed.feedId);
                                 },
                                 icon: Icon(
                                   Icons.favorite,
@@ -47,8 +46,7 @@ class FeedDetailView extends StatelessWidget {
                                 ))
                             : IconButton(
                                 onPressed: () {
-                                  if (feed.feedId != null)
-                                    _currUser.favoriteFeeds.add(feed.feedId!);
+                                  _currUser.favoriteFeeds.add(feed.feedId);
                                 },
                                 icon: Icon(
                                   Icons.favorite_border_outlined,
