@@ -20,7 +20,7 @@ class FeedInfo with PyDateMixin {
       : hashTags = hashTags.join(" ");
   final PyUser writer;
   final bool isfavorite;
-  final String? feedId;
+  final String feedId;
   final List<PyFile> files;
   final String title;
   final String content;
@@ -53,7 +53,8 @@ class FeedInfo with PyDateMixin {
         sharedUserIds = j['sharedUserIds'],
         bookmarkedUserIds = j['bookmarkedUserIds'],
         // FIXME: 현재 받아올때마다 DocumentID를 함께 가져오긴 하지만 이건 문제가 있다.
-        comments = j['comments'].map<Comment>((c) => Comment.fromJson(c, null));
+        comments = j['comments']
+            .map<Comment>((c) => Comment.fromJson(c, c['commentId']));
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),

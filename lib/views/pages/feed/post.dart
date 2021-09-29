@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class FeedPostView extends StatefulWidget {
   FeedPostView({Key? key}) : super(key: key);
@@ -161,6 +162,8 @@ class _FeedPostViewState extends State<FeedPostView> {
                     padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
                     child: ElevatedButton(
                       onPressed: () async {
+                        const uuid = Uuid();
+                        final newFeedId = uuid.v4();
                         List<PyFile> paths = [];
                         for (var f in files) {
                           var info = await uploadFilePathsToFirebase(
@@ -182,7 +185,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                         var finfo = FeedInfo(
                           writer: writer,
                           isfavorite: false,
-                          feedId: null,
+                          feedId: newFeedId,
                           files: paths,
                           title: _titleController.text,
                           content: _contentController.text,
@@ -195,7 +198,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                         doc.set(writer.toJson(), SetOptions(merge: true));
                         doc
                             .collection("feeds")
-                            .doc()
+                            .doc(newFeedId)
                             .set(finfo.toJson())
                             .then((value) {
                           print(">>> Feed Added <<<");

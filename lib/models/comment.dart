@@ -3,14 +3,14 @@ import 'package:campy/models/user.dart';
 import 'common.dart';
 
 class Comment with PyDateMixin {
-  final String? commentId;
+  final String commentId;
   final PyUser writer;
   final ContentType ctype;
   List<Comment> replies = [];
   String content;
 
   Comment(
-      {this.commentId,
+      {required this.commentId,
       required this.writer,
       required this.content,
       required this.ctype});
@@ -24,7 +24,7 @@ class Comment with PyDateMixin {
   Comment.fromJson(Map<String, dynamic> j, this.commentId)
       : writer = PyUser.fromJson(j['writer']),
         replies = j['replies'].map<Comment>(
-            (Map<String, dynamic> c) => Comment.fromJson(c, null)),
+            (Map<String, dynamic> c) => Comment.fromJson(c, c['commentId'])),
         ctype = contentTypeFromString(j['ctype']),
         content = j['content'];
 
