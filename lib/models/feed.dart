@@ -1,6 +1,8 @@
 import 'package:campy/models/comment.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/repositories/store/init.dart';
 import 'package:campy/utils/io.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'common.dart';
 
@@ -36,6 +38,17 @@ class FeedInfo with PyDateMixin {
   @override
   String toString() {
     return "\n >>>>> User: $writer 's FeedInfo: \n Title$title \n tags: $hashTags \n Files: $files \n <<<<<";
+  }
+
+  Future<bool> update(FeedInfo f) {
+    updateTime();
+    final doc = getCollection(Collections.Users).doc(writer.userId);
+    return doc
+        .collection("feeds")
+        .doc(feedId)
+        .set(f.toJson(), SetOptions(merge: true))
+        .then((value) => true)
+        .catchError((e) => false);
   }
 
   FeedInfo.fromJson(Map<String, dynamic> j, String documentId)
