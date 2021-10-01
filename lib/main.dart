@@ -44,7 +44,6 @@ class PyApp extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          print("=== Flutter Initialize Error ===");
           return WrongView(key: ValueKey("Wrong"));
         } else {
           return CircularProgressIndicator();

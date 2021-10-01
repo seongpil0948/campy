@@ -16,7 +16,7 @@ class AuthRepository {
     try {
       googleUser = await GoogleSignIn().signIn();
     } catch (e) {
-      print("Login Error $e");
+      print(">>>Login Error $e<<<");
     }
 
     if (googleUser != null) {
