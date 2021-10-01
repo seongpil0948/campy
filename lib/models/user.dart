@@ -1,4 +1,6 @@
 import 'package:campy/models/feed.dart';
+import 'package:campy/repositories/store/init.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'common.dart';
@@ -44,6 +46,15 @@ class PyUser with PyDateMixin {
     createdAt: $createdAt 
     updatedAt: $updatedAt 
     """;
+  }
+
+  Future<bool> update() {
+    updateTime();
+    final doc = getCollection(Collections.Users).doc(userId);
+    return doc
+        .set(toJson(), SetOptions(merge: true))
+        .then((value) => true)
+        .catchError((e) => false);
   }
 
   PyUser.fromJson(Map<String, dynamic> j)

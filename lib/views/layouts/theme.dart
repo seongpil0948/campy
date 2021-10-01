@@ -31,8 +31,8 @@ class PyTheme extends PyThemeInterface {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
       textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.black),
-          bodyText2: TextStyle(color: Colors.white),
+          bodyText1: TextStyle(color: Colors.white),
+          bodyText2: TextStyle(color: Colors.black),
           overline: origin.textTheme.overline!.copyWith(color: Colors.white)),
       appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.black),

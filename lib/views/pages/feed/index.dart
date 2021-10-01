@@ -26,6 +26,7 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
   Future _loadData() async {
     print("=== Call Load Data ==");
     final feeds = await getAllFeeds();
+    if (!mounted) return;
     setState(() {
       print("=== Call Set State Response Feed Is: $feeds ==");
       this.feeds = feeds;
@@ -36,6 +37,7 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
   @override
   void initState() {
     _loadData();
+    super.initState();
   }
 
   @override

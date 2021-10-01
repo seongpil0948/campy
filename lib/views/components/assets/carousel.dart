@@ -15,7 +15,7 @@ final pyCarouselOption = CarouselOptions(
 );
 
 class PyCarousel extends StatelessWidget {
-  List<PyFile> fs;
+  final List<PyFile> fs;
   PyCarousel({Key? key, required this.fs}) : super(key: key);
 
   @override

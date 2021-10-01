@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'common.dart';
 
-// TODO: count to object
 class FeedInfo with PyDateMixin {
   FeedInfo(
       {required this.writer,

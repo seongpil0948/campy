@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/auth.dart';
+import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
+import 'package:campy/models/user.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class FeedDetailView extends StatelessWidget {
@@ -21,148 +24,42 @@ class FeedDetailView extends StatelessWidget {
         drawer: PyDrawer(),
         body: Stack(children: [
           SingleChildScrollView(
-              child: Column(
-            children: [
-              PyCarousel(fs: feed.files),
-              Container(
-                width: mq.size.width * 0.6,
-                padding: EdgeInsets.only(left: 12),
-                margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: <Widget>[
-                        _currUser.favoriteFeeds.contains(feed.feedId)
-                            ? IconButton(
-                                onPressed: () {
-                                  // FIXME: 전체적 변경 사항있을경우 파이어 베이스로 업데이트 해주는 코드 필요
-                                  if (feed.feedId != null)
-                                    _currUser.favoriteFeeds.remove(feed.feedId);
-                                },
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ))
-                            : IconButton(
-                                onPressed: () {
-                                  _currUser.favoriteFeeds.add(feed.feedId);
-                                },
-                                icon: Icon(
-                                  Icons.favorite_border_outlined,
-                                  color: Colors.black,
-                                ),
-                              ),
-                        Text("  ${feed.likeUserIds.length}  "),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Image(
-                          image: AssetImage("assets/images/comment_icon.png"),
-                          width: iconSize['width'],
-                          height: iconSize['heihgt'],
-                        ),
-                        Text("  ${feed.comments.length}  "),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.share_rounded,
-                        ),
-                        Text("  ${feed.sharedUserIds.length}  "),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.bookmark_border_outlined,
-                        ),
-                        Text("  ${feed.bookmarkedUserIds.length}  "),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(child: Text(feed.hashTags)),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Divider()),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                width: mq.size.width,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    // mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(children: [
-                            Image.asset(
-                              "assets/images/feed_icon_filled.png",
-                              height: iconImgH,
-                            ),
-                            Text(" 글램핑")
-                          ]),
-                          SizedBox(height: 10),
-                          Row(mainAxisSize: MainAxisSize.min, children: [
-                            SizedBox(
-                              width: 1,
-                            ),
-                            Image.asset(
-                              "assets/images/map_marker.png",
-                              height: iconImgH - 3,
-                            ),
+              child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) =>
+                      ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.maxHeight),
+                        child: Column(
+                          children: [
                             Container(
-                              constraints: BoxConstraints(maxWidth: 180),
-                              margin: EdgeInsets.only(left: mq.size.width / 80),
-                              child: Text(
-                                "경기도 광명시 가림일로",
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                                width: mq.size.width,
+                                height: mq.size.height / 3,
+                                child: PyCarousel(fs: feed.files)),
+                            Container(
+                              width: mq.size.width * 0.6,
+                              padding: EdgeInsets.only(left: 12),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: mq.size.height / 100),
+                              child: _FeedStatusRow(
+                                  currUser: _currUser,
+                                  feed: feed,
+                                  iconSize: iconSize),
+                            ),
+                            _Divider(),
+                            Text(feed.hashTags),
+                            _Divider(),
+                            _PlaceInfo(mq: mq, iconImgH: iconImgH),
+                            Container(
+                              child: Text("댓글(${feed.comments.length})"),
                             )
-                          ]),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(children: [
-                            Image.asset(
-                              "assets/images/won.png",
-                              height: iconImgH - 7,
-                            ),
-                            Text("  유료 : 1일 10만원")
-                          ]),
-                          SizedBox(height: 10),
-                          Row(children: [
-                            Image.asset(
-                              "assets/images/caution.png",
-                              height: iconImgH - 7,
-                            ),
-                            Text(
-                              "  주변 마켓 없음",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ]),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                child: Text("댓글(${feed.comments.length})"),
-              )
-            ],
-          )),
+                          ],
+                        ),
+                      ))),
           Positioned(
               bottom: 30,
               child: Container(
-                height: 30,
+                color: Colors.green,
+                height: mq.size.height / 3,
                 child: Row(
                   children: [
                     SizedBox(
@@ -221,5 +118,176 @@ class FeedDetailView extends StatelessWidget {
                 ),
               ))
         ]));
+  }
+}
+
+class _PlaceInfo extends StatelessWidget {
+  const _PlaceInfo({
+    Key? key,
+    required this.mq,
+    required this.iconImgH,
+  }) : super(key: key);
+
+  final MediaQueryData mq;
+  final double iconImgH;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: mq.size.height / 4,
+      margin: EdgeInsets.symmetric(vertical: 20),
+      width: mq.size.width,
+      child: Center(
+        child: Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(children: [
+                    Image.asset(
+                      "assets/images/feed_icon_filled.png",
+                      height: iconImgH,
+                    ),
+                    Text(" 글램핑")
+                  ]),
+                  SizedBox(height: 10),
+                  Row(mainAxisSize: MainAxisSize.min, children: [
+                    SizedBox(
+                      width: 1,
+                    ),
+                    Image.asset(
+                      "assets/images/map_marker.png",
+                      height: iconImgH - 3,
+                    ),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 180),
+                      margin: EdgeInsets.only(left: mq.size.width / 80),
+                      child: Text(
+                        "경기도 광명시 가림일로",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    )
+                  ]),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(children: [
+                    Image.asset(
+                      "assets/images/won.png",
+                      height: iconImgH - 7,
+                    ),
+                    Text("  유료 : 1일 10만원")
+                  ]),
+                  SizedBox(height: 10),
+                  Row(children: [
+                    Image.asset(
+                      "assets/images/caution.png",
+                      height: iconImgH - 7,
+                    ),
+                    Text(
+                      "  주변 마켓 없음",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ]),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  const _Divider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 30,
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        child: Divider());
+  }
+}
+
+class _FeedStatusRow extends StatelessWidget {
+  const _FeedStatusRow({
+    Key? key,
+    required PyUser currUser,
+    required this.feed,
+    required this.iconSize,
+  })  : _currUser = currUser,
+        super(key: key);
+
+  final PyUser _currUser;
+  final FeedInfo feed;
+  final Map<String, double> iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: <Widget>[
+            _currUser.favoriteFeeds.contains(feed.feedId)
+                ? IconButton(
+                    onPressed: () {
+                      _currUser.favoriteFeeds.remove(feed.feedId);
+                      _currUser.update();
+                    },
+                    icon: Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ))
+                : IconButton(
+                    onPressed: () {
+                      _currUser.favoriteFeeds.add(feed.feedId);
+                      _currUser.update();
+                    },
+                    icon: Icon(
+                      Icons.favorite_border_outlined,
+                      color: Colors.black,
+                    ),
+                  ),
+            Text("  ${feed.likeUserIds.length}  "),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Image(
+              image: AssetImage("assets/images/comment_icon.png"),
+              width: iconSize['width'],
+              height: iconSize['heihgt'],
+            ),
+            Text("  ${feed.comments.length}  "),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.share_rounded,
+            ),
+            Text("  ${feed.sharedUserIds.length}  "),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Icon(
+              Icons.bookmark_border_outlined,
+            ),
+            Text("  ${feed.bookmarkedUserIds.length}  "),
+          ],
+        ),
+      ],
+    );
   }
 }

@@ -1,49 +1,66 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/feed.dart';
+import 'package:campy/utils/io.dart';
 import 'package:flutter/material.dart';
 
-class FeedWidget extends StatelessWidget {
-  final FeedInfo info;
-  FeedWidget({Key? key, required this.info}) : super(key: key);
+class FeedThumnail extends StatelessWidget {
+  const FeedThumnail({
+    Key? key,
+    required this.mq,
+    required this.imgs,
+    required this.feedInfo,
+  }) : super(key: key);
+  final FeedInfo feedInfo;
+  final MediaQueryData mq;
+  final Iterable<PyFile> imgs;
 
   @override
   Widget build(BuildContext ctx) {
-    var mq = MediaQuery.of(ctx);
-    return Container(
-      margin: EdgeInsets.symmetric(
-          vertical: mq.size.height / 40, horizontal: mq.size.width / 25),
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(40.0),
-          child: Stack(children: [
-            Image.asset(
-              "assets/images/mock.jpg",
-              height: mq.size.height / 3,
-              width: mq.size.width,
+    return ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: Stack(children: [
+          CachedNetworkImage(
+              // FIXME: 동영상일때는 썸네일을 보여줄 수 있도록
               fit: BoxFit.cover,
-            ),
-            Positioned(
-              bottom: 30,
-              left: 30,
+              width: mq.size.width,
+              imageUrl:
+                  imgs.length > 0 ? imgs.first.url! : feedInfo.writer.photoURL),
+          Positioned(
+              bottom: mq.size.height / 30,
+              left: mq.size.width / 15,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       CircleAvatar(
+                          radius: 15,
                           backgroundImage: CachedNetworkImageProvider(
-                              info.writer.profileImage)),
+                              feedInfo.writer.photoURL)),
                       SizedBox(width: 10),
-                      Text("data"),
+                      Text(
+                        feedInfo.writer.email ?? "",
+                        style: Theme.of(ctx).textTheme.bodyText1,
+                      )
                     ],
                   ),
-                  Text("data"),
-                  Text("data"),
-                  Text("data"),
-                  Text("data"),
+                  SizedBox(height: 10),
+                  Text(
+                    feedInfo.content,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(ctx).textTheme.bodyText1,
+                  ),
+                  Text(feedInfo.title,
+                      style: Theme.of(ctx)
+                          .textTheme
+                          .headline3
+                          ?.copyWith(color: Colors.white)),
+                  Text(
+                    feedInfo.hashTags.replaceAll(" ", " #"),
+                    style: Theme.of(ctx).textTheme.bodyText1,
+                  )
                 ],
-              ),
-            )
-          ])),
-    );
+              ))
+        ]));
   }
 }
