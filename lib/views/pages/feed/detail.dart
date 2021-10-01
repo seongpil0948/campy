@@ -20,46 +20,43 @@ class FeedDetailView extends StatelessWidget {
     final _currUser = ctx.watch<PyAuth>().currUser!;
     final iconImgH = 24.0;
     final iconSize = {'width': 15.0, 'height': 15.0};
+    var _commentController = TextEditingController();
     return Scaffold(
         drawer: PyDrawer(),
         body: Stack(children: [
           SingleChildScrollView(
-              child: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) =>
-                      ConstrainedBox(
-                        constraints:
-                            BoxConstraints(minHeight: constraints.maxHeight),
-                        child: Column(
-                          children: [
-                            Container(
-                                width: mq.size.width,
-                                height: mq.size.height / 3,
-                                child: PyCarousel(fs: feed.files)),
-                            Container(
-                              width: mq.size.width * 0.6,
-                              padding: EdgeInsets.only(left: 12),
-                              margin: EdgeInsets.symmetric(
-                                  vertical: mq.size.height / 100),
-                              child: _FeedStatusRow(
-                                  currUser: _currUser,
-                                  feed: feed,
-                                  iconSize: iconSize),
-                            ),
-                            _Divider(),
-                            Text(feed.hashTags),
-                            _Divider(),
-                            _PlaceInfo(mq: mq, iconImgH: iconImgH),
-                            Container(
-                              child: Text("댓글(${feed.comments.length})"),
-                            )
-                          ],
-                        ),
-                      ))),
+            child: Column(
+              children: [
+                Container(
+                    width: mq.size.width,
+                    height: mq.size.height / 3,
+                    child: PyCarousel(fs: feed.files)),
+                Container(
+                  width: mq.size.width * 0.6,
+                  padding: EdgeInsets.only(left: 12),
+                  margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
+                  child: _FeedStatusRow(
+                      currUser: _currUser, feed: feed, iconSize: iconSize),
+                ),
+                _Divider(),
+                Text(feed.hashTags),
+                _Divider(),
+                _PlaceInfo(mq: mq, iconImgH: iconImgH),
+                Container(
+                  child: Text("댓글(${feed.comments.length})"),
+                )
+              ],
+            ),
+          ),
           Positioned(
-              bottom: 30,
+            bottom: 30,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(60),
               child: Container(
-                color: Colors.green,
-                height: mq.size.height / 3,
+                width: mq.size.width - 40,
+                margin: EdgeInsets.only(left: 20),
+                color: Theme.of(ctx).primaryColor,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Row(
                   children: [
                     SizedBox(
@@ -73,20 +70,8 @@ class FeedDetailView extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 6,
-                      child: Container(
-                        height: mq.size.height / 23,
-                        padding: EdgeInsets.only(left: 10),
-                        child: TextField(
-                            // controller: _controller,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(60),
-                                        bottomLeft: Radius.circular(60)))),
-                            onSubmitted: (String value) => {
-                                  // showCommentDialog(value)
-                                }),
-                      ),
+                      child: _CommentPost(
+                          mq: mq, commentController: _commentController),
                     ),
                     Expanded(
                       flex: 1,
@@ -99,15 +84,16 @@ class FeedDetailView extends StatelessWidget {
                             bottomRight: Radius.circular(60)),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Theme.of(ctx).primaryColor,
+                              color: Colors.white,
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(60),
                                   bottomRight: Radius.circular(60))),
-                          height: mq.size.height / 23,
+                          height: 30,
                           child: Center(
                             child: Text(
                               "등록",
-                              style: TextStyle(color: Colors.white),
+                              style:
+                                  TextStyle(color: Theme.of(ctx).primaryColor),
                             ),
                           ),
                         ),
@@ -116,8 +102,43 @@ class FeedDetailView extends StatelessWidget {
                     SizedBox(width: mq.size.width / 20)
                   ],
                 ),
-              ))
+              ),
+            ),
+          )
         ]));
+    ;
+  }
+}
+
+class _CommentPost extends StatelessWidget {
+  const _CommentPost({
+    Key? key,
+    required this.mq,
+    required TextEditingController commentController,
+  })  : _commentController = commentController,
+        super(key: key);
+
+  final MediaQueryData mq;
+  final TextEditingController _commentController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: mq.size.height / 23,
+      padding: EdgeInsets.only(left: 10),
+      child: TextField(
+          controller: _commentController,
+          decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                      bottomLeft: Radius.circular(60)))),
+          onSubmitted: (String value) => {
+                // showCommentDialog(value)
+              }),
+    );
   }
 }
 
@@ -273,17 +294,13 @@ class _FeedStatusRow extends StatelessWidget {
         ),
         Row(
           children: <Widget>[
-            Icon(
-              Icons.share_rounded,
-            ),
+            Icon(Icons.share_rounded),
             Text("  ${feed.sharedUserIds.length}  "),
           ],
         ),
         Row(
           children: <Widget>[
-            Icon(
-              Icons.bookmark_border_outlined,
-            ),
+            Icon(Icons.bookmark_border_outlined),
             Text("  ${feed.bookmarkedUserIds.length}  "),
           ],
         ),
