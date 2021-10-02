@@ -125,14 +125,6 @@ class _CommentPost extends StatelessWidget {
                   },
                 ),
               )),
-          // Container(
-          //   decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       borderRadius: const BorderRadius.only(
-          //           topRight: Radius.circular(60),
-          //           bottomRight: Radius.circular(60))),
-          //   height: 30,
-          // ),
         ],
       ),
     );
