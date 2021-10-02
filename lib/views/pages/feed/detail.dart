@@ -6,6 +6,7 @@ import 'package:campy/models/user.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
@@ -50,60 +51,10 @@ class FeedDetailView extends StatelessWidget {
           ),
           Positioned(
             bottom: 30,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(60),
-              child: Container(
-                width: mq.size.width - 40,
-                margin: EdgeInsets.only(left: 20),
-                color: Theme.of(ctx).primaryColor,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: CircleAvatar(
-                          backgroundImage: CachedNetworkImageProvider(
-                              _currUser.profileImage)),
-                    ),
-                    Expanded(
-                      flex: 6,
-                      child: _CommentPost(
-                          mq: mq, commentController: _commentController),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: InkWell(
-                        onTap: () => {
-                          // showCommentDialog(_controller.text)
-                        },
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(60),
-                            bottomRight: Radius.circular(60)),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(60),
-                                  bottomRight: Radius.circular(60))),
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              "등록",
-                              style:
-                                  TextStyle(color: Theme.of(ctx).primaryColor),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: mq.size.width / 20)
-                  ],
-                ),
-              ),
-            ),
+            child: _CommentPost(
+                mq: mq,
+                currUser: _currUser,
+                commentController: _commentController),
           )
         ]));
     ;
@@ -114,30 +65,76 @@ class _CommentPost extends StatelessWidget {
   const _CommentPost({
     Key? key,
     required this.mq,
+    required PyUser currUser,
     required TextEditingController commentController,
-  })  : _commentController = commentController,
+  })  : _currUser = currUser,
+        _commentController = commentController,
         super(key: key);
 
   final MediaQueryData mq;
+  final PyUser _currUser;
   final TextEditingController _commentController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Container(
-      height: mq.size.height / 23,
-      padding: EdgeInsets.only(left: 10),
-      child: TextField(
-          controller: _commentController,
-          decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(60),
-                      bottomLeft: Radius.circular(60)))),
-          onSubmitted: (String value) => {
-                // showCommentDialog(value)
-              }),
+      width: mq.size.width - 40,
+      margin: EdgeInsets.only(left: 20),
+      decoration: new BoxDecoration(
+        color: Theme.of(ctx).primaryColor,
+        border: Border.all(color: Colors.black, width: 0.0),
+        borderRadius: const BorderRadius.all(Radius.circular(60)),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 5,
+          ),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: CircleAvatar(
+                  backgroundImage:
+                      CachedNetworkImageProvider(_currUser.profileImage)),
+            ),
+          ),
+          Expanded(
+              flex: 6,
+              child: Container(
+                height: mq.size.height / 23,
+                padding: EdgeInsets.only(left: 10),
+                child: TextField(
+                  controller: _commentController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.send),
+                        iconSize: 18,
+                        color: Theme.of(ctx).primaryColor),
+                    // border: OutlineInputBorder(
+                    //     borderRadius: BorderRadius.only(
+                    //         topLeft: Radius.circular(60),
+                    //         bottomLeft: Radius.circular(60)))
+                  ),
+                  onSubmitted: (String value) => {
+                    // showCommentDialog(value)
+                  },
+                ),
+              )),
+          // Container(
+          //   decoration: BoxDecoration(
+          //       color: Colors.white,
+          //       borderRadius: const BorderRadius.only(
+          //           topRight: Radius.circular(60),
+          //           bottomRight: Radius.circular(60))),
+          //   height: 30,
+          // ),
+        ],
+      ),
     );
   }
 }
