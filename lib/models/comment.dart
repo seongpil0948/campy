@@ -30,7 +30,7 @@ class Comment with PyDateMixin {
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),
-        'replies': replies.map((r) => r.toJson()),
+        'replies': replies.map((r) => r.toJson()).toList(),
         'ctype': ctype.toCustomString(),
         'content': content,
       };

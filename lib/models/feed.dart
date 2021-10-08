@@ -32,7 +32,6 @@ class FeedInfo with PyDateMixin {
   List<String> likeUserIds = [];
   List<String> sharedUserIds = [];
   List<String> bookmarkedUserIds = [];
-  List<Comment> comments = [];
 
   @override
   String toString() {
@@ -63,11 +62,7 @@ class FeedInfo with PyDateMixin {
         hashTags = j['hashTags'],
         likeUserIds = j['likeUserIds'].cast<String>(),
         sharedUserIds = j['sharedUserIds'].cast<String>(),
-        bookmarkedUserIds = j['bookmarkedUserIds'].cast<String>(),
-        // FIXME: 현재 받아올때마다 DocumentID를 함께 가져오긴 하지만 이건 문제가 있다.
-        comments = j['comments']
-            .map<Comment>((c) => Comment.fromJson(c, c['commentId']))
-            .toList();
+        bookmarkedUserIds = j['bookmarkedUserIds'].cast<String>();
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),
@@ -83,6 +78,5 @@ class FeedInfo with PyDateMixin {
         'likeUserIds': likeUserIds,
         'sharedUserIds': sharedUserIds,
         'bookmarkedUserIds': bookmarkedUserIds,
-        'comments': comments.map((c) => c.toJson()).toList(),
       };
 }

@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/auth.dart';
+import 'package:campy/models/comment.dart';
+import 'package:campy/models/common.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/repositories/store/init.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class FeedDetailView extends StatelessWidget {
   FeedDetailView({Key? key}) : super(key: key);
@@ -43,18 +47,20 @@ class FeedDetailView extends StatelessWidget {
                 Text(feed.hashTags),
                 _Divider(),
                 _PlaceInfo(mq: mq, iconImgH: iconImgH),
-                Container(
-                  child: Text("댓글(${feed.comments.length})"),
-                )
+                // Container(
+                //   child: Text("댓글(${feed.comments.length})"),
+                // )
               ],
             ),
           ),
           Positioned(
             bottom: 30,
             child: _CommentPost(
-                mq: mq,
-                currUser: _currUser,
-                commentController: _commentController),
+              mq: mq,
+              currUser: _currUser,
+              commentController: _commentController,
+              feed: feed,
+            ),
           )
         ]));
     ;
@@ -62,18 +68,20 @@ class FeedDetailView extends StatelessWidget {
 }
 
 class _CommentPost extends StatelessWidget {
-  const _CommentPost({
-    Key? key,
-    required this.mq,
-    required PyUser currUser,
-    required TextEditingController commentController,
-  })  : _currUser = currUser,
+  const _CommentPost(
+      {Key? key,
+      required this.mq,
+      required PyUser currUser,
+      required TextEditingController commentController,
+      required this.feed})
+      : _currUser = currUser,
         _commentController = commentController,
         super(key: key);
 
   final MediaQueryData mq;
   final PyUser _currUser;
   final TextEditingController _commentController;
+  final FeedInfo feed;
 
   @override
   Widget build(BuildContext ctx) {
@@ -120,8 +128,27 @@ class _CommentPost extends StatelessWidget {
                     //         topLeft: Radius.circular(60),
                     //         bottomLeft: Radius.circular(60)))
                   ),
-                  onSubmitted: (String value) => {
-                    // showCommentDialog(value)
+                  onSubmitted: (String txt) {
+                    final commentId = Uuid().v4();
+                    final comment = Comment(
+                        commentId: commentId,
+                        writer: _currUser,
+                        content: txt,
+                        ctype: ContentType.Comment);
+                    final cj = comment.toJson();
+                    print("In Submit Comment: $cj");
+                    getCollection(Collections.Users)
+                        .doc(_currUser.userId)
+                        .collection("feeds")
+                        .doc(feed.feedId)
+                        .collection('comments')
+                        .doc(commentId)
+                        .set(cj)
+                        .then((value) {
+                      print("Post Comment is Successed ");
+                    }).catchError((e) {
+                      print("Post Comment is Restricted: $e");
+                    });
                   },
                 ),
               )),
@@ -148,66 +175,64 @@ class _PlaceInfo extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 20),
       width: mq.size.width,
       child: Center(
-        child: Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            // mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(children: [
-                    Image.asset(
-                      "assets/images/feed_icon_filled.png",
-                      height: iconImgH,
-                    ),
-                    Text(" 글램핑")
-                  ]),
-                  SizedBox(height: 10),
-                  Row(mainAxisSize: MainAxisSize.min, children: [
-                    SizedBox(
-                      width: 1,
-                    ),
-                    Image.asset(
-                      "assets/images/map_marker.png",
-                      height: iconImgH - 3,
-                    ),
-                    Container(
-                      constraints: BoxConstraints(maxWidth: 180),
-                      margin: EdgeInsets.only(left: mq.size.width / 80),
-                      child: Text(
-                        "경기도 광명시 가림일로",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
-                  ]),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(children: [
-                    Image.asset(
-                      "assets/images/won.png",
-                      height: iconImgH - 7,
-                    ),
-                    Text("  유료 : 1일 10만원")
-                  ]),
-                  SizedBox(height: 10),
-                  Row(children: [
-                    Image.asset(
-                      "assets/images/caution.png",
-                      height: iconImgH - 7,
-                    ),
-                    Text(
-                      "  주변 마켓 없음",
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // mainAxisSize: MainAxisSize.min,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  Image.asset(
+                    "assets/images/feed_icon_filled.png",
+                    height: iconImgH,
+                  ),
+                  Text(" 글램핑")
+                ]),
+                SizedBox(height: 10),
+                Row(mainAxisSize: MainAxisSize.min, children: [
+                  SizedBox(
+                    width: 1,
+                  ),
+                  Image.asset(
+                    "assets/images/map_marker.png",
+                    height: iconImgH - 3,
+                  ),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: 180),
+                    margin: EdgeInsets.only(left: mq.size.width / 80),
+                    child: Text(
+                      "경기도 광명시 가림일로",
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ]),
-                ],
-              ),
-            ],
-          ),
+                  )
+                ]),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  Image.asset(
+                    "assets/images/won.png",
+                    height: iconImgH - 7,
+                  ),
+                  Text("  유료 : 1일 10만원")
+                ]),
+                SizedBox(height: 10),
+                Row(children: [
+                  Image.asset(
+                    "assets/images/caution.png",
+                    height: iconImgH - 7,
+                  ),
+                  Text(
+                    "  주변 마켓 없음",
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ]),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -278,7 +303,7 @@ class _FeedStatusRow extends StatelessWidget {
               width: iconSize['width'],
               height: iconSize['heihgt'],
             ),
-            Text("  ${feed.comments.length}  "),
+            // Text("  ${feed.comments.length}  "),
           ],
         ),
         Row(

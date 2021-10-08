@@ -28,7 +28,6 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
     final feeds = await getAllFeeds();
     if (!mounted) return;
     setState(() {
-      print("=== Call Set State Response Feed Is: $feeds ==");
       this.feeds = feeds;
       isLoading = false;
     });
