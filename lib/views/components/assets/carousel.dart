@@ -66,15 +66,19 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
     if (isVideo) {
       final asset = await _picker.pickVideo(source: ImageSource.gallery);
       if (asset != null) {
-        fs.add(PyFile.fromXfile(f: asset, ftype: PyFileType.Video));
+        setState(() {
+          fs.add(PyFile.fromXfile(f: asset, ftype: PyFileType.Video));
+        });
       }
       return null;
     }
     final imgs = await _picker.pickMultiImage();
     if (imgs != null) {
-      for (var i in imgs) {
-        fs.add(PyFile.fromXfile(f: i, ftype: PyFileType.Image));
-      }
+      setState(() {
+        for (var i in imgs) {
+          fs.add(PyFile.fromXfile(f: i, ftype: PyFileType.Image));
+        }
+      });
     }
   }
 }
