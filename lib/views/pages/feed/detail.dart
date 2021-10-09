@@ -130,11 +130,8 @@ class _CommentPost extends StatelessWidget {
                   ),
                   onSubmitted: (String txt) {
                     final commentId = Uuid().v4();
-                    final comment = Comment(
-                        commentId: commentId,
-                        writer: _currUser,
-                        content: txt,
-                        ctype: ContentType.Comment);
+                    final comment =
+                        Comment(id: commentId, writer: _currUser, content: txt);
                     final cj = comment.toJson();
                     print("In Submit Comment: $cj");
                     getCollection(Collections.Users)

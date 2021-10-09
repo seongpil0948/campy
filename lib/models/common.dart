@@ -1,4 +1,4 @@
-enum ContentType { Feed, Store, Comment }
+enum ContentType { Feed, Store, Comment, Reply }
 
 extension ParseToString on ContentType {
   String toCustomString() {
