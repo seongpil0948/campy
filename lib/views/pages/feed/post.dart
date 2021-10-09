@@ -180,8 +180,8 @@ class _FeedPostViewState extends State<FeedPostView> {
                           }
                         }
 
-                        final doc =
-                            getCollection(Collections.Users).doc(writer.userId);
+                        final doc = getCollection(c: Collections.Users)
+                            .doc(writer.userId);
                         var finfo = FeedInfo(
                           writer: writer,
                           isfavorite: false,

@@ -1,4 +1,3 @@
-import 'package:campy/models/comment.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/store/init.dart';
 import 'package:campy/utils/io.dart';
@@ -40,9 +39,8 @@ class FeedInfo with PyDateMixin {
 
   Future<bool> update(FeedInfo f) {
     updateTime();
-    final doc = getCollection(Collections.Users).doc(writer.userId);
-    return doc
-        .collection("feeds")
+    final fc = getCollection(c: Collections.Feeds, userId: writer.userId);
+    return fc
         .doc(feedId)
         .set(f.toJson(), SetOptions(merge: true))
         .then((value) => true)

@@ -4,7 +4,7 @@ import 'package:campy/repositories/store/user.dart';
 
 Future<List<FeedInfo>> getFeeds(Iterable<String> userIds) async {
   List<FeedInfo> allFeeds = [];
-  final userC = getCollection(Collections.Users);
+  final userC = getCollection(c: Collections.Users);
   for (var _id in userIds) {
     var feeds = await userC.doc(_id).collection("feeds").get();
     print("Get Feeds , user Id: $_id 's Feeds : $feeds");

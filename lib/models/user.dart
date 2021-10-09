@@ -50,7 +50,7 @@ class PyUser with PyDateMixin {
 
   Future<bool> update() {
     updateTime();
-    final doc = getCollection(Collections.Users).doc(userId);
+    final doc = getCollection(c: Collections.Users).doc(userId);
     return doc
         .set(toJson(), SetOptions(merge: true))
         .then((value) => true)

@@ -63,7 +63,63 @@ class FeedDetailView extends StatelessWidget {
             ),
           )
         ]));
-    ;
+  }
+}
+
+class CommentList extends StatefulWidget {
+  String userId;
+  String feedId;
+  CommentList({Key? key, required this.userId, required this.feedId})
+      : super(key: key);
+
+  @override
+  _CommentListState createState() => _CommentListState();
+}
+
+class _CommentListState extends State<CommentList> {
+  List<Comment> comments = [];
+  Future _loadData() async {
+    final comments = await getCollection(
+            c: Collections.Comments,
+            userId: widget.userId,
+            feedId: widget.feedId)
+        .get();
+    setState(() {
+      this.comments = comments.docs
+          .map((c) => Comment.fromJson(c.data() as Map<String, dynamic>))
+          .toList();
+    });
+  }
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(itemBuilder: (ctx, idx) {
+      final c = comments[idx];
+      return Column(
+        children: [
+          Text("댓글 ${comments.length}"),
+          SizedBox(height: 10),
+          Container(
+              height: 50,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                      radius: 15,
+                      backgroundImage:
+                          CachedNetworkImageProvider(c.writer.photoURL)),
+                  Text(c.writer.email!.split("@")[0]),
+                  Text(c.content)
+                ],
+              )),
+        ],
+      );
+    });
   }
 }
 
@@ -134,11 +190,10 @@ class _CommentPost extends StatelessWidget {
                         Comment(id: commentId, writer: _currUser, content: txt);
                     final cj = comment.toJson();
                     print("In Submit Comment: $cj");
-                    getCollection(Collections.Users)
-                        .doc(_currUser.userId)
-                        .collection("feeds")
-                        .doc(feed.feedId)
-                        .collection('comments')
+                    getCollection(
+                            c: Collections.Comments,
+                            userId: _currUser.userId,
+                            feedId: feed.feedId)
                         .doc(commentId)
                         .set(cj)
                         .then((value) {
