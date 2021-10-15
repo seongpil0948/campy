@@ -7,11 +7,6 @@ import 'package:campy/views/components/structs/feed/list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// FIXME: 전부다 갈아없어여함
-/// 프로바이더로 전체화면 말고 리스트 보여주는 부분만 받아오면 리빌드 하고
-/// 프로그래스바 뜰때 기존 피드는 없어지지 않는 상태로
-/// https://medium.com/@jun.chenying/flutter-tutorial-part-5-listview-pagination-scroll-up-to-load-more-ed132f6a06be
-
 class FeedCategoryView extends StatefulWidget {
   const FeedCategoryView({Key? key}) : super(key: key);
 

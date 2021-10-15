@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/auth.dart';
 import 'package:campy/models/comment.dart';
-import 'package:campy/models/common.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
@@ -30,27 +29,33 @@ class FeedDetailView extends StatelessWidget {
         drawer: PyDrawer(),
         body: Stack(children: [
           SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                    width: mq.size.width,
-                    height: mq.size.height / 3,
-                    child: PyCarousel(fs: feed.files)),
-                Container(
-                  width: mq.size.width * 0.6,
-                  padding: EdgeInsets.only(left: 12),
-                  margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
-                  child: _FeedStatusRow(
-                      currUser: _currUser, feed: feed, iconSize: iconSize),
-                ),
-                _Divider(),
-                Text(feed.hashTags),
-                _Divider(),
-                _PlaceInfo(mq: mq, iconImgH: iconImgH),
-                // Container(
-                //   child: Text("댓글(${feed.comments.length})"),
-                // )
-              ],
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: mq.size.height),
+              child: Column(
+                children: [
+                  Container(
+                      width: mq.size.width,
+                      height: mq.size.height / 3,
+                      child: PyCarousel(fs: feed.files)),
+                  Container(
+                    width: mq.size.width * 0.6,
+                    padding: EdgeInsets.only(left: 12),
+                    margin:
+                        EdgeInsets.symmetric(vertical: mq.size.height / 100),
+                    child: _FeedStatusRow(
+                        currUser: _currUser, feed: feed, iconSize: iconSize),
+                  ),
+                  _Divider(),
+                  Text(feed.hashTags),
+                  _Divider(),
+                  _PlaceInfo(mq: mq, iconImgH: iconImgH),
+                  _Divider(),
+                  CommentList(
+                    userId: feed.writer.userId,
+                    feedId: feed.feedId,
+                  )
+                ],
+              ),
             ),
           ),
           Positioned(
@@ -67,8 +72,8 @@ class FeedDetailView extends StatelessWidget {
 }
 
 class CommentList extends StatefulWidget {
-  String userId;
-  String feedId;
+  final String userId;
+  final String feedId;
   CommentList({Key? key, required this.userId, required this.feedId})
       : super(key: key);
 
@@ -79,6 +84,7 @@ class CommentList extends StatefulWidget {
 class _CommentListState extends State<CommentList> {
   List<Comment> comments = [];
   Future _loadData() async {
+    if (!mounted) return [];
     final comments = await getCollection(
             c: Collections.Comments,
             userId: widget.userId,
@@ -98,29 +104,55 @@ class _CommentListState extends State<CommentList> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(itemBuilder: (ctx, idx) {
-      final c = comments[idx];
-      return Column(
-        children: [
-          Text("댓글 ${comments.length}"),
-          SizedBox(height: 10),
-          Container(
-              height: 50,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                      radius: 15,
-                      backgroundImage:
-                          CachedNetworkImageProvider(c.writer.photoURL)),
-                  Text(c.writer.email!.split("@")[0]),
-                  Text(c.content)
-                ],
-              )),
-        ],
-      );
-    });
+  Widget build(BuildContext ctx) {
+    final mq = MediaQuery.of(ctx);
+    return Column(
+      children: [
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: comments.length,
+            itemBuilder: (ctx, idx) {
+              if (idx == 0) return Text("댓글 ${comments.length}");
+              final c = comments[idx];
+              return Container(
+                height: mq.size.height / 10,
+                width: mq.size.width,
+                child: Container(
+                    width: mq.size.width,
+                    height: mq.size.height / 10,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                            radius: 15,
+                            backgroundImage:
+                                CachedNetworkImageProvider(c.writer.photoURL)),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                            child: Text(c.writer.email!.split("@")[0])),
+                        Expanded(child: Text(c.content))
+                      ],
+                    )),
+              );
+            }),
+      ],
+    );
   }
+}
+
+void postComment(String txt, PyUser writer, FeedInfo feed) {
+  final commentId = Uuid().v4();
+  final comment = Comment(id: commentId, writer: writer, content: txt);
+  final cj = comment.toJson();
+  print("In Submit Comment: $cj");
+  getCollection(
+          c: Collections.Comments, userId: writer.userId, feedId: feed.feedId)
+      .doc(commentId)
+      .set(cj)
+      .then((value) {
+    print("Post Comment is Successed ");
+  }).catchError((e) {
+    print("Post Comment is Restricted: $e");
+  });
 }
 
 class _CommentPost extends StatelessWidget {
@@ -170,39 +202,22 @@ class _CommentPost extends StatelessWidget {
                 height: mq.size.height / 23,
                 padding: EdgeInsets.only(left: 10),
                 child: TextField(
-                  controller: _commentController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.send),
-                        iconSize: 18,
-                        color: Theme.of(ctx).primaryColor),
-                    // border: OutlineInputBorder(
-                    //     borderRadius: BorderRadius.only(
-                    //         topLeft: Radius.circular(60),
-                    //         bottomLeft: Radius.circular(60)))
-                  ),
-                  onSubmitted: (String txt) {
-                    final commentId = Uuid().v4();
-                    final comment =
-                        Comment(id: commentId, writer: _currUser, content: txt);
-                    final cj = comment.toJson();
-                    print("In Submit Comment: $cj");
-                    getCollection(
-                            c: Collections.Comments,
-                            userId: _currUser.userId,
-                            feedId: feed.feedId)
-                        .doc(commentId)
-                        .set(cj)
-                        .then((value) {
-                      print("Post Comment is Successed ");
-                    }).catchError((e) {
-                      print("Post Comment is Restricted: $e");
-                    });
-                  },
-                ),
+                    controller: _commentController,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            postComment(
+                                _commentController.text, _currUser, feed);
+                          },
+                          icon: Icon(Icons.send),
+                          iconSize: 18,
+                          color: Theme.of(ctx).primaryColor),
+                    ),
+                    onSubmitted: (String txt) =>
+                        postComment(txt, _currUser, feed)),
               )),
         ],
       ),
@@ -223,7 +238,6 @@ class _PlaceInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: mq.size.height / 4,
       margin: EdgeInsets.symmetric(vertical: 20),
       width: mq.size.width,
       child: Center(

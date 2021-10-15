@@ -386,14 +386,14 @@ PODS:
   - Firebase/Storage (8.7.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 8.7.0)
-  - firebase_auth (3.1.2):
+  - firebase_auth (3.1.3):
     - Firebase/Auth (= 8.7.0)
     - firebase_core
     - Flutter
   - firebase_core (1.7.0):
     - Firebase/CoreOnly (= 8.7.0)
     - Flutter
-  - firebase_storage (10.0.4):
+  - firebase_storage (10.0.5):
     - Firebase/Storage (= 8.7.0)
     - firebase_core
     - Flutter
@@ -624,9 +624,9 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 73ebe3a27eb688ac5b5aa7e99f68992993042115
   FBSDKLoginKit: 2e76831ef08d356b8f9150ea51cce865074ea304
   Firebase: bc9325d5ee2041524bac78a5213d0e530c651309
-  firebase_auth: 3193124aa14a62b8abec3fd069df73ef378d2c5b
+  firebase_auth: 25f34550b0023cbc3824731240608cd0aa515ca2
   firebase_core: f5ac1f2726a2bd0468cea0161eddeea3d83d7e3e
-  firebase_storage: 04a381404ffddf5d3d39bf4bdfc517e4a354dfe9
+  firebase_storage: d4ced699e5106374a16961d8f2028a0ed34b748d
   FirebaseAnalytics: 52768800c2add1d84b751420cb4caaf8195f2c41
   FirebaseAuth: 2e7d029977648c67a5d51a263d4cbab76d34cf12
   FirebaseCore: f4804c1d3f4bbbefc88904d15653038f2c99ddf7
