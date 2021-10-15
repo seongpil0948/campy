@@ -113,11 +113,17 @@ class PyDrawer extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text("캠핑플레이스"),
+          title: Text(
+            "캠핑플레이스",
+            style: Theme.of(ctx).textTheme.bodyText2,
+          ),
           onTap: () => appState.currPageAction = PageAction.feed(),
         ),
         ListTile(
-          title: Text("스토어"),
+          title: Text(
+            "스토어",
+            style: Theme.of(ctx).textTheme.bodyText2,
+          ),
           onTap: () => appState.currPageAction = PageAction.store(),
         ),
       ],
