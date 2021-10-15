@@ -181,7 +181,7 @@ class _CommentPost extends StatelessWidget {
         border: Border.all(color: Colors.black, width: 0.0),
         borderRadius: const BorderRadius.all(Radius.circular(60)),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
           SizedBox(
@@ -198,27 +198,23 @@ class _CommentPost extends StatelessWidget {
           ),
           Expanded(
               flex: 6,
-              child: Container(
-                height: mq.size.height / 23,
-                padding: EdgeInsets.only(left: 10),
-                child: TextField(
-                    controller: _commentController,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            postComment(
-                                _commentController.text, _currUser, feed);
-                          },
-                          icon: Icon(Icons.send),
-                          iconSize: 18,
-                          color: Theme.of(ctx).primaryColor),
-                    ),
-                    onSubmitted: (String txt) =>
-                        postComment(txt, _currUser, feed)),
-              )),
+              child: TextField(
+                  controller: _commentController,
+                  minLines: 1,
+                  maxLines: 12,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          postComment(_commentController.text, _currUser, feed);
+                        },
+                        icon: Icon(Icons.send),
+                        iconSize: 18,
+                        color: Theme.of(ctx).primaryColor),
+                  ),
+                  onSubmitted: (String txt) =>
+                      postComment(txt, _currUser, feed))),
         ],
       ),
     );
