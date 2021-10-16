@@ -1,5 +1,5 @@
 import 'package:campy/models/user.dart';
-import 'package:campy/repositories/store/init.dart';
+import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

@@ -1,5 +1,5 @@
 import 'package:campy/models/user.dart';
-import 'package:campy/repositories/store/init.dart';
+import 'package:campy/repositories/init.dart';
 
 Future<Iterable<PyUser>> getAllUsers() async {
   // todo: Filtering Friends

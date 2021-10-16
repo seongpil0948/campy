@@ -70,12 +70,12 @@ class PyPathConfig {
       this.productId,
       this.currentPageAction});
 
-  PyPathConfig.feedDetail({required this.feedId})
+  PyPathConfig.feedDetail({this.feedId})
       : this.key = 'FeedDetail',
         this.path = FeedPath + '/$feedId',
         this.uiCtgr = Views.FeedDetail;
 
-  PyPathConfig.productDetail({required this.productId})
+  PyPathConfig.productDetail({this.productId})
       : this.key = 'ProductDetail',
         this.path = StorePath + '/products/$productId',
         this.uiCtgr = Views.ProductDetail;

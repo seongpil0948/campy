@@ -1,12 +1,14 @@
 import 'package:campy/views/components/assets/upload.dart';
 
 import 'package:campy/utils/io.dart';
+import 'package:campy/views/components/structs/dot.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
+// https://github.com/serenader2014/flutter_carousel_slider/blob/master/lib/carousel_options.dart
 final pyCarouselOption = CarouselOptions(
   enlargeCenterPage: true,
   viewportFraction: 1.0,
@@ -51,8 +53,8 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
           itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
             if (idx == fs.length) {
               return AssetUploadCard(
-                  photoPressed: () => pressAssetButton(false, ctx),
-                  videoPressed: () => pressAssetButton(true, ctx));
+                  photoPressed: () => _pressAssetButton(false, ctx),
+                  videoPressed: () => _pressAssetButton(true, ctx));
             }
             var f = fs[idx];
             return loadFile(f: f, ctx: ctx);
@@ -61,7 +63,7 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
     ]);
   }
 
-  pressAssetButton(bool isVideo, BuildContext ctx) async {
+  _pressAssetButton(bool isVideo, BuildContext ctx) async {
     var fs = ctx.read<List<PyFile>>();
     if (isVideo) {
       final asset = await _picker.pickVideo(source: ImageSource.gallery);
@@ -80,5 +82,57 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
         }
       });
     }
+  }
+}
+
+class PyDotCorousel extends StatefulWidget {
+  final List<Image> imgs;
+  const PyDotCorousel({Key? key, required this.imgs}) : super(key: key);
+
+  @override
+  _PyDotCorouselState createState() => _PyDotCorouselState();
+}
+
+class _PyDotCorouselState extends State<PyDotCorousel> {
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      CarouselSlider.builder(
+        itemCount: widget.imgs.length,
+        carouselController: _controller,
+        itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) =>
+            widget.imgs[idx],
+        options: CarouselOptions(
+            autoPlay: true,
+            // enlargeCenterPage: true,
+            aspectRatio: 1.3,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            }),
+      ),
+      Positioned(
+        bottom: 10,
+        right: 5,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: widget.imgs.asMap().entries.map((entry) {
+            return GestureDetector(
+              onTap: () => _controller.animateToPage(entry.key),
+              child: DotCircle(
+                  width: 12.0,
+                  height: 12.0,
+                  color: (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black)
+                      .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+            );
+          }).toList(),
+        ),
+      ),
+    ]);
   }
 }

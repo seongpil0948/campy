@@ -1,5 +1,5 @@
 import 'package:campy/models/feed.dart';
-import 'package:campy/repositories/store/feed.dart';
+import 'package:campy/repositories/place/feed.dart';
 import 'package:campy/views/components/buttons/fabs.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/components/structs/feed/list.dart';
@@ -44,6 +44,7 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
         fButton: FeedFab(),
         body: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
+              // https://pub.dev/packages/throttling
               print("Scroll Info: $scrollInfo");
               if (!isLoading &&
                   scrollInfo.metrics.pixels ==

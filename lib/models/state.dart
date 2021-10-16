@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:campy/models/feed.dart';
+import 'package:campy/models/product.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class PyState extends ChangeNotifier {
   late PageAction _currPageAction;
   bool endSplash = false;
   FeedInfo? selectedFeed;
+  ProductInfo? selectedProd;
 
   PageAction get currPageAction => _currPageAction;
   set currPageAction(PageAction act) {
