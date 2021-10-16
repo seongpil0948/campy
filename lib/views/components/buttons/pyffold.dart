@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class Pyffold extends StatelessWidget {
   final Widget body;
   final Widget? fButton;
+  final BottomSheet? bSheet;
 
   Pyffold({
     Key? key,
     this.fButton,
+    this.bSheet,
     required this.body,
   }) : super(key: key);
 
@@ -17,12 +19,14 @@ class Pyffold extends StatelessWidget {
     final mq = MediaQuery.of(ctx);
     final toolbarH = mq.size.height / 6;
     return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(toolbarH),
-            child: PyAppBar(toolbarH: toolbarH)),
-        drawer: PyDrawer(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: fButton,
-        body: body);
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(toolbarH),
+          child: PyAppBar(toolbarH: toolbarH)),
+      drawer: PyDrawer(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: fButton,
+      body: body,
+      bottomSheet: bSheet,
+    );
   }
 }
