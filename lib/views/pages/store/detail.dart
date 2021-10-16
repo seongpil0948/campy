@@ -1,5 +1,6 @@
 import 'package:campy/models/product.dart';
 import 'package:campy/models/state.dart';
+import 'package:campy/repositories/bootpay/index.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/components/structs/store/product.dart';
@@ -80,7 +81,9 @@ BottomSheet _bottomSheet() {
                       children: [
                         Expanded(
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                goBootpayRequest(ctx);
+                              },
                               style: ButtonStyle(
                                   shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(

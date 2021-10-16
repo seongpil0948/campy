@@ -36,6 +36,16 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 		</dict>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>com.campy.sns</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>campyUrlScheme</string>
+            </array>
+        </dict>        
 	</array>
     <!--  >>> FaceBookLogin >>>   -->
     <key>FacebookAppID</key>
@@ -68,13 +78,13 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <!--  FireBaseCore >>>   -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
 	</dict>
-    <!--  <<< FireBaseCore <<<   -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
