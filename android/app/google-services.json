@@ -48,50 +48,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:881986361143:android:d69aef310cd6bb05dbecb2",
-        "android_client_info": {
-          "package_name": "com.example.campy"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "881986361143-rn7qo2m9dn0b3a34j6hj8mo9n48h28mq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.campy",
-            "certificate_hash": "4e4cf1358e3f440d3e4eac2b40534acd8c59b86f"
-          }
-        },
-        {
-          "client_id": "881986361143-orgj2i2emfpvf1h2ocrsi4mo6cgdo7vo.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBm9PUgbJtNW9IBpwXgyw9cFA2-NoiftyY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "881986361143-orgj2i2emfpvf1h2ocrsi4mo6cgdo7vo.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "881986361143-0jja88mfhkkaj8dqlpomdq46jdc7k4qg.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.campy"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"
