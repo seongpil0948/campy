@@ -3,7 +3,7 @@ import 'package:campy/repositories/place/feed.dart';
 import 'package:campy/views/components/buttons/fabs.dart';
 import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/components/structs/feed/list.dart';
-
+import 'package:throttling/throttling.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +17,7 @@ class FeedCategoryView extends StatefulWidget {
 class _FeedCategoryViewState extends State<FeedCategoryView> {
   bool isLoading = false;
   List<FeedInfo> feeds = [];
+  Throttling thr = Throttling(duration: const Duration(seconds: 5));
 
   Future _loadData() async {
     print("=== Call Load Data ==");
@@ -35,26 +36,29 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
   }
 
   @override
+  void dispose() {
+    this.thr.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext ctx) {
-// if (userSnapShot.hasError) {
-//   return Text('Something went wrong of Users');
-// } else if (userSnapShot.connectionState == ConnectionState.waiting) {
-//     return Text("Loading of Users");
     return Pyffold(
         fButton: FeedFab(),
         body: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
-              // https://pub.dev/packages/throttling
-              print("Scroll Info: $scrollInfo");
-              if (!isLoading &&
-                  scrollInfo.metrics.pixels ==
-                      scrollInfo.metrics.maxScrollExtent) {
-                _loadData();
-                setState(() {
-                  isLoading = true;
-                });
-              }
-              return false;
+              thr.throttle(() {
+                print("Scroll Info: $scrollInfo");
+                if (!isLoading &&
+                    scrollInfo.metrics.pixels ==
+                        scrollInfo.metrics.maxScrollExtent) {
+                  _loadData();
+                  setState(() {
+                    isLoading = true;
+                  });
+                }
+              });
+              return true;
             },
             child: Stack(
               children: [

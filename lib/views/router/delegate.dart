@@ -5,6 +5,7 @@ import 'package:campy/views/pages/common/splash.dart';
 import 'package:campy/views/pages/feed/detail.dart';
 import 'package:campy/views/pages/feed/index.dart';
 import 'package:campy/views/pages/feed/post.dart';
+import 'package:campy/views/pages/store/detail.dart';
 import 'package:campy/views/pages/store/index.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
@@ -150,8 +151,11 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
             FeedDetailView(key: ValueKey("_feed_detail_")), pageConfig);
         break;
       case Views.StoreCategory:
+        _addPageData(StoreCategoryView(key: ValueKey("_store_")), pageConfig);
+        break;
+      case Views.ProductDetail:
         _addPageData(
-            StoreCategoryView(key: ValueKey("_store_")), storePathConfig);
+            ProductDetailView(key: ValueKey("_prod_detail_")), pageConfig);
         break;
       default:
         break;

@@ -39,7 +39,7 @@ class _ProdBottom extends StatelessWidget {
         onTap: () {
           final state = ctx.read<PyState>();
           state.currPageAction = PageAction.productDetail(I.prodInfo.productId);
-          state.selectedProd = I.prodInfo;
+          state.selectedProd = I;
         },
         child: Column(children: [
           ClipRRect(
@@ -57,26 +57,28 @@ class _ProdBottom extends StatelessWidget {
 
 class ProductInfoW extends StatelessWidget {
   final ProdInfoType iType;
-  const ProductInfoW({Key? key, this.iType = ProdInfoType.Common})
+  final InheritProduct? prod;
+  const ProductInfoW({Key? key, this.prod, this.iType = ProdInfoType.Common})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     switch (iType) {
       case ProdInfoType.Common:
-        return _ProdInfoCommon();
+        return _ProdInfoCommon(prod: prod);
       case ProdInfoType.Detail:
-        return _ProdInfoCommon();
+        return _ProdInfoCommon(prod: prod);
     }
   }
 }
 
 class _ProdInfoCommon extends StatelessWidget {
-  const _ProdInfoCommon({Key? key}) : super(key: key);
+  final InheritProduct? prod;
+  const _ProdInfoCommon({Key? key, this.prod}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
-    final I = InheritProduct.of(ctx);
+    final I = this.prod ?? InheritProduct.of(ctx);
     final T = Theme.of(ctx).textTheme;
     final isSmall = I.size == ProductCardSize.Small;
     final prodInfo = I.prodInfo;
