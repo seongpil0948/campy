@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:campy/models/feed.dart';
-import 'package:campy/models/product.dart';
 import 'package:campy/repositories/store/product.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';

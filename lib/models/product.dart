@@ -20,7 +20,6 @@ class ProductInfo {
   final int reviewCount;
 }
 
-// TODO: Global Constant
 const RankProducts = [
   'assets/images/store_rank_1.png',
   'assets/images/store_rank_2.png',

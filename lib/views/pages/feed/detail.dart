@@ -1,9 +1,7 @@
 import 'package:campy/models/auth.dart';
-import 'package:campy/models/comment.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
-import 'package:campy/repositories/sns/comment.dart';
 import 'package:campy/views/components/assets/carousel.dart';
 import 'package:campy/views/components/structs/feed/comment.dart';
 import 'package:campy/views/components/structs/place/place.dart';

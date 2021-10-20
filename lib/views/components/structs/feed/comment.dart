@@ -6,13 +6,11 @@ import 'package:campy/repositories/init.dart';
 import 'package:campy/repositories/sns/comment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
 
 class CommentList extends StatefulWidget {
   final String feedId;
   final String userId;
-  Stream<QuerySnapshot> commentStream;
+  final Stream<QuerySnapshot> commentStream;
   CommentList({Key? key, required this.userId, required this.feedId})
       : commentStream = getCollection(
                 c: Collections.Comments, userId: userId, feedId: feedId)
