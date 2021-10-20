@@ -2,47 +2,72 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/comment.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/repositories/init.dart';
 import 'package:campy/repositories/sns/comment.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
-class CommentList extends StatelessWidget {
-  const CommentList({Key? key}) : super(key: key);
+class CommentList extends StatefulWidget {
+  final String feedId;
+  final String userId;
+  Stream<QuerySnapshot> commentStream;
+  CommentList({Key? key, required this.userId, required this.feedId})
+      : commentStream = getCollection(
+                c: Collections.Comments, userId: userId, feedId: feedId)
+            .snapshots();
 
+  @override
+  _CommentListState createState() => _CommentListState();
+}
+
+class _CommentListState extends State<CommentList> {
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
-    final comments = ctx.watch<List<Comment>>();
-    return Column(
-      children: [
-        ListView.builder(
-            shrinkWrap: true,
-            itemCount: comments.length,
-            itemBuilder: (ctx, idx) {
-              if (idx == 0) return Text("댓글 ${comments.length}");
-              final c = comments[idx];
-              return Container(
-                height: mq.size.height / 10,
-                width: mq.size.width,
-                child: Container(
-                    width: mq.size.width,
-                    height: mq.size.height / 10,
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                            radius: 15,
-                            backgroundImage:
-                                CachedNetworkImageProvider(c.writer.photoURL)),
-                        Container(
-                            margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                            child: Text(c.writer.email!.split("@")[0])),
-                        Expanded(child: Text(c.content))
-                      ],
-                    )),
-              );
-            }),
-      ],
+    return StreamBuilder<QuerySnapshot>(
+      stream: widget.commentStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasError &&
+            snapshot.connectionState != ConnectionState.waiting) {
+          var comments = snapshot.data!.docs
+              .map((c) => Comment.fromJson(c.data() as Map<String, dynamic>))
+              .toList();
+          return Column(
+            children: [
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: comments.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (ctx, idx) {
+                    if (idx == 0) return Text("댓글 ${comments.length}");
+                    final c = comments[idx];
+                    return Container(
+                      height: mq.size.height / 10,
+                      width: mq.size.width,
+                      child: Container(
+                          width: mq.size.width,
+                          height: mq.size.height / 10,
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                  radius: 15,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      c.writer.photoURL)),
+                              Container(
+                                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  child: Text(c.writer.email!.split("@")[0])),
+                              Expanded(child: Text(c.content))
+                            ],
+                          )),
+                    );
+                  }),
+            ],
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
@@ -100,6 +125,7 @@ class CommentPost extends StatelessWidget {
                     suffixIcon: IconButton(
                         onPressed: () {
                           postComment(_commentController.text, _currUser, feed);
+                          _commentController.clear();
                         },
                         icon: Icon(Icons.send),
                         iconSize: 18,

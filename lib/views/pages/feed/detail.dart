@@ -1,4 +1,5 @@
 import 'package:campy/models/auth.dart';
+import 'package:campy/models/comment.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
@@ -50,11 +51,7 @@ class FeedDetailView extends StatelessWidget {
                   _Divider(),
                   PlaceInfo(mq: mq, iconImgH: iconImgH),
                   _Divider(),
-                  FutureProvider(
-                      create: (ctx) =>
-                          loadComment(_currUser.userId, feed.feedId),
-                      initialData: [],
-                      child: CommentList())
+                  CommentList(feedId: feed.feedId, userId: _currUser.userId)
                 ],
               ),
             ),
@@ -86,7 +83,7 @@ class _Divider extends StatelessWidget {
   }
 }
 
-class _FeedStatusRow extends StatelessWidget {
+class _FeedStatusRow extends StatefulWidget {
   const _FeedStatusRow({
     Key? key,
     required PyUser currUser,
@@ -100,21 +97,30 @@ class _FeedStatusRow extends StatelessWidget {
   final Map<String, double> iconSize;
 
   @override
-  Widget build(BuildContext context) {
-    void _updates() {
-      _currUser.update();
-      feed.update();
-    }
+  __FeedStatusRowState createState() => __FeedStatusRowState();
+}
 
+class __FeedStatusRowState extends State<_FeedStatusRow> {
+  void _updates() {
+    setState(() {
+      widget._currUser.update();
+      widget.feed.update();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final U = widget._currUser;
+    final F = widget.feed;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: <Widget>[
-            _currUser.favoriteFeeds.contains(feed.feedId)
+            U.favoriteFeeds.contains(F.feedId)
                 ? IconButton(
                     onPressed: () {
-                      _currUser.favoriteFeeds.remove(feed.feedId);
+                      U.favoriteFeeds.remove(F.feedId);
                       _updates();
                     },
                     icon: Icon(
@@ -123,7 +129,7 @@ class _FeedStatusRow extends StatelessWidget {
                     ))
                 : IconButton(
                     onPressed: () {
-                      _currUser.favoriteFeeds.add(feed.feedId);
+                      U.favoriteFeeds.add(F.feedId);
                       _updates();
                     },
                     icon: Icon(
@@ -131,7 +137,7 @@ class _FeedStatusRow extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-            Text("  ${feed.likeUserIds.length}  "),
+            Text("  ${F.likeUserIds.length}  "),
           ],
         ),
         // Row(
@@ -148,13 +154,13 @@ class _FeedStatusRow extends StatelessWidget {
         Row(
           children: <Widget>[
             Icon(Icons.share_rounded),
-            Text("  ${feed.sharedUserIds.length}  "),
+            Text("  ${F.sharedUserIds.length}  "),
           ],
         ),
         Row(
           children: <Widget>[
             Icon(Icons.bookmark_border_outlined),
-            Text("  ${feed.bookmarkedUserIds.length}  "),
+            Text("  ${F.bookmarkedUserIds.length}  "),
           ],
         ),
       ],
