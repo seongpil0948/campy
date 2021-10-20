@@ -37,12 +37,12 @@ class FeedInfo with PyDateMixin {
     return "\n >>>>> User: $writer 's FeedInfo: \n Title$title \n tags: $hashTags \n Files: $files \n <<<<<";
   }
 
-  Future<bool> update(FeedInfo f) {
+  Future<bool> update() {
     updateTime();
     final fc = getCollection(c: Collections.Feeds, userId: writer.userId);
     return fc
         .doc(feedId)
-        .set(f.toJson(), SetOptions(merge: true))
+        .set(toJson(), SetOptions(merge: true))
         .then((value) => true)
         .catchError((e) => false);
   }
