@@ -23,7 +23,9 @@ class FeedDetailView extends StatelessWidget {
     final _currUser = ctx.watch<PyAuth>().currUser!;
     final iconImgH = 24.0;
     final iconSize = {'width': 15.0, 'height': 15.0};
+    final T = Theme.of(ctx).textTheme;
     var _commentController = TextEditingController();
+    const leftPadding = 20.0;
     return Scaffold(
         drawer: PyDrawer(),
         body: Stack(children: [
@@ -38,7 +40,7 @@ class FeedDetailView extends StatelessWidget {
                       child: PyCarousel(fs: feed.files)),
                   Container(
                     width: mq.size.width * 0.6,
-                    padding: EdgeInsets.only(left: 12),
+                    padding: EdgeInsets.only(left: leftPadding),
                     margin:
                         EdgeInsets.symmetric(vertical: mq.size.height / 100),
                     child: _FeedStatusRow(
@@ -49,7 +51,11 @@ class FeedDetailView extends StatelessWidget {
                   _Divider(),
                   PlaceInfo(mq: mq, iconImgH: iconImgH),
                   _Divider(),
-                  CommentList(feedId: feed.feedId, userId: _currUser.userId)
+                  Padding(
+                    padding: const EdgeInsets.only(left: leftPadding),
+                    child: CommentList(
+                        feedId: feed.feedId, userId: _currUser.userId),
+                  )
                 ],
               ),
             ),
