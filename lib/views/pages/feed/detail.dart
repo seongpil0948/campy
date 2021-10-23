@@ -1,10 +1,11 @@
 import 'package:campy/components/assets/carousel.dart';
+import 'package:campy/components/structs/comment/list.dart';
+import 'package:campy/components/structs/comment/post.dart';
 import 'package:campy/components/structs/place/place.dart';
 import 'package:campy/models/auth.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
-import 'package:campy/views/components/structs/feed/comment.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
