@@ -1,8 +1,8 @@
+import 'package:campy/components/assets/carousel.dart';
+import 'package:campy/components/buttons/pyffold.dart';
+import 'package:campy/components/structs/store/product.dart';
 import 'package:campy/models/product.dart';
 import 'package:campy/models/state.dart';
-import 'package:campy/views/components/assets/carousel.dart';
-import 'package:campy/views/components/buttons/pyffold.dart';
-import 'package:campy/views/components/structs/store/product.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';

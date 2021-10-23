@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:campy/views/components/assets/video.dart';
+import 'package:campy/components/assets/video.dart';
 import 'package:video_player/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

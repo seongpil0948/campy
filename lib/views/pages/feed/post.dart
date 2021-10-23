@@ -1,12 +1,12 @@
+import 'package:campy/components/assets/carousel.dart';
+import 'package:campy/components/buttons/pyffold.dart';
+import 'package:campy/components/select/single.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/models/auth.dart';
 import 'package:campy/repositories/init.dart';
 import 'package:campy/repositories/upload_file.dart';
-import 'package:campy/views/components/assets/carousel.dart';
-import 'package:campy/views/components/select/single.dart';
-import 'package:campy/views/components/buttons/pyffold.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:campy/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

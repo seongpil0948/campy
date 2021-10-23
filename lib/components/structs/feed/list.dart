@@ -1,4 +1,4 @@
-import 'package:campy/views/components/structs/feed/feed.dart';
+import 'package:campy/components/structs/feed/feed.dart';
 import 'package:flutter/material.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:campy/utils/io.dart';

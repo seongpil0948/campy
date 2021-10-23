@@ -1,7 +1,6 @@
-import 'package:campy/views/components/assets/upload.dart';
-
+import 'package:campy/components/assets/upload.dart';
+import 'package:campy/components/structs/dot.dart';
 import 'package:campy/utils/io.dart';
-import 'package:campy/views/components/structs/dot.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';

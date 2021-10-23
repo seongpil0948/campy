@@ -1,8 +1,8 @@
+import 'package:campy/components/buttons/fabs.dart';
+import 'package:campy/components/buttons/pyffold.dart';
+import 'package:campy/components/structs/feed/list.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/repositories/place/feed.dart';
-import 'package:campy/views/components/buttons/fabs.dart';
-import 'package:campy/views/components/buttons/pyffold.dart';
-import 'package:campy/views/components/structs/feed/list.dart';
 import 'package:throttling/throttling.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
