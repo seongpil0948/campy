@@ -16,7 +16,6 @@ class PyDrawer extends StatelessWidget {
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
     final appState = ctx.read<PyState>();
-    print("Drawer AppState");
     return Drawer(
         child: ListView(
       padding: EdgeInsets.zero,

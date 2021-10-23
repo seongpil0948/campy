@@ -27,20 +27,17 @@ class PyAuth extends ChangeNotifier {
   }
 
   void logout() {
-    print("signed out!");
     _updateLoginStatus(false);
     _currUser = null;
   }
 
   void handleAuthChange(User? user) {
-    print("In authStateChanges $user");
     if (user == null) {
       logout();
     } else {
       if (_currUser != null) return;
       _currUser = PyUser(user: user, userId: user.providerData[0].uid!);
       _updateLoginStatus(true);
-      print('\nCurrent User: $_currUser is signed in!\n');
     }
   }
 

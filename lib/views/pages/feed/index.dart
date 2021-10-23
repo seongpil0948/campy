@@ -20,7 +20,6 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
   Throttling thr = Throttling(duration: const Duration(seconds: 5));
 
   Future _loadData() async {
-    print("=== Call Load Data ==");
     final feeds = await getAllFeeds();
     if (!mounted) return;
     setState(() {
@@ -48,7 +47,6 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
         body: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               thr.throttle(() {
-                print("Scroll Info: $scrollInfo");
                 if (!isLoading &&
                     scrollInfo.metrics.pixels ==
                         scrollInfo.metrics.maxScrollExtent) {

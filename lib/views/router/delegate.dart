@@ -57,7 +57,6 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
           break;
       }
     }
-    print("\n Current Page Stack : $_pages \n");
     return List.of(_pages);
   }
 

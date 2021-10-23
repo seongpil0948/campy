@@ -139,7 +139,6 @@ class _FeedPostViewState extends State<FeedPostView> {
                               child: TextField(
                                 keyboardType: TextInputType.text,
                                 onSubmitted: (String val) {
-                                  print("Hash Values $val");
                                   setState(() {
                                     for (var t in val.split(" ")) {
                                       if (!hashTags.contains(t)) {
