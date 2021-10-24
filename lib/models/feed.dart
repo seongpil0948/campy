@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'common.dart';
 
-class FeedInfo with PyDateMixin {
+class FeedInfo {
   FeedInfo(
       {required this.writer,
       required this.isfavorite,
@@ -31,6 +31,8 @@ class FeedInfo with PyDateMixin {
   List<String> likeUserIds = [];
   List<String> sharedUserIds = [];
   List<String> bookmarkedUserIds = [];
+  DateTime createdAt = DateTime.now();
+  DateTime updatedAt = DateTime.now();
 
   @override
   String toString() {
@@ -38,7 +40,7 @@ class FeedInfo with PyDateMixin {
   }
 
   Future<bool> update() {
-    updateTime();
+    updatedAt = DateTime.now();
     final fc = getCollection(c: Collections.Feeds, userId: writer.userId);
     return fc
         .doc(feedId)
@@ -60,7 +62,9 @@ class FeedInfo with PyDateMixin {
         hashTags = j['hashTags'],
         likeUserIds = j['likeUserIds'].cast<String>(),
         sharedUserIds = j['sharedUserIds'].cast<String>(),
-        bookmarkedUserIds = j['bookmarkedUserIds'].cast<String>();
+        bookmarkedUserIds = j['bookmarkedUserIds'].cast<String>(),
+        createdAt = j['createdAt'],
+        updatedAt = j['updatedAt'];
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),
@@ -76,5 +80,7 @@ class FeedInfo with PyDateMixin {
         'likeUserIds': likeUserIds,
         'sharedUserIds': sharedUserIds,
         'bookmarkedUserIds': bookmarkedUserIds,
+        'updatedAt': updatedAt,
+        'createdAt': createdAt
       };
 }

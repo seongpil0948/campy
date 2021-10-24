@@ -74,7 +74,8 @@ class _CommentListState extends State<CommentList> {
                                 Container(
                                     padding: EdgeInsets.only(top: 5),
                                     width: mq.size.width / 1.8,
-                                    child: Text(c.content, maxLines: 2)),
+                                    child: Text(c.content,
+                                        maxLines: 2)), // TODO: Use Wrap
                                 Row(children: [
                                   Consumer<CommentState>(
                                       builder: (ctx, cmtState, child) =>
@@ -86,6 +87,7 @@ class _CommentListState extends State<CommentList> {
                                                     true;
                                               },
                                               child: Text(
+                                                // TODO: Implement Reply List Use Wrap
                                                 "답글달기",
                                                 style: T.bodyText2!.copyWith(
                                                     fontWeight:
