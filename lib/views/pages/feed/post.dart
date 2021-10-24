@@ -196,7 +196,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                         // If you don't add a field to the document it will be orphaned.
                         doc.set(writer.toJson(), SetOptions(merge: true));
                         doc
-                            .collection("feeds")
+                            .collection(FeedCollection)
                             .doc(newFeedId)
                             .set(finfo.toJson())
                             .then((value) {

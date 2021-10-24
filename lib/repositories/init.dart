@@ -14,18 +14,26 @@ CollectionReference getCollection(
       if (userId == null)
         throw ArgumentError(
             "If you want a feed collection, please enter your user ID.");
-      return store.collection('users').doc(userId).collection('feeds');
+      return store
+          .collection(UserCollection)
+          .doc(userId)
+          .collection(FeedCollection);
     case Collections.Comments:
       if (userId == null || feedId == null)
         throw ArgumentError(
             "If you want a Comment collection, please enter your user & feed ID.");
       return store
-          .collection('users')
+          .collection(UserCollection)
           .doc(userId)
-          .collection('feeds')
+          .collection(FeedCollection)
           .doc(feedId)
-          .collection('comments');
+          .collection(CommentCollection);
     case Collections.Users:
-      return store.collection('users');
+      return store.collection(UserCollection);
   }
 }
+
+const UserCollection = 'users';
+const FeedCollection = 'feeds';
+const CommentCollection = 'comments';
+const ReplyCollection = 'replies';

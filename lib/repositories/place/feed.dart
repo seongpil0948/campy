@@ -6,7 +6,7 @@ Future<List<FeedInfo>> getFeeds(Iterable<String> userIds) async {
   List<FeedInfo> allFeeds = [];
   final userC = getCollection(c: Collections.Users);
   for (var _id in userIds) {
-    var feeds = await userC.doc(_id).collection("feeds").get();
+    var feeds = await userC.doc(_id).collection(FeedCollection).get();
     var feedInfos = feeds.docs.map((f) => FeedInfo.fromJson(f.data(), f.id));
     allFeeds.addAll(feedInfos);
   }

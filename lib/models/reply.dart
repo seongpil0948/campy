@@ -1,30 +1,25 @@
+import 'package:campy/models/comment.dart';
 import 'package:campy/models/user.dart';
 
 import 'common.dart';
 
-class Reply with PyDateMixin {
+class Reply extends Comment {
   ContentType ctype = ContentType.Reply;
-  final String id;
-  final PyUser writer;
-  String content;
-
-  Reply({required this.id, required this.writer, required this.content});
-
-  void update({required String content}) {
-    this.content = content;
-    updateTime();
-  }
+  final String targetCmtId;
+  Reply(
+      {required this.targetCmtId,
+      required String id,
+      required PyUser writer,
+      required String content})
+      : super(id: id, writer: writer, content: content);
 
   Reply.fromJson(Map<String, dynamic> j)
-      : id = j['id'],
-        writer = PyUser.fromJson(j['writer']),
-        ctype = contentTypeFromString(j['ctype']),
-        content = j['content'];
+      : targetCmtId = j['targetCmtId'],
+        super(content: j['content'], writer: j['writer'], id: j['id']);
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'writer': writer.toJson(),
-        'ctype': ctype.toCustomString(),
-        'content': content,
-      };
+  Map<String, dynamic> toJson() {
+    var j = super.toJson();
+    j['targetCmtId'] = targetCmtId;
+    return j;
+  }
 }

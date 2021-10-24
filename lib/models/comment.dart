@@ -1,22 +1,50 @@
 import 'package:campy/models/common.dart';
-import 'package:campy/models/reply.dart';
 import 'package:campy/models/user.dart';
+import 'package:flutter/material.dart';
 
-class Comment extends Reply {
+class Comment with PyDateMixin {
   ContentType ctype = ContentType.Comment;
-  // List<Reply> replies = [];
-  Comment({required String id, required PyUser writer, required String content})
-      : super(id: id, writer: writer, content: content);
+  final String id;
+  final PyUser writer;
+  String content;
+  Comment({required this.id, required this.writer, required this.content});
+
+  void update({required String content}) {
+    this.content = content;
+    updateTime();
+  }
 
   Comment.fromJson(Map<String, dynamic> j)
-      // : replies = j['replies']
-      //       .map<Reply>((Map<String, dynamic> c) => Reply.fromJson(c))
-      //       .toList(),
-      : super.fromJson(j);
+      : id = j['id'],
+        writer = PyUser.fromJson(j['writer']),
+        ctype = contentTypeFromString(j['ctype']),
+        content = j['content'];
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'writer': writer.toJson(),
+        'ctype': ctype.toCustomString(),
+        'content': content,
+      };
+}
 
-  Map<String, dynamic> toJson() {
-    var j = super.toJson();
-    // j['replies'] = replies.map((r) => r.toJson()).toList();
-    return j;
+class CommentState extends ChangeNotifier {
+  Comment? _targetCmt;
+  bool _show = false;
+
+  Comment? get getTargetCmt => _targetCmt;
+
+  set setTargetCmt(Comment? cmt) {
+    _targetCmt = cmt;
+    notifyListeners();
+  }
+
+  bool get showPostCmtWidget => _show;
+
+  set showPostCmtWidget(bool to) {
+    if (to == false) {
+      _targetCmt = null;
+    }
+    _show = to;
+    notifyListeners();
   }
 }

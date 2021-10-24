@@ -3,6 +3,7 @@ import 'package:campy/components/structs/comment/list.dart';
 import 'package:campy/components/structs/comment/post.dart';
 import 'package:campy/components/structs/place/place.dart';
 import 'package:campy/models/auth.dart';
+import 'package:campy/models/comment.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
@@ -22,55 +23,95 @@ class FeedDetailView extends StatelessWidget {
     final state = ctx.read<PyState>();
     final feed = state.selectedFeed!;
     final _currUser = ctx.watch<PyAuth>().currUser!;
-    final iconImgH = 24.0;
-    final iconSize = {'width': 15.0, 'height': 15.0};
-    final T = Theme.of(ctx).textTheme;
     var _commentController = TextEditingController();
-    const leftPadding = 20.0;
     return Scaffold(
         drawer: PyDrawer(),
-        body: Stack(children: [
-          SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: mq.size.height),
-              child: Column(
-                children: [
-                  Container(
-                      width: mq.size.width,
-                      height: mq.size.height / 3,
-                      child: PyCarousel(fs: feed.files)),
-                  Container(
-                    width: mq.size.width * 0.6,
-                    padding: EdgeInsets.only(left: leftPadding),
-                    margin:
-                        EdgeInsets.symmetric(vertical: mq.size.height / 100),
-                    child: _FeedStatusRow(
-                        currUser: _currUser, feed: feed, iconSize: iconSize),
-                  ),
-                  _Divider(),
-                  Text(feed.hashTags),
-                  _Divider(),
-                  PlaceInfo(mq: mq, iconImgH: iconImgH),
-                  _Divider(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: leftPadding),
-                    child: CommentList(
-                        feedId: feed.feedId, userId: _currUser.userId),
-                  )
-                ],
-              ),
+        body: ChangeNotifierProvider<CommentState>(
+            create: (ctx) => CommentState(),
+            child: FeedDetailW(
+                mq: mq,
+                feed: feed,
+                currUser: _currUser,
+                commentController: _commentController)));
+  }
+}
+
+class FeedDetailW extends StatelessWidget {
+  const FeedDetailW({
+    Key? key,
+    required this.mq,
+    required this.feed,
+    required PyUser currUser,
+    required TextEditingController commentController,
+  })  : _currUser = currUser,
+        _commentController = commentController,
+        super(key: key);
+
+  final MediaQueryData mq;
+  final FeedInfo feed;
+  final PyUser _currUser;
+  final TextEditingController _commentController;
+
+  @override
+  Widget build(BuildContext ctx) {
+    const leftPadding = 20.0;
+    const iconImgH = 24.0;
+    const iconSize = {'width': 15.0, 'height': 15.0};
+    return Stack(children: [
+      SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: mq.size.height),
+          child: GestureDetector(
+            onTap: () {
+              Provider.of<CommentState>(ctx, listen: false).showPostCmtWidget =
+                  false;
+            },
+            child: Column(
+              children: [
+                Container(
+                    width: mq.size.width,
+                    height: mq.size.height / 3,
+                    child: PyCarousel(fs: feed.files)),
+                Container(
+                  width: mq.size.width * 0.6,
+                  padding: EdgeInsets.only(left: leftPadding),
+                  margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
+                  child: _FeedStatusRow(
+                      currUser: _currUser, feed: feed, iconSize: iconSize),
+                ),
+                _Divider(),
+                Text(feed.hashTags),
+                _Divider(),
+                PlaceInfo(mq: mq, iconImgH: iconImgH),
+                _Divider(),
+                Consumer<CommentState>(
+                    builder: (ctx, cmtState, child) => TextButton(
+                        onPressed: () {
+                          cmtState.setTargetCmt = null;
+                          cmtState.showPostCmtWidget = true;
+                        },
+                        child: Text("댓글 달기"))),
+                Padding(
+                  padding: const EdgeInsets.only(left: leftPadding),
+                  child: CommentList(
+                      feedId: feed.feedId, userId: _currUser.userId),
+                )
+              ],
             ),
           ),
-          Positioned(
-            bottom: 30,
-            child: CommentPost(
-              mq: mq,
-              currUser: _currUser,
-              commentController: _commentController,
-              feed: feed,
-            ),
-          )
-        ]));
+        ),
+      ),
+      if (Provider.of<CommentState>(ctx).showPostCmtWidget)
+        Positioned(
+          bottom: 30,
+          child: CommentPost(
+            mq: mq,
+            currUser: _currUser,
+            commentController: _commentController,
+            feed: feed,
+          ),
+        )
+    ]);
   }
 }
 

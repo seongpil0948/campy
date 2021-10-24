@@ -4,6 +4,7 @@ import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/moment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CommentList extends StatefulWidget {
   final String feedId;
@@ -75,16 +76,22 @@ class _CommentListState extends State<CommentList> {
                                     width: mq.size.width / 1.8,
                                     child: Text(c.content, maxLines: 2)),
                                 Row(children: [
-                                  TextButton(
-                                      onPressed: () {
-                                        print("답글달기 푸쉬");
-                                      },
-                                      child: Text(
-                                        "답글달기",
-                                        style: T.bodyText2!.copyWith(
-                                            fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis,
-                                      )),
+                                  Consumer<CommentState>(
+                                      builder: (ctx, cmtState, child) =>
+                                          TextButton(
+                                              onPressed: () {
+                                                print("답글달기 푸쉬");
+                                                cmtState.setTargetCmt = c;
+                                                cmtState.showPostCmtWidget =
+                                                    true;
+                                              },
+                                              child: Text(
+                                                "답글달기",
+                                                style: T.bodyText2!.copyWith(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                overflow: TextOverflow.ellipsis,
+                                              ))),
                                   Text("${diffDays.abs()}일전")
                                 ])
                               ])
