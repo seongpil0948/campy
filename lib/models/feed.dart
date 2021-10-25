@@ -1,6 +1,7 @@
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/io.dart';
+import 'package:campy/utils/moment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FeedInfo {
@@ -61,8 +62,8 @@ class FeedInfo {
         likeUserIds = j['likeUserIds'].cast<String>(),
         sharedUserIds = j['sharedUserIds'].cast<String>(),
         bookmarkedUserIds = j['bookmarkedUserIds'].cast<String>(),
-        createdAt = j['createdAt'],
-        updatedAt = j['updatedAt'];
+        createdAt = timeStamp2DateTime(j['createdAt']),
+        updatedAt = timeStamp2DateTime(j['updatedAt']);
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),

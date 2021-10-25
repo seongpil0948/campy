@@ -1,5 +1,6 @@
 import 'package:campy/models/feed.dart';
 import 'package:campy/repositories/init.dart';
+import 'package:campy/utils/moment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -71,8 +72,8 @@ class PyUser {
         followers =
             j['followers'].map<PyUser>((f) => PyUser.fromJson(j)).toList(),
         follows = j['follows'].map<PyUser>((f) => PyUser.fromJson(j)).toList(),
-        createdAt = j['createdAt'],
-        updatedAt = j['updatedAt'];
+        createdAt = timeStamp2DateTime(j['createdAt']),
+        updatedAt = timeStamp2DateTime(j['updatedAt']);
 
   Map<String, dynamic> toJson() => {
         'userId': userId,

@@ -1,5 +1,6 @@
 import 'package:campy/models/common.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/utils/moment.dart';
 import 'package:flutter/material.dart';
 
 class Comment {
@@ -21,8 +22,8 @@ class Comment {
         writer = PyUser.fromJson(j['writer']),
         ctype = contentTypeFromString(j['ctype']),
         content = j['content'],
-        createdAt = j['createdAt'],
-        updatedAt = j['updatedAt'];
+        createdAt = timeStamp2DateTime(j['createdAt']),
+        updatedAt = timeStamp2DateTime(j['updatedAt']);
   Map<String, dynamic> toJson() => {
         'id': id,
         'writer': writer.toJson(),
