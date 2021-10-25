@@ -3,8 +3,6 @@ import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'common.dart';
-
 class FeedInfo {
   FeedInfo(
       {required this.writer,
