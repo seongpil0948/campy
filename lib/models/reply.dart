@@ -15,7 +15,10 @@ class Reply extends Comment {
 
   Reply.fromJson(Map<String, dynamic> j)
       : targetCmtId = j['targetCmtId'],
-        super(content: j['content'], writer: j['writer'], id: j['id']);
+        super(
+            content: j['content'],
+            writer: PyUser.fromJson(j['writer']),
+            id: j['id']);
 
   Map<String, dynamic> toJson() {
     var j = super.toJson();

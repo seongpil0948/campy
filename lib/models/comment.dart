@@ -50,6 +50,7 @@ class CommentState extends ChangeNotifier {
   set showPostCmtWidget(bool to) {
     if (to == false) {
       _targetCmt = null;
+      notifyListeners();
     }
     _show = to;
     notifyListeners();

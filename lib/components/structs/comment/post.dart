@@ -60,22 +60,28 @@ class CommentPost extends StatelessWidget {
                     fillColor: Colors.white,
                     suffixIcon: IconButton(
                         onPressed: () {
-                          target == null
-                              ? postComment(
-                                  _commentController.text, _currUser, feed)
-                              : postReply(_commentController.text, _currUser,
-                                  feed.feedId, target.id);
-                          _commentController.clear();
+                          _submit(target, _commentController.text, _currUser,
+                              feed, ctx, _commentController);
                         },
                         icon: Icon(Icons.send),
                         iconSize: 18,
                         color: Theme.of(ctx).primaryColor),
                   ),
-                  onSubmitted: (String txt) => target == null
-                      ? postComment(txt, _currUser, feed)
-                      : postReply(txt, _currUser, feed.feedId, target.id))),
+                  onSubmitted: (String txt) {
+                    _submit(
+                        target, txt, _currUser, feed, ctx, _commentController);
+                  })),
         ],
       ),
     );
   }
+}
+
+void _submit(Comment? target, String txt, PyUser user, FeedInfo feed,
+    BuildContext ctx, TextEditingController _commentController) {
+  target == null
+      ? postComment(txt, user, feed)
+      : postReply(txt, user, feed.feedId, target.id);
+  _commentController.clear();
+  Provider.of<CommentState>(ctx, listen: false).showPostCmtWidget = false;
 }
