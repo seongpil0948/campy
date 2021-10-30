@@ -27,8 +27,8 @@ class PageAction {
   late List<PyPathConfig> pages;
   PageAction.my(userId) {
     state = PageState.addPage;
-    page = PyPathConfig.my(userId: userId);
-    pages = [PyPathConfig.my(userId: userId)];
+    page = PyPathConfig.my();
+    pages = [PyPathConfig.my()];
   }
   PageAction.feed() {
     state = PageState.addPage;
@@ -64,7 +64,6 @@ class PyPathConfig {
   PageAction? currentPageAction;
   String? productId;
   String? feedId;
-  String? userId;
 
   @override
   String toString() {
@@ -76,8 +75,7 @@ class PyPathConfig {
       required this.path,
       required this.uiCtgr,
       this.productId,
-      this.currentPageAction,
-      this.userId});
+      this.currentPageAction});
 
   PyPathConfig.feedDetail({required this.feedId})
       : this.key = 'FeedDetail',
@@ -88,9 +86,9 @@ class PyPathConfig {
       : this.key = 'ProductDetail',
         this.path = StorePath + '/products/$productId',
         this.uiCtgr = Views.ProductDetail;
-  PyPathConfig.my({required this.userId})
+  PyPathConfig.my()
       : this.key = 'MyMy',
-        this.path = '$UserPath/$userId',
+        this.path = '$UserPath/',
         this.uiCtgr = Views.My;
 }
 

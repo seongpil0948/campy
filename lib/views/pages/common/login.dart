@@ -11,6 +11,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext ctx) {
     var mq = MediaQuery.of(ctx);
     final auth = ctx.read<PyAuth>();
+    final body2 = Theme.of(ctx).textTheme.overline;
     return Scaffold(
       body: Stack(children: [
         Image.asset(
@@ -32,7 +33,7 @@ class LoginView extends StatelessWidget {
                 ),
                 VmarginContainer(
                   mq: mq,
-                  w: Text("캠피 서비스 이용을 위해 SNS 로그인을 해주세요"),
+                  w: Text("캠피 서비스 이용을 위해 SNS 로그인을 해주세요", style: body2),
                 ),
                 LoginButton(
                   mq: mq,
@@ -55,7 +56,6 @@ class LoginView extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                Text("로그인에 문제가 있으시면 여기를 눌러주세요"),
               ],
             ),
           ),

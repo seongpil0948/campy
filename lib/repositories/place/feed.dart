@@ -15,6 +15,5 @@ Future<List<FeedInfo>> getFeeds(Iterable<String> userIds) async {
 
 Future<List<FeedInfo>> getAllFeeds() async {
   final allUsers = await getAllUsers();
-  print("Get All Feeds , user datas: $allUsers");
   return getFeeds(allUsers.map((u) => u.userId));
 }

@@ -23,17 +23,22 @@ class FeedDetailView extends StatelessWidget {
     final mq = MediaQuery.of(ctx);
     final state = ctx.read<PyState>();
     final feed = state.selectedFeed!;
-    final _currUser = ctx.watch<PyAuth>().currUser!;
     var _commentController = TextEditingController();
     return Scaffold(
         drawer: PyDrawer(),
         body: ChangeNotifierProvider<CommentState>(
             create: (ctx) => CommentState(),
-            child: FeedDetailW(
-                mq: mq,
-                feed: feed,
-                currUser: _currUser,
-                commentController: _commentController)));
+            child: FutureBuilder<PyUser>(
+                future: ctx.watch<PyAuth>().currUser,
+                builder: (ctx, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(child: CircularProgressIndicator());
+                  return FeedDetailW(
+                      mq: mq,
+                      feed: feed,
+                      currUser: snapshot.data!,
+                      commentController: _commentController);
+                })));
   }
 }
 

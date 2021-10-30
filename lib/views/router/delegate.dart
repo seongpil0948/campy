@@ -158,11 +158,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
             ProductDetailView(key: ValueKey("_prod_detail_")), pageConfig);
         break;
       case Views.My:
-        if (pageConfig.userId == null) {
-          throw ArgumentError("마이페이지에 접근 하였지만 유저 아이디가 없습니다? 장난?");
-        }
-        _addPageData(MyView(key: ValueKey("_my_"), userId: pageConfig.userId!),
-            pageConfig);
+        _addPageData(MyView(key: ValueKey("_my_")), pageConfig);
         break;
       default:
         break;

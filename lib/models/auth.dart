@@ -1,4 +1,6 @@
 import 'package:campy/repositories/auth_repository.dart';
+import 'package:campy/repositories/init.dart';
+import 'package:campy/repositories/place/feed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:campy/models/user.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +13,21 @@ class PyAuth extends ChangeNotifier {
 
   bool get isAuthentic => _isAuthentic;
 
-  PyUser? get currUser {
-    if (isAuthentic && _currUser == null) {
-      var user = _fireAuth.currentUser;
-      if (user != null) {
-        _currUser = PyUser(user: user, userId: user.providerData[0].uid!);
-      }
+  Future<PyUser> get currUser async {
+    var user = _fireAuth.currentUser;
+    await setUser(user!);
+    return _currUser!;
+  }
+
+  Future<void> setUser(User user) async {
+    final userId = user.providerData[0].uid!;
+    var ref = getCollection(c: Collections.Users).doc(userId);
+    var docSnapthot = await ref.get();
+    if (docSnapthot.exists) {
+      var user = PyUser.fromJson(docSnapthot.data() as Map<String, dynamic>);
+      user.feeds = await getFeeds([userId]);
     }
-    return _currUser;
+    _currUser = PyUser(user: user, userId: userId);
   }
 
   void _updateLoginStatus(bool dest) {
@@ -36,7 +45,7 @@ class PyAuth extends ChangeNotifier {
       logout();
     } else {
       if (_currUser != null) return;
-      _currUser = PyUser(user: user, userId: user.providerData[0].uid!);
+      setUser(user);
       _updateLoginStatus(true);
     }
   }

@@ -42,7 +42,6 @@ class _FeedPostViewState extends State<FeedPostView> {
   @override
   Widget build(BuildContext ctx) {
     final auth = ctx.watch<PyAuth>();
-    PyUser writer = auth.currUser!;
     final mq = MediaQuery.of(ctx);
 
     return Pyffold(
@@ -154,68 +153,73 @@ class _FeedPostViewState extends State<FeedPostView> {
                     child: Text("#태그추가"))
               ],
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        const uuid = Uuid();
-                        final newFeedId = uuid.v4();
-                        List<PyFile> paths = [];
-                        for (var f in files) {
-                          var info = await uploadFilePathsToFirebase(
-                              f,
-                              Provider.of<PyAuth>(ctx, listen: false)
-                                  .currUser!
-                                  .userId);
-                          if (info != null &&
-                              info.containsKey('url') &&
-                              info.containsKey('pymime')) {
-                            var file = PyFile.fromCdn(
-                                url: info['url'], fileType: info['pymime']);
-                            paths.add(file);
-                          }
-                        }
+            FutureBuilder<PyUser>(
+                future: ctx.watch<PyAuth>().currUser,
+                builder: (ctx, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(child: CircularProgressIndicator());
+                  var writer = snapshot.data!;
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              const uuid = Uuid();
+                              final newFeedId = uuid.v4();
+                              List<PyFile> paths = [];
+                              for (var f in files) {
+                                var info = await uploadFilePathsToFirebase(
+                                    f, writer.userId);
+                                if (info != null &&
+                                    info.containsKey('url') &&
+                                    info.containsKey('pymime')) {
+                                  var file = PyFile.fromCdn(
+                                      url: info['url'],
+                                      fileType: info['pymime']);
+                                  paths.add(file);
+                                }
+                              }
 
-                        final doc = getCollection(c: Collections.Users)
-                            .doc(writer.userId);
-                        var finfo = FeedInfo(
-                          writer: writer,
-                          isfavorite: false,
-                          feedId: newFeedId,
-                          files: paths,
-                          title: _titleController.text,
-                          content: _contentController.text,
-                          placeAround: around ?? '',
-                          placePrice: int.parse(price ?? '-1'),
-                          campKind: kind ?? '',
-                          hashTags: hashTags,
-                        );
-                        // If you don't add a field to the document it will be orphaned.
-                        doc.set(writer.toJson(), SetOptions(merge: true));
-                        doc
-                            .collection(FeedCollection)
-                            .doc(newFeedId)
-                            .set(finfo.toJson())
-                            .then((value) {
-                          print(">>> Feed Added <<<");
-                          ctx.read<PyState>().currPageAction =
-                              PageAction.feed();
-                        }).catchError((error) {
-                          print(
-                              "!!!Failed to add Feed!!!: ${error.toString()}");
-                        });
-                      },
-                      child: Center(
-                        child: Text("올리기"),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            )
+                              final doc = getCollection(c: Collections.Users)
+                                  .doc(writer.userId);
+                              var finfo = FeedInfo(
+                                writer: writer,
+                                isfavorite: false,
+                                feedId: newFeedId,
+                                files: paths,
+                                title: _titleController.text,
+                                content: _contentController.text,
+                                placeAround: around ?? '',
+                                placePrice: int.parse(price ?? '-1'),
+                                campKind: kind ?? '',
+                                hashTags: hashTags,
+                              );
+                              // If you don't add a field to the document it will be orphaned.
+                              doc.set(writer.toJson(), SetOptions(merge: true));
+                              doc
+                                  .collection(FeedCollection)
+                                  .doc(newFeedId)
+                                  .set(finfo.toJson())
+                                  .then((value) {
+                                print(">>> Feed Added <<<");
+                                ctx.read<PyState>().currPageAction =
+                                    PageAction.feed();
+                              }).catchError((error) {
+                                print(
+                                    "!!!Failed to add Feed!!!: ${error.toString()}");
+                              });
+                            },
+                            child: Center(
+                              child: Text("올리기"),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                })
           ],
         ),
       ),

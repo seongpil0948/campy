@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/components/inputs/appbar_text_field.dart';
 import 'package:campy/models/auth.dart';
+import 'package:campy/models/user.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
@@ -38,12 +39,15 @@ class PyAppBar extends StatelessWidget {
                 tooltip: MaterialLocalizations.of(ctx).openAppDrawerTooltip,
               ),
               Spacer(),
-              CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(auth.currUser !=
-                        null
-                    ? auth.currUser!.profileImage
-                    : "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_960_720.jpg"),
-              ),
+              FutureBuilder<PyUser>(
+                  future: auth.currUser,
+                  builder: (ctx, snapshot) {
+                    if (!snapshot.hasData) return CircularProgressIndicator();
+                    return CircleAvatar(
+                      backgroundImage: CachedNetworkImageProvider(
+                          snapshot.data!.profileImage),
+                    );
+                  })
             ],
           ),
         ),
