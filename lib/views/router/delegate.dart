@@ -1,6 +1,7 @@
 import 'package:campy/models/auth.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/views/pages/common/login.dart';
+import 'package:campy/views/pages/common/my.dart';
 import 'package:campy/views/pages/common/splash.dart';
 import 'package:campy/views/pages/feed/detail.dart';
 import 'package:campy/views/pages/feed/index.dart';
@@ -155,6 +156,13 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
       case Views.ProductDetail:
         _addPageData(
             ProductDetailView(key: ValueKey("_prod_detail_")), pageConfig);
+        break;
+      case Views.My:
+        if (pageConfig.userId == null) {
+          throw ArgumentError("마이페이지에 접근 하였지만 유저 아이디가 없습니다? 장난?");
+        }
+        _addPageData(MyView(key: ValueKey("_my_"), userId: pageConfig.userId!),
+            pageConfig);
         break;
       default:
         break;

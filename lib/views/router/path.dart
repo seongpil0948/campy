@@ -5,6 +5,7 @@ const String StorePath = '/store';
 const String LoginPath = '/login';
 const String UnKnownPath = '/unknown';
 const String RootPath = "/";
+const String UserPath = "/users";
 
 enum PageState { none, addPage, addAll, pop, replace, replaceAll }
 
@@ -17,12 +18,18 @@ enum Views {
   UnknownPage,
   SplashPage,
   LoginPage,
+  My,
 }
 
 class PageAction {
   late PageState state;
   late PyPathConfig page;
   late List<PyPathConfig> pages;
+  PageAction.my(userId) {
+    state = PageState.addPage;
+    page = PyPathConfig.my(userId: userId);
+    pages = [PyPathConfig.my(userId: userId)];
+  }
   PageAction.feed() {
     state = PageState.addPage;
     page = feedPathConfig;
@@ -57,6 +64,7 @@ class PyPathConfig {
   PageAction? currentPageAction;
   String? productId;
   String? feedId;
+  String? userId;
 
   @override
   String toString() {
@@ -68,17 +76,22 @@ class PyPathConfig {
       required this.path,
       required this.uiCtgr,
       this.productId,
-      this.currentPageAction});
+      this.currentPageAction,
+      this.userId});
 
-  PyPathConfig.feedDetail({this.feedId})
+  PyPathConfig.feedDetail({required this.feedId})
       : this.key = 'FeedDetail',
         this.path = FeedPath + '/$feedId',
         this.uiCtgr = Views.FeedDetail;
 
-  PyPathConfig.productDetail({this.productId})
+  PyPathConfig.productDetail({required this.productId})
       : this.key = 'ProductDetail',
         this.path = StorePath + '/products/$productId',
         this.uiCtgr = Views.ProductDetail;
+  PyPathConfig.my({required this.userId})
+      : this.key = 'MyMy',
+        this.path = '$UserPath/$userId',
+        this.uiCtgr = Views.My;
 }
 
 PyPathConfig feedPathConfig = PyPathConfig(

@@ -1,6 +1,7 @@
 import 'package:campy/components/assets/carousel.dart';
 import 'package:campy/components/structs/comment/list.dart';
 import 'package:campy/components/structs/comment/post.dart';
+import 'package:campy/components/structs/feed/feed.dart';
 import 'package:campy/components/structs/place/place.dart';
 import 'package:campy/models/auth.dart';
 import 'package:campy/models/comment.dart';
@@ -56,7 +57,6 @@ class FeedDetailW extends StatelessWidget {
   Widget build(BuildContext ctx) {
     const leftPadding = 20.0;
     const iconImgH = 24.0;
-    const iconSize = {'width': 15.0, 'height': 15.0};
     return Stack(children: [
       SingleChildScrollView(
         child: ConstrainedBox(
@@ -76,8 +76,7 @@ class FeedDetailW extends StatelessWidget {
                   width: mq.size.width * 0.6,
                   padding: EdgeInsets.only(left: leftPadding),
                   margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
-                  child: _FeedStatusRow(
-                      currUser: _currUser, feed: feed, iconSize: iconSize),
+                  child: FeedStatusRow(currUser: _currUser, feed: feed),
                 ),
                 _Divider(),
                 Text(feed.hashTags),
@@ -126,90 +125,5 @@ class _Divider extends StatelessWidget {
         height: 30,
         margin: EdgeInsets.symmetric(horizontal: 10),
         child: Divider());
-  }
-}
-
-class _FeedStatusRow extends StatefulWidget {
-  const _FeedStatusRow({
-    Key? key,
-    required PyUser currUser,
-    required this.feed,
-    required this.iconSize,
-  })  : _currUser = currUser,
-        super(key: key);
-
-  final PyUser _currUser;
-  final FeedInfo feed;
-  final Map<String, double> iconSize;
-
-  @override
-  __FeedStatusRowState createState() => __FeedStatusRowState();
-}
-
-class __FeedStatusRowState extends State<_FeedStatusRow> {
-  void _updates() {
-    setState(() {
-      widget._currUser.update();
-      widget.feed.update();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final U = widget._currUser;
-    final F = widget.feed;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: <Widget>[
-            U.favoriteFeeds.contains(F.feedId)
-                ? IconButton(
-                    onPressed: () {
-                      U.favoriteFeeds.remove(F.feedId);
-                      _updates();
-                    },
-                    icon: Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    ))
-                : IconButton(
-                    onPressed: () {
-                      U.favoriteFeeds.add(F.feedId);
-                      _updates();
-                    },
-                    icon: Icon(
-                      Icons.favorite_border_outlined,
-                      color: Colors.black,
-                    ),
-                  ),
-            Text("  ${F.likeUserIds.length}  "),
-          ],
-        ),
-        // Row(
-        //   children: <Widget>[
-        //     Image(
-        //       image: AssetImage("assets/images/comment_icon.png"),
-        //       width: iconSize['width'],
-        //       height: iconSize['heihgt'],
-        //     ),
-        //     Text("  ${feed.comment}  "),
-        //     // Text("  ${feed.comments.length}  "),
-        //   ],
-        // ),
-        Row(
-          children: <Widget>[
-            Icon(Icons.share_rounded),
-            Text("  ${F.sharedUserIds.length}  "),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Icon(Icons.bookmark_border_outlined),
-            Text("  ${F.bookmarkedUserIds.length}  "),
-          ],
-        ),
-      ],
-    );
   }
 }
