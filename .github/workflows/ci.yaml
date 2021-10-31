@@ -3,9 +3,9 @@ name: Flutter CI
 # This workflow is triggered Event on pushes to the repository.
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
     
     
 jobs:
