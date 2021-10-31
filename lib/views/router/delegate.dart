@@ -29,7 +29,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     final auth = ctx.watch<PyAuth>();
     if (!state.endSplash) {
       _addPageData(SplashView(key: ValueKey("_splash_")), splashPathConfig);
-    } else if (!auth.isAuthentic || auth.currUser == null) {
+    } else if (!auth.isAuthentic) {
       _addPageData(LoginView(key: ValueKey("_login_")), loginPathConfig);
     } else {
       switch (state.currPageAction.state) {
