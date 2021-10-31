@@ -9,7 +9,7 @@ on:
     
     
 jobs:
-  android_build:
+  android_ios_build:
   
     # This job what will run on which OS virtual machine
     runs-on: ubuntu-latest
