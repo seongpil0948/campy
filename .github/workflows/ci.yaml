@@ -9,7 +9,7 @@ on:
     
     
 jobs:
-  android_ios_build:
+  android_build:
   
     # This job what will run on which OS virtual machine
     runs-on: ubuntu-latest
@@ -67,6 +67,7 @@ jobs:
     # Upload generated apk to the artifacts.
     - uses: actions/upload-artifact@v1
       with:
+        name: android-release.apk
         # path: |
         #   build/app/outputs/apk/release/app-release.apk
         #   /Users/sp/Codes/Camps/campy/build/ios/iphoneos/
