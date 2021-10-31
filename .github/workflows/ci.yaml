@@ -62,11 +62,12 @@ jobs:
     
     # Build apk.
     - run: flutter build apk
-    - run: flutter build ios --build-name=1.0.0 --build-number=1 --release --dart-define=MY_APP_ENV=prod
+    # - run: flutter build ios --build-name=1.0.0 --build-number=1 --release --dart-define=MY_APP_ENV=prod
     
     # Upload generated apk to the artifacts.
     - uses: actions/upload-artifact@v1
       with:
-        path: |
-          build/app/outputs/apk/release/app-release.apk
-          /Users/sp/Codes/Camps/campy/build/ios/iphoneos/
+        # path: |
+        #   build/app/outputs/apk/release/app-release.apk
+        #   /Users/sp/Codes/Camps/campy/build/ios/iphoneos/
+        path: build/app/outputs/apk/release/app-release.apk
