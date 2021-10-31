@@ -1,0 +1,70 @@
+name: Flutter CI
+
+# This workflow is triggered Event on pushes to the repository.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    
+    
+jobs:
+  android_build:
+  
+    # This job what will run on which OS virtual machine
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        sdk: [2.14.4]
+        
+        
+    steps:
+    - run: echo "🎉 The job was triggered by a ${{ github.event_name }} event."
+    - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub"
+    - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."    
+    - name: List files in the repository
+      run: |
+        ls ${{ github.workspace }}
+    - run: echo "🍏 This job's status is ${{ job.status }}."    
+    # For Working at Other Branch
+    - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+
+
+    # Setup Java environment in order to build the Android app.
+    - uses: actions/setup-java@v1
+      # 해당 action에 의해 정의되는 input 파라미터. 
+      # key/value 페어로 되어 있다. 
+      # 파라미터는 환경 변수로 설정되고, 'INPUT_'이라는 prefix가 붙는다.
+      with: 
+        java-version: '12.x'
+    
+    # Setup the flutter environment.
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable' # 'dev', 'alpha', default to: 'stable'
+        flutter-version: '2.5.3' # you can also specify exact version of flutter
+    
+    # Get flutter dependencies.
+    - run: flutter pub get
+    
+    # Check for any formatting issues in the code.
+    - run: flutter format --set-exit-if-changed .
+    
+    # Statically analyze the Dart code for any errors.
+    - run: flutter analyze .
+    
+    # Run widget tests for our flutter project.
+    - run: flutter test
+    
+    # Build apk.
+    - run: flutter build apk
+    
+    # Upload generated apk to the artifacts.
+    - uses: actions/upload-artifact@v1
+      with:
+        name: release-apk
+        path: build/app/outputs/apk/release/app-release.apk
