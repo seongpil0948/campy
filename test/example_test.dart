@@ -19,7 +19,7 @@ void main() {
 
       counter.increment();
 
-      expect(counter.value, 2);
+      expect(counter.value, 1);
     });
 
     test('value should be decremented', () {

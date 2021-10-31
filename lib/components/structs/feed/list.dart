@@ -1,9 +1,6 @@
 import 'package:campy/components/structs/feed/feed.dart';
 import 'package:campy/utils/feed.dart';
 import 'package:flutter/material.dart';
-import 'package:campy/utils/io.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
 import 'package:campy/models/feed.dart';
 
 class FeedList extends StatelessWidget {

@@ -25,7 +25,6 @@ class CommentList extends StatefulWidget {
 class _CommentListState extends State<CommentList> {
   @override
   Widget build(BuildContext ctx) {
-    final mq = MediaQuery.of(ctx);
     final T = Theme.of(ctx).textTheme;
     return StreamBuilder<QuerySnapshot>(
       stream: widget.commentStream,

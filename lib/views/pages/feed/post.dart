@@ -41,7 +41,6 @@ class _FeedPostViewState extends State<FeedPostView> {
 
   @override
   Widget build(BuildContext ctx) {
-    final auth = ctx.watch<PyAuth>();
     final mq = MediaQuery.of(ctx);
 
     return Pyffold(
