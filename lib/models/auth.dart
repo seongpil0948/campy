@@ -15,19 +15,18 @@ class PyAuth extends ChangeNotifier {
 
   Future<PyUser> get currUser async {
     var user = _fireAuth.currentUser;
-    await setUser(user!);
+    if (user == null) await setUser(user!);
     return _currUser!;
   }
 
   Future<void> setUser(User user) async {
+    // FIXME: 이거 왤케 많이 호출되냐
     final userId = user.providerData[0].uid!;
     var ref = getCollection(c: Collections.Users).doc(userId);
     var docSnapthot = await ref.get();
-    if (docSnapthot.exists) {
-      var user = PyUser.fromJson(docSnapthot.data() as Map<String, dynamic>);
-      user.feeds = await getFeeds([userId]);
-    }
-    _currUser = PyUser(user: user, userId: userId);
+    _currUser = docSnapthot.exists
+        ? PyUser.fromJson(docSnapthot.data() as Map<String, dynamic>)
+        : PyUser(user: user, userId: userId);
   }
 
   void _updateLoginStatus(bool dest) {

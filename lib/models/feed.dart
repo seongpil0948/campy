@@ -48,10 +48,10 @@ class FeedInfo {
         .catchError((e) => false);
   }
 
-  FeedInfo.fromJson(Map<String, dynamic> j, String documentId)
+  FeedInfo.fromJson(Map<String, dynamic> j)
       : writer = PyUser.fromJson(j['writer']),
         isfavorite = j['isfavorite'],
-        feedId = documentId,
+        feedId = j['feedId'],
         files = j['files'].map<PyFile>((f) => PyFile.fromJson(f)).toList(),
         title = j['title'],
         content = j['content'],

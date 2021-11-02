@@ -20,14 +20,19 @@ class _PySingleSelectState extends State<PySingleSelect> {
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
+    final sty = Theme.of(ctx)
+        .textTheme
+        .overline!
+        .copyWith(color: Theme.of(ctx).hintColor);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: Container(
         color: Theme.of(ctx).cardColor,
+        width: mq.size.width / 4,
         child: DropdownButton<String>(
-          alignment: AlignmentDirectional.center,
+          alignment: AlignmentDirectional.centerEnd,
           value: dropdownValue,
-          hint: Text(widget.hint),
+          hint: Text(widget.hint, style: sty),
           underline: Container(),
           menuMaxHeight: mq.size.height / 2,
           dropdownColor: Theme.of(ctx).cardColor,
@@ -46,7 +51,7 @@ class _PySingleSelectState extends State<PySingleSelect> {
           items: widget.items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Center(child: Text(value)),
+              child: Center(child: Text(value, style: sty)),
             );
           }).toList(),
         ),

@@ -59,12 +59,15 @@ Widget loadFile({required PyFile f, required BuildContext ctx}) {
   switch (f.ftype) {
     case PyFileType.Image:
       return f.file != null
-          ? Image.file(f.file!)
-          : CachedNetworkImage(
-              imageUrl: f.url!,
+          ? Image.file(
+              f.file!,
               fit: BoxFit.cover,
               width: mq.size.width,
-              height: mq.size.height,
+            )
+          : CachedNetworkImage(
+              imageUrl: f.url!,
+              fit: BoxFit.fill,
+              width: mq.size.width,
             );
 
     case PyFileType.Video:

@@ -24,6 +24,7 @@ class PyTheme extends PyThemeInterface {
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: primaryColor,
+      hintColor: Colors.black,
       cardColor: Colors.grey[100],
       colorScheme: ColorScheme.light().copyWith(secondary: secondColor),
       scaffoldBackgroundColor: Colors.white,

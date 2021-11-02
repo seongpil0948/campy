@@ -66,7 +66,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                         });
                       },
                       hint: "캠핑 종류",
-                      items: ["오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
+                      items: ["__오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
                   PySingleSelect(
                       onChange: (newVal) {
                         setState(() {
@@ -125,7 +125,11 @@ class _FeedPostViewState extends State<FeedPostView> {
               children: [
                 for (var tag in hashTags)
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        hashTags.remove(tag);
+                      });
+                    },
                     child: Text("#$tag"),
                   ),
                 TextButton(
@@ -144,6 +148,7 @@ class _FeedPostViewState extends State<FeedPostView> {
                                       }
                                     }
                                   });
+                                  Navigator.pop(ctx);
                                 },
                               ),
                             );

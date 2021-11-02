@@ -68,10 +68,12 @@ class PyUser {
         photoURL = j['photoURL'],
         refreshToken = j['refreshToken'],
         tenantId = j['tenantId'],
-        hash = j['hashCode'],
+        hash = j['hash'],
+        feeds = j["feeds"].map<FeedInfo>((f) => FeedInfo.fromJson(f)).toList(),
+        favoriteFeeds = List<String>.from(j['favoriteFeeds']),
         followers =
-            j['followers'].map<PyUser>((f) => PyUser.fromJson(j)).toList(),
-        follows = j['follows'].map<PyUser>((f) => PyUser.fromJson(j)).toList(),
+            j['followers'].map<PyUser>((f) => PyUser.fromJson(f)).toList(),
+        follows = j['follows'].map<PyUser>((f) => PyUser.fromJson(f)).toList(),
         createdAt = timeStamp2DateTime(j['createdAt']),
         updatedAt = timeStamp2DateTime(j['updatedAt']);
 
@@ -84,10 +86,12 @@ class PyUser {
         'photoURL': photoURL,
         'refreshToken': refreshToken,
         'tenantId': tenantId,
-        'hashCode': hashCode,
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
+        'hash': hash,
+        'feeds': feeds.map((f) => f.toJson()).toList(),
+        'favoriteFeeds': favoriteFeeds,
         'followers': followers.map((f) => f.toJson()).toList(),
         'follows': follows.map((f) => f.toJson()).toList(),
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
       };
 }
