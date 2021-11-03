@@ -1,4 +1,4 @@
-import 'package:campy/models/auth.dart';
+import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/utils/responsive.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports

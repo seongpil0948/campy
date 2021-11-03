@@ -1,4 +1,4 @@
-import 'package:campy/models/auth.dart';
+import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/my.dart';

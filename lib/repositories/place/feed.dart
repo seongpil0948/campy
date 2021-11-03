@@ -1,6 +1,6 @@
 import 'package:campy/models/feed.dart';
 import 'package:campy/repositories/init.dart';
-import 'package:campy/repositories/auth/user.dart';
+import 'package:campy/repositories/auth/users.dart';
 
 Future<List<FeedInfo>> getFeeds(Iterable<String> userIds) async {
   List<FeedInfo> allFeeds = [];

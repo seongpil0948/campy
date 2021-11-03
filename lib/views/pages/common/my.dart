@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/components/buttons/fabs.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/components/structs/feed/feed.dart';
-import 'package:campy/models/auth.dart';
+import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/utils/feed.dart';

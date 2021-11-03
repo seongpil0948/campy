@@ -3,7 +3,7 @@ import 'package:campy/components/structs/comment/list.dart';
 import 'package:campy/components/structs/comment/post.dart';
 import 'package:campy/components/structs/feed/feed.dart';
 import 'package:campy/components/structs/place/place.dart';
-import 'package:campy/models/auth.dart';
+import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/comment.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';

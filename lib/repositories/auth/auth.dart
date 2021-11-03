@@ -1,6 +1,5 @@
 import 'package:campy/repositories/auth_repository.dart';
 import 'package:campy/repositories/init.dart';
-import 'package:campy/repositories/place/feed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:campy/models/user.dart';
 import 'package:flutter/material.dart';
