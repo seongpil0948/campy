@@ -116,6 +116,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
                 ? IconButton(
                     onPressed: () {
                       U.favoriteFeeds.remove(F.feedId);
+                      F.likeUserIds.remove(U.userId);
                       _updates();
                     },
                     icon: Icon(
@@ -125,6 +126,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
                 : IconButton(
                     onPressed: () {
                       U.favoriteFeeds.add(F.feedId);
+                      F.likeUserIds.add(U.userId);
                       _updates();
                     },
                     icon: Icon(
@@ -139,25 +141,25 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
         //   children: <Widget>[
         //     Image(
         //       image: AssetImage("assets/images/comment_icon.png"),
-        //       width: iconSize['width'],
-        //       height: iconSize['heihgt'],
+        //       width: widget.iconSize['width'],
+        //       height: widget.iconSize['heihgt'],
         //     ),
-        //     Text("  ${feed.comment}  "),
+        //     Text("  ${F}  "),
         //     // Text("  ${feed.comments.length}  "),
         //   ],
         // ),
-        Row(
-          children: <Widget>[
-            Icon(Icons.share_rounded),
-            Text("  ${F.sharedUserIds.length}  "),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Icon(Icons.bookmark_border_outlined),
-            Text("  ${F.bookmarkedUserIds.length}  "),
-          ],
-        ),
+        // Row(
+        //   children: <Widget>[
+        //     Icon(Icons.share_rounded),
+        //     Text("  ${F.sharedUserIds.length}  "),
+        //   ],
+        // ),
+        // Row(
+        //   children: <Widget>[
+        //     Icon(Icons.bookmark_border_outlined),
+        //     Text("  ${F.bookmarkedUserIds.length}  "),
+        //   ],
+        // ),
       ],
     );
   }

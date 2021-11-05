@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 class UserSnsInfo extends StatelessWidget {
   const UserSnsInfo({
     Key? key,
-    required PyUser currUser,
-  })  : _currUser = currUser,
-        super(key: key);
+    required this.currUser,
+    required this.numUserFeeds,
+  }) : super(key: key);
 
-  final PyUser _currUser;
+  final PyUser currUser;
+  final int numUserFeeds;
 
   @override
   Widget build(BuildContext ctx) {
@@ -18,9 +19,9 @@ class UserSnsInfo extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         for (var i in [
-          "포스팅 ${_currUser.feeds.length}",
-          "팔로워 ${_currUser.followers.length}",
-          "팔로우 ${_currUser.follows.length}"
+          "포스팅 ${numUserFeeds.toString()}",
+          "팔로워 ${currUser.followers.length}",
+          "팔로우 ${currUser.follows.length}"
         ])
           Text(
             i,

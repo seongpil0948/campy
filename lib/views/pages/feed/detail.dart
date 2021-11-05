@@ -83,8 +83,10 @@ class FeedDetailW extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
                   child: FeedStatusRow(currUser: _currUser, feed: feed),
                 ),
-                _Divider(),
-                Text(feed.hashTags),
+                if (feed.hashTags.length > 0) ...[
+                  _Divider(),
+                  Text(feed.hashTags)
+                ],
                 _Divider(),
                 PlaceInfo(mq: mq, iconImgH: iconImgH),
                 _Divider(),

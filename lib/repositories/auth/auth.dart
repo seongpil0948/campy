@@ -13,8 +13,9 @@ class PyAuth extends ChangeNotifier {
   bool get isAuthentic => _isAuthentic;
 
   Future<PyUser> get currUser async {
+    if (_currUser != null) return _currUser!;
     var user = _fireAuth.currentUser;
-    if (user == null) await setUser(user!);
+    await setUser(user!);
     return _currUser!;
   }
 

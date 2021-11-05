@@ -110,6 +110,7 @@ class _FeedPostViewState extends State<FeedPostView> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
               child: TextField(
+                // FIXME: PyEditor Tag 기능 넣어서 가즈아 일단 상태관리부터햣
                 keyboardType: TextInputType.text,
                 controller: _contentController,
                 decoration: InputDecoration(
@@ -190,7 +191,6 @@ class _FeedPostViewState extends State<FeedPostView> {
                                   .doc(writer.userId);
                               var finfo = FeedInfo(
                                 writer: writer,
-                                isfavorite: false,
                                 feedId: newFeedId,
                                 files: paths,
                                 title: _titleController.text,

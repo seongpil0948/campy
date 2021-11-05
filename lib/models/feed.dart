@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FeedInfo {
   FeedInfo(
       {required this.writer,
-      required this.isfavorite,
       required this.feedId,
       required this.files,
       required this.title,
@@ -18,7 +17,6 @@ class FeedInfo {
       required List<String> hashTags})
       : hashTags = hashTags.join(" ");
   final PyUser writer;
-  final bool isfavorite;
   final String feedId;
   final List<PyFile> files;
   final String title;
@@ -50,7 +48,6 @@ class FeedInfo {
 
   FeedInfo.fromJson(Map<String, dynamic> j)
       : writer = PyUser.fromJson(j['writer']),
-        isfavorite = j['isfavorite'],
         feedId = j['feedId'],
         files = j['files'].map<PyFile>((f) => PyFile.fromJson(f)).toList(),
         title = j['title'],
@@ -67,7 +64,6 @@ class FeedInfo {
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),
-        'isfavorite': isfavorite,
         'feedId': feedId,
         'files': files.map((f) => f.toJson()).toList(),
         'title': title,

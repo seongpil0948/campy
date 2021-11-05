@@ -1,4 +1,3 @@
-import 'package:campy/models/feed.dart';
 import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/moment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +16,6 @@ class PyUser {
   String? tenantId;
   int hash;
   String get profileImage => photoURL;
-  List<FeedInfo> feeds = [];
   List<String> favoriteFeeds = [];
   List<PyUser> followers = [];
   List<PyUser> follows = [];
@@ -42,7 +40,6 @@ class PyUser {
     PyUser: name: $displayName \n 
     providerData: $providerData \n 
     tenantId: $tenantId \n
-    feeds: $feeds \n 
     followers: $followers \n 
     follows: $follows \n
     createdAt: $createdAt 
@@ -69,7 +66,6 @@ class PyUser {
         refreshToken = j['refreshToken'],
         tenantId = j['tenantId'],
         hash = j['hash'],
-        feeds = j["feeds"].map<FeedInfo>((f) => FeedInfo.fromJson(f)).toList(),
         favoriteFeeds = List<String>.from(j['favoriteFeeds']),
         followers =
             j['followers'].map<PyUser>((f) => PyUser.fromJson(f)).toList(),
@@ -87,7 +83,6 @@ class PyUser {
         'refreshToken': refreshToken,
         'tenantId': tenantId,
         'hash': hash,
-        'feeds': feeds.map((f) => f.toJson()).toList(),
         'favoriteFeeds': favoriteFeeds,
         'followers': followers.map((f) => f.toJson()).toList(),
         'follows': follows.map((f) => f.toJson()).toList(),

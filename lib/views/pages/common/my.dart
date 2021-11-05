@@ -2,14 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/components/buttons/fabs.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/components/structs/feed/feed.dart';
-import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/repositories/auth/user.dart';
 import 'package:campy/utils/feed.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
-import 'package:provider/src/provider.dart';
 
 class MyView extends StatelessWidget {
   const MyView({Key? key}) : super(key: key);
@@ -21,8 +20,8 @@ class MyView extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FeedFab(),
         drawer: PyDrawer(),
-        body: FutureBuilder<PyUser>(
-          future: ctx.watch<PyAuth>().currUser,
+        body: FutureBuilder<CompleteUser>(
+          future: getCompleteUser(ctx: ctx),
           builder: (ctx, snapshot) {
             if (!snapshot.hasData)
               return Center(child: CircularProgressIndicator());
@@ -49,18 +48,20 @@ class MyView extends StatelessWidget {
                         CircleAvatar(
                             radius: 40,
                             backgroundImage: CachedNetworkImageProvider(
-                                _currUser.profileImage)),
+                                _currUser.user.profileImage)),
                         Container(
                           margin: EdgeInsets.only(top: 10),
                           child: Text(
-                            "@${_currUser.email!.split('@')[0]}",
+                            "@${_currUser.user.email!.split('@')[0]}",
                             style: Theme.of(ctx).textTheme.bodyText1,
                           ),
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 15),
                           width: mq.size.width / 1.5,
-                          child: UserSnsInfo(currUser: _currUser),
+                          child: UserSnsInfo(
+                              currUser: _currUser.user,
+                              numUserFeeds: _currUser.feeds.length),
                         ),
                         Text("이 시대 진정한 인싸 캠핑러 \n 정보 공유 DM 환영 ",
                             style: Theme.of(ctx).textTheme.bodyText1),
@@ -74,7 +75,9 @@ class MyView extends StatelessWidget {
                   child: Stack(
                     children: [
                       _GridFeeds(
-                          feeds: _currUser.feeds, mq: mq, currUser: _currUser),
+                          feeds: _currUser.feeds,
+                          mq: mq,
+                          currUser: _currUser.user),
                     ],
                   ))
             ]);

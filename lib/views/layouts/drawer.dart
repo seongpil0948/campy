@@ -4,7 +4,7 @@ import 'package:campy/components/buttons/white.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/state.dart';
-import 'package:campy/models/user.dart';
+import 'package:campy/repositories/auth/user.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
@@ -24,15 +24,16 @@ class PyDrawer extends StatelessWidget {
         child: ListView(
       padding: EdgeInsets.zero,
       children: [
-        FutureBuilder<PyUser>(
-            future: ctx.watch<PyAuth>().currUser,
+        FutureBuilder<CompleteUser>(
+            future: getCompleteUser(ctx: ctx),
             builder: (ctx, snapshot) {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
               final _currUser = snapshot.data!;
               return GestureDetector(
                 onTap: () {
-                  appState.currPageAction = PageAction.my(_currUser.userId);
+                  appState.currPageAction =
+                      PageAction.my(_currUser.user.userId);
                 },
                 child: Container(
                   decoration: BoxDecoration(color: Theme.of(ctx).primaryColor),
@@ -73,8 +74,8 @@ class PyDrawer extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 30,
-                            backgroundImage:
-                                CachedNetworkImageProvider(_currUser.photoURL),
+                            backgroundImage: CachedNetworkImageProvider(
+                                _currUser.user.photoURL),
                           ),
                           SizedBox(
                             width: 20,
@@ -85,7 +86,7 @@ class PyDrawer extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "@${_currUser.displayName ?? _currUser.email!.split('@')[0]}",
+                                  "@${_currUser.user.displayName ?? _currUser.user.email!.split('@')[0]}",
                                   style: Theme.of(ctx).textTheme.bodyText1,
                                 ),
                                 Container(
@@ -105,7 +106,9 @@ class PyDrawer extends StatelessWidget {
                       Container(
                           margin: const EdgeInsets.only(top: 15),
                           height: 35,
-                          child: UserSnsInfo(currUser: _currUser))
+                          child: UserSnsInfo(
+                              currUser: _currUser.user,
+                              numUserFeeds: _currUser.feeds.length))
                     ],
                   ),
                 ),
