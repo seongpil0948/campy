@@ -19,14 +19,16 @@ dependencies:
   video_player: ^2.1.15
   provider: ^6.0.1
   firebase_core: ^1.6.0
-  cloud_firestore: ^2.5.3
+  cloud_firestore: ^3.0.0
   firebase_storage: "^10.0.3"
   firebase_auth: ^3.1.0
   google_sign_in: ^5.0.7
   flutter_facebook_auth: ^3.5.1
   uuid: ^3.0.4
   throttling: ^1.0.0
-
+  rich_text_controller:
+    git:  
+      url: https://github.com/micazi/rich_text_controller
 dev_dependencies:
   flutter_test:
     sdk: flutter

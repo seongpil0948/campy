@@ -12,8 +12,8 @@ import 'package:campy/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
+import 'package:rich_text_controller/rich_text_controller.dart';
+
 import 'package:uuid/uuid.dart';
 
 class FeedPostView extends StatefulWidget {
@@ -24,7 +24,7 @@ class FeedPostView extends StatefulWidget {
 
 class _FeedPostViewState extends State<FeedPostView> {
   var _titleController = TextEditingController();
-  var _contentController = TextEditingController();
+  late RichTextController _contentController;
   String? kind;
   String? price;
   String? around;
@@ -32,10 +32,42 @@ class _FeedPostViewState extends State<FeedPostView> {
   List<String> hashTags = [];
   List<PyFile> files = [];
 
+  void setHashTags(List<String> tags) {
+    hashTags = tags;
+  }
+
+  @override
+  void initState() {
+    _contentController = RichTextController(
+        patternMap: {
+          // Returns every Hashtag with red color
+          RegExp(r"\B#[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+\b"):
+              TextStyle(color: Colors.purple),
+          // Returns every Mention with blue color and bold style.
+          RegExp(r"\B@[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+\b"): TextStyle(
+            fontWeight: FontWeight.w800,
+            color: Colors.blue,
+          ),
+          //* Returns every word after '!' with yellow color and italic style.
+          RegExp(r"\B![ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+\b"):
+              TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
+          // add as many expressions as you need!
+        },
+        // stringMap: {
+        //   "성필": TextStyle(color: Colors.purple),
+        //   "sp": TextStyle(color: Colors.purple),
+        // },
+        //! Assertion: Only one of the two matching options can be given at a time!
+        onMatch: (matches) {
+          setHashTags(matches);
+          return '';
+        });
+    super.initState();
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
-    _contentController.dispose();
     super.dispose();
   }
 
@@ -109,18 +141,7 @@ class _FeedPostViewState extends State<FeedPostView> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-              child: TextField(
-                // FIXME: PyEditor Tag 기능 넣어서 가즈아 일단 상태관리부터햣
-                keyboardType: TextInputType.text,
-                controller: _contentController,
-                decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            width: 3, color: Theme.of(ctx).cardColor),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    labelText: "사진에 대한 내용을 입력해주세요"),
-                maxLines: 10,
-              ),
+              child: PyContentEditor(controller: _contentController),
             ),
             Wrap(
               children: [
@@ -131,31 +152,8 @@ class _FeedPostViewState extends State<FeedPostView> {
                         hashTags.remove(tag);
                       });
                     },
-                    child: Text("#$tag"),
+                    child: Text(tag),
                   ),
-                TextButton(
-                    onPressed: () {
-                      showDialog(
-                          context: ctx,
-                          builder: (ctx) {
-                            return Dialog(
-                              child: TextField(
-                                keyboardType: TextInputType.text,
-                                onSubmitted: (String val) {
-                                  setState(() {
-                                    for (var t in val.split(" ")) {
-                                      if (!hashTags.contains(t)) {
-                                        hashTags.add(t);
-                                      }
-                                    }
-                                  });
-                                  Navigator.pop(ctx);
-                                },
-                              ),
-                            );
-                          });
-                    },
-                    child: Text("#태그추가"))
               ],
             ),
             FutureBuilder<PyUser>(
@@ -228,5 +226,24 @@ class _FeedPostViewState extends State<FeedPostView> {
         ),
       ),
     ));
+  }
+}
+
+class PyContentEditor extends StatelessWidget {
+  final TextEditingController controller;
+  PyContentEditor({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext ctx) {
+    return TextField(
+      keyboardType: TextInputType.text,
+      controller: controller,
+      decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 3, color: Theme.of(ctx).cardColor),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          labelText: "사진에 대한 내용을 입력해주세요"),
+      maxLines: 10,
+    );
   }
 }
