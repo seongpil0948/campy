@@ -14,8 +14,7 @@ class FeedInfo {
       required this.placeAround,
       required this.placePrice,
       required this.campKind,
-      required List<String> hashTags})
-      : hashTags = hashTags.join(" ");
+      required this.hashTags});
   final PyUser writer;
   final String feedId;
   final List<PyFile> files;
@@ -24,7 +23,7 @@ class FeedInfo {
   final String placeAround;
   final int placePrice;
   final String campKind;
-  String hashTags;
+  List<String> hashTags = [];
   List<String> likeUserIds = [];
   List<String> sharedUserIds = [];
   List<String> bookmarkedUserIds = [];
@@ -55,7 +54,7 @@ class FeedInfo {
         placeAround = j['placeAround'],
         placePrice = j['placePrice'],
         campKind = j['campKind'],
-        hashTags = j['hashTags'],
+        hashTags = j['hashTags'].cast<String>(),
         likeUserIds = j['likeUserIds'].cast<String>(),
         sharedUserIds = j['sharedUserIds'].cast<String>(),
         bookmarkedUserIds = j['bookmarkedUserIds'].cast<String>(),

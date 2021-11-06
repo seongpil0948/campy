@@ -19,6 +19,7 @@ abstract class PyThemeInterface with ChangeNotifier {
 class PyTheme extends PyThemeInterface {
   ThemeData get lightTheme {
     final primaryColor = Colors.blue.shade900; //1
+    final primaryVarColor = Colors.deepPurple;
     final secondColor = Colors.grey; //1
     final origin = ThemeData.light();
     return ThemeData(
@@ -26,7 +27,10 @@ class PyTheme extends PyThemeInterface {
       primaryColor: primaryColor,
       hintColor: Colors.black,
       cardColor: Colors.grey[100],
-      colorScheme: ColorScheme.light().copyWith(secondary: secondColor),
+      colorScheme: ColorScheme.light().copyWith(
+          secondary: secondColor,
+          primary: primaryColor,
+          primaryVariant: primaryVarColor),
       scaffoldBackgroundColor: Colors.white,
       cardTheme: CardTheme(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -35,6 +39,11 @@ class PyTheme extends PyThemeInterface {
           bodyText1: TextStyle(color: Colors.white),
           bodyText2: TextStyle(color: Colors.black),
           overline: origin.textTheme.overline!.copyWith(color: Colors.white)),
+      primaryTextTheme: TextTheme(
+          bodyText1: TextStyle(
+            color: primaryColor,
+          ),
+          bodyText2: TextStyle(color: primaryVarColor)),
       appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.black),
           toolbarTextStyle: TextStyle(color: Colors.black),

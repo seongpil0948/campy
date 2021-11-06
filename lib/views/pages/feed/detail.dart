@@ -8,6 +8,7 @@ import 'package:campy/models/comment.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/utils/parsers.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -62,6 +63,9 @@ class FeedDetailW extends StatelessWidget {
   Widget build(BuildContext ctx) {
     const leftPadding = 20.0;
     const iconImgH = 24.0;
+    Map<String, Text> tagMap = {};
+    feed.hashTags
+        .forEach((tag) => tagMap[tag] = Text(tag, style: tagTextSty(tag, ctx)));
     return Stack(children: [
       SingleChildScrollView(
         child: ConstrainedBox(
@@ -85,10 +89,28 @@ class FeedDetailW extends StatelessWidget {
                 ),
                 if (feed.hashTags.length > 0) ...[
                   _Divider(),
-                  Text(feed.hashTags)
+                  Wrap(
+                    runSpacing: 10.0,
+                    spacing: 10.0,
+                    children: feed.hashTags
+                        .map<Widget>((tag) => tagMap[tag]!)
+                        .toList(),
+                  )
                 ],
                 _Divider(),
                 PlaceInfo(mq: mq, iconImgH: iconImgH),
+                RichText(
+                    text: TextSpan(
+                        children: feed.content
+                            .split(
+                                ' ') /*find words that start with '@' and include a username that can also be found in the list of mentions*/
+                            .map((word) => TextSpan(
+                                  text: word + ' ',
+                                  style: tagMap.containsKey(word)
+                                      ? tagMap[word]!.style
+                                      : Theme.of(ctx).textTheme.bodyText2,
+                                ))
+                            .toList())),
                 _Divider(),
                 Consumer<CommentState>(
                     builder: (ctx, cmtState, child) => TextButton(

@@ -68,7 +68,7 @@ class FeedThumnail extends StatelessWidget {
                             .headline3
                             ?.copyWith(color: Colors.white)),
                     Text(
-                      feedInfo.hashTags.replaceAll(" ", " #"),
+                      feedInfo.hashTags.join(" "),
                       style: Theme.of(ctx).textTheme.bodyText1,
                     )
                   ],

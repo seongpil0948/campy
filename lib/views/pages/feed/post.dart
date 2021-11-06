@@ -7,6 +7,7 @@ import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/repositories/init.dart';
 import 'package:campy/repositories/upload_file.dart';
+import 'package:campy/utils/parsers.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:campy/utils/io.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,38 +32,43 @@ class _FeedPostViewState extends State<FeedPostView> {
   // ignore: unused_local_variable
   List<String> hashTags = [];
   List<PyFile> files = [];
+  bool once = false;
 
   void setHashTags(List<String> tags) {
     hashTags = tags;
   }
 
   @override
-  void initState() {
-    _contentController = RichTextController(
-        patternMap: {
-          // Returns every Hashtag with red color
-          RegExp(r"\B#[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+\b"):
-              TextStyle(color: Colors.purple),
-          // Returns every Mention with blue color and bold style.
-          RegExp(r"\B@[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+\b"): TextStyle(
-            fontWeight: FontWeight.w800,
-            color: Colors.blue,
-          ),
-          //* Returns every word after '!' with yellow color and italic style.
-          RegExp(r"\B![ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+\b"):
-              TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
-          // add as many expressions as you need!
-        },
-        // stringMap: {
-        //   "성필": TextStyle(color: Colors.purple),
-        //   "sp": TextStyle(color: Colors.purple),
-        // },
-        //! Assertion: Only one of the two matching options can be given at a time!
-        onMatch: (matches) {
-          setHashTags(matches);
-          return '';
-        });
-    super.initState();
+  void didChangeDependencies() {
+    var ctx = context;
+    if (once == false) {
+      _contentController = RichTextController(
+          patternMap: {
+            // Returns every Hashtag with red color
+
+            RegExp("#[|ㄱ-ㅎ가-힣a-zA-Z0-9]+"):
+                Theme.of(ctx).primaryTextTheme.bodyText2!,
+            // Returns every Mention with blue color and bold style.
+            RegExp(r"@[|ㄱ-ㅎ가-힣a-zA-Z0-9]+"):
+                Theme.of(ctx).primaryTextTheme.bodyText1!,
+            //* Returns every word after '!' with yellow color and italic style.
+            RegExp(r"![|ㄱ-ㅎ가-힣a-zA-Z0-9]+"):
+                TextStyle(color: Theme.of(ctx).colorScheme.error),
+            // add as many expressions as you need!
+          },
+          // stringMap: {
+          //   "성필": TextStyle(color: Colors.purple),
+          //   "sp": TextStyle(color: Colors.purple),
+          // },
+          //! Assertion: Only one of the two matching options can be given at a time!
+          onMatch: (matches) {
+            setHashTags(matches);
+            return matches.join(" ");
+          });
+      once = true;
+    }
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -74,7 +80,6 @@ class _FeedPostViewState extends State<FeedPostView> {
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
-
     return Pyffold(
         body: SingleChildScrollView(
       child: Provider.value(
@@ -147,13 +152,12 @@ class _FeedPostViewState extends State<FeedPostView> {
               children: [
                 for (var tag in hashTags)
                   TextButton(
-                    onPressed: () {
-                      setState(() {
-                        hashTags.remove(tag);
-                      });
-                    },
-                    child: Text(tag),
-                  ),
+                      onPressed: () {
+                        setState(() {
+                          hashTags.remove(tag);
+                        });
+                      },
+                      child: Text(tag, style: tagTextSty(tag, ctx))),
               ],
             ),
             FutureBuilder<PyUser>(
