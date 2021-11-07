@@ -5,6 +5,7 @@ import 'package:campy/models/user.dart';
 import 'package:campy/utils/io.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
@@ -12,12 +13,12 @@ class FeedThumnail extends StatelessWidget {
   const FeedThumnail({
     Key? key,
     required this.mq,
-    required this.imgs,
+    this.img,
     required this.feedInfo,
   }) : super(key: key);
   final FeedInfo feedInfo;
   final MediaQueryData mq;
-  final Iterable<PyFile> imgs;
+  final PyFile? img;
 
   @override
   Widget build(BuildContext ctx) {
@@ -30,13 +31,14 @@ class FeedThumnail extends StatelessWidget {
       child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           child: Stack(children: [
-            CachedNetworkImage(
-                // FIXME: 동영상일때는 썸네일을 보여줄 수 있도록
-                fit: BoxFit.cover,
-                width: mq.size.width,
-                imageUrl: imgs.length > 0
-                    ? imgs.first.url!
-                    : feedInfo.writer.photoURL),
+            if (img == null || img!.file == null)
+              CachedNetworkImage(
+                  // FIXME: 동영상일때는 썸네일을 보여줄 수 있도록
+                  fit: BoxFit.cover,
+                  width: mq.size.width,
+                  imageUrl: img?.url ?? feedInfo.writer.photoURL)
+            else if (img!.file != null)
+              loadFile(f: img!, ctx: ctx),
             Positioned(
                 bottom: mq.size.height / 30,
                 left: mq.size.width / 15,

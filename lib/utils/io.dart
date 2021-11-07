@@ -31,6 +31,8 @@ class PyFile {
 
   PyFile.fromXfile({required XFile f, required this.ftype})
       : this.file = File(f.path);
+  PyFile.fileName({required String fileName, required this.ftype})
+      : this.file = File(fileName);
 
   PyFile.fromCdn({required String this.url, required String fileType}) {
     switch (fileType) {

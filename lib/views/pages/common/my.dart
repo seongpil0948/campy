@@ -6,6 +6,7 @@ import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth/user.dart';
 import 'package:campy/utils/feed.dart';
+import 'package:campy/utils/io.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
@@ -121,10 +122,16 @@ class _GridFeeds extends StatelessWidget {
                         flex: 1,
                         child: FeedStatusRow(currUser: _currUser, feed: f)),
                     Expanded(
-                      flex: 3,
-                      child: FeedThumnail(
-                          mq: mq, imgs: imgsOfFeed(f), feedInfo: f),
-                    )
+                        flex: 3,
+                        child: FutureBuilder<List<PyFile>>(
+                            future: imgsOfFeed(f),
+                            builder: (ctx, snapshot) {
+                              if (!snapshot.hasData)
+                                return CircularProgressIndicator();
+                              final imgs = snapshot.data!;
+                              return FeedThumnail(
+                                  mq: mq, img: imgs.first, feedInfo: f);
+                            }))
                   ],
                 ),
               ));

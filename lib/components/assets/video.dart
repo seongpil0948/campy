@@ -35,7 +35,8 @@ class _VideoWState extends State<VideoW> {
         ),
       );
     } else {
-      return Text("SomeThingWrong In Video Widget");
+      return Center(
+          child: Container(height: 40, child: CircularProgressIndicator()));
     }
   }
 
