@@ -11,7 +11,7 @@ import 'package:provider/src/provider.dart';
 final pyCarouselOption = CarouselOptions(
   enlargeCenterPage: true,
   viewportFraction: 1.0,
-  aspectRatio: 1.6,
+  aspectRatio: 1.0,
   enableInfiniteScroll: false,
 );
 

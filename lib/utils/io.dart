@@ -68,7 +68,7 @@ Widget loadFile({required PyFile f, required BuildContext ctx}) {
             )
           : CachedNetworkImage(
               imageUrl: f.url!,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
               width: mq.size.width,
             );
 

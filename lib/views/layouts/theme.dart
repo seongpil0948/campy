@@ -60,6 +60,7 @@ class PyTheme extends PyThemeInterface {
       dividerColor: Colors.black,
       iconTheme: IconThemeData(color: primaryColor),
       inputDecorationTheme: InputDecorationTheme(
+        floatingLabelBehavior: FloatingLabelBehavior.never,
         labelStyle: ThemeData.light().textTheme.caption,
         border: OutlineInputBorder(
             borderSide: BorderSide(width: OvalBorderWidth, color: primaryColor),

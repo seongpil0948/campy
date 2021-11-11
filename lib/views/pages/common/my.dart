@@ -124,13 +124,16 @@ class _GridFeeds extends StatelessWidget {
                     Expanded(
                         flex: 3,
                         child: FutureBuilder<List<PyFile>>(
-                            future: imgsOfFeed(f),
+                            future: imgsOfFeed(f: f, limit: 1),
                             builder: (ctx, snapshot) {
                               if (!snapshot.hasData)
                                 return CircularProgressIndicator();
                               final imgs = snapshot.data!;
                               return FeedThumnail(
-                                  mq: mq, img: imgs.first, feedInfo: f);
+                                  mq: mq,
+                                  img: imgs.first,
+                                  feedInfo: f,
+                                  tSize: ThumnailSize.Small);
                             }))
                   ],
                 ),

@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/components/inputs/appbar_text_field.dart';
+import 'package:campy/models/state.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
@@ -43,9 +45,15 @@ class PyAppBar extends StatelessWidget {
                   future: auth.currUser,
                   builder: (ctx, snapshot) {
                     if (!snapshot.hasData) return CircularProgressIndicator();
-                    return CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(
-                          snapshot.data!.profileImage),
+                    return GestureDetector(
+                      onTap: () => {
+                        ctx.read<PyState>().currPageAction =
+                            PageAction.my(snapshot.data!)
+                      },
+                      child: CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                            snapshot.data!.profileImage),
+                      ),
                     );
                   })
             ],

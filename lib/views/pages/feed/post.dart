@@ -87,8 +87,7 @@ class _FeedPostViewState extends State<FeedPostView> {
         child: Column(
           children: [
             Container(
-              height: mq.size.height / 3.1,
-              margin: EdgeInsets.symmetric(horizontal: 10),
+              height: mq.size.height / 2.1,
               child: PyAssetCarousel(),
             ),
             Container(

@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 Future<List<Comment>> loadComment(String userId, String feedId) async {
   final comments = await getCollection(
           c: Collections.Comments, userId: userId, feedId: feedId)
+      .orderBy('createdAt', descending: true)
       .get();
   return comments.docs
       .map((c) => Comment.fromJson(c.data() as Map<String, dynamic>))

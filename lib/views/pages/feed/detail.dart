@@ -68,64 +68,60 @@ class FeedDetailW extends StatelessWidget {
         .forEach((tag) => tagMap[tag] = Text(tag, style: tagTextSty(tag, ctx)));
     return Stack(children: [
       SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: mq.size.height),
-          child: GestureDetector(
-            onTap: () {
-              Provider.of<CommentState>(ctx, listen: false).showPostCmtWidget =
-                  false;
-            },
-            child: Column(
-              children: [
-                Container(
-                    width: mq.size.width,
-                    height: mq.size.height / 3,
-                    child: PyCarousel(fs: feed.files)),
-                Container(
-                  width: mq.size.width * 0.6,
-                  padding: EdgeInsets.only(left: leftPadding),
-                  margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
-                  child: FeedStatusRow(currUser: _currUser, feed: feed),
-                ),
-                if (feed.hashTags.length > 0) ...[
-                  _Divider(),
-                  Wrap(
-                    runSpacing: 10.0,
-                    spacing: 10.0,
-                    children: feed.hashTags
-                        .map<Widget>((tag) => tagMap[tag]!)
-                        .toList(),
-                  )
-                ],
+        child: GestureDetector(
+          onTap: () {
+            Provider.of<CommentState>(ctx, listen: false).showPostCmtWidget =
+                false;
+          },
+          child: Column(
+            children: [
+              Container(
+                  width: mq.size.width,
+                  height: mq.size.height / 2,
+                  child: PyCarousel(fs: feed.files)),
+              Container(
+                width: mq.size.width * 0.6,
+                padding: EdgeInsets.only(left: leftPadding),
+                margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
+                child: FeedStatusRow(currUser: _currUser, feed: feed),
+              ),
+              if (feed.hashTags.length > 0) ...[
                 _Divider(),
-                PlaceInfo(mq: mq, iconImgH: iconImgH),
-                RichText(
-                    text: TextSpan(
-                        children: feed.content
-                            .split(
-                                ' ') /*find words that start with '@' and include a username that can also be found in the list of mentions*/
-                            .map((word) => TextSpan(
-                                  text: word + ' ',
-                                  style: tagMap.containsKey(word)
-                                      ? tagMap[word]!.style
-                                      : Theme.of(ctx).textTheme.bodyText2,
-                                ))
-                            .toList())),
-                _Divider(),
-                Consumer<CommentState>(
-                    builder: (ctx, cmtState, child) => TextButton(
-                        onPressed: () {
-                          cmtState.setTargetCmt = null;
-                          cmtState.showPostCmtWidget = true;
-                        },
-                        child: Text("댓글 달기"))),
-                Padding(
-                  padding: const EdgeInsets.only(left: leftPadding),
-                  child: CommentList(
-                      feedId: feed.feedId, userId: _currUser.userId),
+                Wrap(
+                  runSpacing: 10.0,
+                  spacing: 10.0,
+                  children:
+                      feed.hashTags.map<Widget>((tag) => tagMap[tag]!).toList(),
                 )
               ],
-            ),
+              _Divider(),
+              PlaceInfo(mq: mq, iconImgH: iconImgH),
+              RichText(
+                  text: TextSpan(
+                      children: feed.content
+                          .split(
+                              ' ') /*find words that start with '@' and include a username that can also be found in the list of mentions*/
+                          .map((word) => TextSpan(
+                                text: word + ' ',
+                                style: tagMap.containsKey(word)
+                                    ? tagMap[word]!.style
+                                    : Theme.of(ctx).textTheme.bodyText2,
+                              ))
+                          .toList())),
+              _Divider(),
+              Consumer<CommentState>(
+                  builder: (ctx, cmtState, child) => TextButton(
+                      onPressed: () {
+                        cmtState.setTargetCmt = null;
+                        cmtState.showPostCmtWidget = true;
+                      },
+                      child: Text("댓글 달기"))),
+              Padding(
+                padding: const EdgeInsets.only(left: leftPadding),
+                child:
+                    CommentList(feedId: feed.feedId, userId: _currUser.userId),
+              )
+            ],
           ),
         ),
       ),

@@ -5,9 +5,10 @@ import 'package:campy/models/user.dart';
 import 'package:campy/utils/io.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
+
+enum ThumnailSize { Medium, Small }
 
 class FeedThumnail extends StatelessWidget {
   const FeedThumnail({
@@ -15,10 +16,12 @@ class FeedThumnail extends StatelessWidget {
     required this.mq,
     this.img,
     required this.feedInfo,
+    required this.tSize,
   }) : super(key: key);
   final FeedInfo feedInfo;
   final MediaQueryData mq;
   final PyFile? img;
+  final ThumnailSize tSize;
 
   @override
   Widget build(BuildContext ctx) {
@@ -36,28 +39,30 @@ class FeedThumnail extends StatelessWidget {
                   // FIXME: 동영상일때는 썸네일을 보여줄 수 있도록
                   fit: BoxFit.cover,
                   width: mq.size.width,
+                  height: mq.size.height / 2.1,
                   imageUrl: img?.url ?? feedInfo.writer.photoURL)
             else if (img!.file != null)
               loadFile(f: img!, ctx: ctx),
             Positioned(
-                bottom: mq.size.height / 30,
+                bottom: tSize == ThumnailSize.Medium ? mq.size.height / 30 : 0,
                 left: mq.size.width / 15,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                            radius: 15,
-                            backgroundImage: CachedNetworkImageProvider(
-                                feedInfo.writer.photoURL)),
-                        SizedBox(width: 10),
-                        Text(
-                          feedInfo.writer.email ?? "",
-                          style: Theme.of(ctx).textTheme.bodyText1,
-                        )
-                      ],
-                    ),
+                    if (tSize == ThumnailSize.Medium)
+                      Row(
+                        children: [
+                          CircleAvatar(
+                              radius: 15,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  feedInfo.writer.photoURL)),
+                          SizedBox(width: 10),
+                          Text(
+                            feedInfo.writer.email ?? "",
+                            style: Theme.of(ctx).textTheme.bodyText1,
+                          )
+                        ],
+                      ),
                     SizedBox(height: 10),
                     Text(
                       feedInfo.content,
@@ -65,10 +70,15 @@ class FeedThumnail extends StatelessWidget {
                       style: Theme.of(ctx).textTheme.bodyText1,
                     ),
                     Text(feedInfo.title,
-                        style: Theme.of(ctx)
-                            .textTheme
-                            .headline3
-                            ?.copyWith(color: Colors.white)),
+                        style: tSize == ThumnailSize.Medium
+                            ? Theme.of(ctx)
+                                .textTheme
+                                .headline4
+                                ?.copyWith(color: Colors.white)
+                            : Theme.of(ctx)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(color: Colors.white)),
                     Text(
                       feedInfo.hashTags.join(" "),
                       style: Theme.of(ctx).textTheme.bodyText1,

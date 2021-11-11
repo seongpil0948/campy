@@ -14,7 +14,7 @@ class FeedList extends StatelessWidget {
     return ListView(
       children: feeds.map((feedInfo) {
         return FutureBuilder<List<PyFile>>(
-            future: imgsOfFeed(feedInfo),
+            future: imgsOfFeed(f: feedInfo, limit: 1),
             builder: (ctx, snapshot) {
               if (!snapshot.hasData)
                 return Center(
@@ -26,8 +26,12 @@ class FeedList extends StatelessWidget {
               return Container(
                 margin: EdgeInsets.all(20),
                 height: mq.size.height / 3,
-                child:
-                    FeedThumnail(mq: mq, img: imgs.first, feedInfo: feedInfo),
+                child: FeedThumnail(
+                  mq: mq,
+                  img: imgs.first,
+                  feedInfo: feedInfo,
+                  tSize: ThumnailSize.Medium,
+                ),
               );
             });
       }).toList(),
