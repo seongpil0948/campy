@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 class PySingleSelect extends StatefulWidget {
   final List<String> items;
   final String hint;
-  final void Function(String?)? onChange;
-  const PySingleSelect(
-      {Key? key,
-      required this.hint,
-      required this.items,
-      required this.onChange})
+  String? source;
+  PySingleSelect(
+      {Key? key, required this.hint, required this.items, this.source})
       : super(key: key);
 
   @override
@@ -42,9 +39,7 @@ class _PySingleSelectState extends State<PySingleSelect> {
           // style: const TextStyle(color: Colors.deepPurple),
           onChanged: (String? newVal) {
             setState(() {
-              if (widget.onChange != null) {
-                widget.onChange!(newVal);
-              }
+              widget.source = newVal;
               dropdownValue = newVal;
             });
           },

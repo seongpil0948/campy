@@ -96,33 +96,18 @@ class _FeedPostViewState extends State<FeedPostView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   PySingleSelect(
-                      onChange: (newVal) {
-                        setState(() {
-                          kind = newVal;
-                        });
-                      },
+                      source: kind,
                       hint: "캠핑 종류",
                       items: ["__오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
+                  PySingleSelect(source: price, hint: "가격 정보", items: [
+                    "5만원 이하",
+                    "10만원 이하",
+                    "15만원 이하 ",
+                    "20만원 이하",
+                    "20만원 이상"
+                  ]),
                   PySingleSelect(
-                      onChange: (newVal) {
-                        setState(() {
-                          price = newVal?.split("만원")[0];
-                        });
-                      },
-                      hint: "가격 정보",
-                      items: [
-                        "5만원 이하",
-                        "10만원 이하",
-                        "15만원 이하 ",
-                        "20만원 이하",
-                        "20만원 이상"
-                      ]),
-                  PySingleSelect(
-                      onChange: (newVal) {
-                        setState(() {
-                          around = newVal;
-                        });
-                      },
+                      source: around,
                       hint: "주변 정보",
                       items: ["마트 없음", "관광코스 없음", "계곡 없음", "산 없음"]),
                 ],
@@ -131,33 +116,15 @@ class _FeedPostViewState extends State<FeedPostView> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-              child: TextField(
-                keyboardType: TextInputType.text,
-                controller: _titleController,
-                decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            width: 3, color: Theme.of(ctx).cardColor),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    labelText: "제목을 입력해주세요"),
-              ),
+              child: OneLineEditor(titleController: _titleController),
             ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
               child: PyContentEditor(controller: _contentController),
             ),
-            Wrap(
-              children: [
-                for (var tag in hashTags)
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          hashTags.remove(tag);
-                        });
-                      },
-                      child: Text(tag, style: tagTextSty(tag, ctx))),
-              ],
+            HashList(
+              hashTags: hashTags,
             ),
             FutureBuilder<PyUser>(
                 future: ctx.watch<PyAuth>().currUser,
@@ -232,6 +199,29 @@ class _FeedPostViewState extends State<FeedPostView> {
   }
 }
 
+class OneLineEditor extends StatelessWidget {
+  const OneLineEditor({
+    Key? key,
+    required TextEditingController titleController,
+  })  : _titleController = titleController,
+        super(key: key);
+
+  final TextEditingController _titleController;
+
+  @override
+  Widget build(BuildContext ctx) {
+    return TextField(
+      keyboardType: TextInputType.text,
+      controller: _titleController,
+      decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 3, color: Theme.of(ctx).cardColor),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          labelText: "제목을 입력해주세요"),
+    );
+  }
+}
+
 class PyContentEditor extends StatelessWidget {
   final TextEditingController controller;
   PyContentEditor({Key? key, required this.controller}) : super(key: key);
@@ -247,6 +237,32 @@ class PyContentEditor extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(10))),
           labelText: "사진에 대한 내용을 입력해주세요"),
       maxLines: 10,
+    );
+  }
+}
+
+class HashList extends StatefulWidget {
+  final List<String> hashTags;
+  HashList({Key? key, required this.hashTags}) : super(key: key);
+
+  @override
+  _HashListState createState() => _HashListState();
+}
+
+class _HashListState extends State<HashList> {
+  @override
+  Widget build(BuildContext ctx) {
+    return Wrap(
+      children: [
+        for (var tag in widget.hashTags)
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  widget.hashTags.remove(tag);
+                });
+              },
+              child: Text(tag, style: tagTextSty(tag, ctx))),
+      ],
     );
   }
 }
