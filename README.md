@@ -1,5 +1,8 @@
 # CampyCampyCampy
 
+# INFO
+* [FontAwesome](https://fontawesome.com/v5.15/icons?d=gallery&p=2)
+
 
 #TODO:
 * 모델 업데이트 수동으로 하지말고 change notifier 상태 구독하자 헤헤

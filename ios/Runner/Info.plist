@@ -47,6 +47,8 @@
     
     <key>LSApplicationQueriesSchemes</key>
     <array>
+	  <string>https</string>
+	  <string>http</string>		
       <string>fbapi</string>
       <string>fbapi20130214</string>
       <string>fbapi20130410</string>
@@ -61,7 +63,7 @@
       <string>fbauth</string>
       <string>fb-messenger-share-api</string>
       <string>fbauth2</string>
-      <string>fbshareextension</string>
+      <string>fbshareextension</string>  
     </array>
     <!-- <<< Social Login <<< -->
 	<key>CFBundleVersion</key>

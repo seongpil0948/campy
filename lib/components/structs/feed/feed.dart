@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/repositories/sns/share.dart';
 import 'package:campy/utils/io.dart';
+import 'package:campy/views/pages/common/status.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
@@ -82,7 +84,7 @@ class FeedThumnail extends StatelessWidget {
                     Text(
                       feedInfo.hashTags.join(" "),
                       style: Theme.of(ctx).textTheme.bodyText1,
-                    )
+                    ),
                   ],
                 ))
           ])),
@@ -116,7 +118,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     final U = widget._currUser;
     final F = widget.feed;
     return Row(
@@ -160,12 +162,44 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
         //     // Text("  ${feed.comments.length}  "),
         //   ],
         // ),
-        // Row(
-        //   children: <Widget>[
-        //     Icon(Icons.share_rounded),
-        //     Text("  ${F.sharedUserIds.length}  "),
-        //   ],
-        // ),
+        Row(
+          children: <Widget>[
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: ctx,
+                      builder: (ctx) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: const Icon(Icons.account_box),
+                              title: const Text('Twitter'),
+                              onTap: () async {
+                                snsShare(SocialShare.Twitter, F);
+                                F.sharedUserIds.add(F.feedId);
+                                widget.feed.update();
+                                Navigator.pop(ctx);
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.videocam),
+                              title: const Text('Email'),
+                              onTap: () {
+                                snsShare(SocialShare.Email, F);
+                                F.sharedUserIds.add(F.feedId);
+                                widget.feed.update();
+                                Navigator.pop(ctx);
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(Icons.share_rounded)),
+            Text("  ${F.sharedUserIds.length}  "),
+          ],
+        ),
         // Row(
         //   children: <Widget>[
         //     Icon(Icons.bookmark_border_outlined),
