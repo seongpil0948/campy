@@ -35,7 +35,7 @@ android {
 
     defaultConfig {
         applicationId "com.campy.sns"
-        minSdkVersion 19
+        minSdkVersion 20
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

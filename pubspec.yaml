@@ -32,6 +32,8 @@ dependencies:
   video_thumbnail: ^0.4.3
   path_provider: ^2.0.6
   url_launcher: ^6.0.12
+  google_maps_flutter: ^2.1.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
