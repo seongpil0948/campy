@@ -115,8 +115,7 @@ class FeedPostW extends StatelessWidget {
                               title: Provider.of(ctx, listen: false).title,
                               content: Provider.of(ctx, listen: false).content,
                               price: int.parse(price ?? '-1'),
-                              hashTags:
-                                  Provider.of(ctx, listen: false).hashTags);
+                              hashTags: ctx.watch<List<String>>());
                         },
                         child: Center(
                           child: Text("올리기"),
@@ -145,7 +144,8 @@ class _PyEditorsState extends State<PyFeedEditors> {
   bool once = false;
 
   void setHashTags(BuildContext ctx, List<String> tags) {
-    Provider.of(ctx).hashTags = tags;
+    var t = ctx.read<List<String>>();
+    t = tags;
   }
 
   @override
@@ -241,7 +241,7 @@ class HashList extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final tags = Provider.of(ctx).hashTags;
+    final tags = ctx.watch<List<String>>(); // hashTags
     return Wrap(
       children: [
         for (var tag in tags)

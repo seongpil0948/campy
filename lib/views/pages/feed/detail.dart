@@ -83,7 +83,7 @@ class FeedDetailW extends StatelessWidget {
                   height: mq.size.height / 2,
                   child: PyCarousel(fs: feed.files)),
               Container(
-                width: mq.size.width * 0.6,
+                width: mq.size.width,
                 padding: EdgeInsets.only(left: leftPadding),
                 margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
                 child: FeedStatusRow(currUser: _currUser, feed: feed),

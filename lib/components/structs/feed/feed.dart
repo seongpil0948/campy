@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/sns/share.dart';
 import 'package:campy/utils/io.dart';
-import 'package:campy/views/pages/common/status.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
@@ -122,7 +122,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
     final U = widget._currUser;
     final F = widget.feed;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Row(
           children: <Widget>[
@@ -206,6 +206,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
         //     Text("  ${F.bookmarkedUserIds.length}  "),
         //   ],
         // ),
+        FollowBtn(currUser: widget._currUser, F: F)
       ],
     );
   }
