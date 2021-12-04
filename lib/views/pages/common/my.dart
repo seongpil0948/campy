@@ -9,6 +9,7 @@ import 'package:campy/utils/feed.dart';
 import 'package:campy/utils/io.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // ignore: implementation_imports
 
 class MyView extends StatelessWidget {
@@ -120,7 +121,10 @@ class _GridFeeds extends StatelessWidget {
                   children: [
                     Expanded(
                         flex: 1,
-                        child: FeedStatusRow(currUser: _currUser, feed: f)),
+                        child: Provider.value(
+                            value: _currUser,
+                            child: FeedStatusRow(
+                                feed: f, tSize: ThumnailSize.Small))),
                     Expanded(
                         flex: 3,
                         child: FutureBuilder<List<PyFile>>(

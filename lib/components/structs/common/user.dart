@@ -36,32 +36,40 @@ class UserSnsInfo extends StatelessWidget {
   }
 }
 
-class FollowBtn extends StatelessWidget {
+class FollowBtn extends StatefulWidget {
   final PyUser currUser;
   final FeedInfo F;
   FollowBtn({Key? key, required this.currUser, required this.F})
       : super(key: key);
 
+  @override
+  _FollowBtnState createState() => _FollowBtnState();
+}
+
+class _FollowBtnState extends State<FollowBtn> {
   Future<void> followUser(PyUser s, PyUser target, bool unFollow) async {
-    if (unFollow) {
-      s.follows.remove(target);
-      target.followers.remove(s);
-    } else {
-      s.follows.add(target);
-      target.followers.add(s);
-    }
+    setState(() {
+      if (unFollow) {
+        s.follows.remove(target);
+        target.followers.remove(s);
+      } else {
+        s.follows.add(target);
+        target.followers.add(s);
+      }
+    });
+
     await s.update();
     await target.update();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (F.writer == currUser) return Container();
-    final aleady = F.writer.followers.contains(currUser);
+    if (widget.F.writer == widget.currUser) return Container();
+    final aleady = widget.F.writer.followers.contains(widget.currUser);
     final txt = aleady ? "팔로우 취소" : "팔로우";
     return ElevatedButton(
         onPressed: () {
-          followUser(currUser, F.writer, aleady);
+          followUser(widget.currUser, widget.F.writer, aleady);
         },
         child: Text(txt));
   }

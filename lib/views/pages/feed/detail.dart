@@ -32,17 +32,13 @@ class FeedDetailView extends StatelessWidget {
         drawer: PyDrawer(),
         body: ChangeNotifierProvider<CommentState>(
             create: (ctx) => CommentState(),
-            child: FutureBuilder<PyUser>(
-                future: ctx.watch<PyAuth>().currUser,
-                builder: (ctx, snapshot) {
-                  if (!snapshot.hasData)
-                    return Center(child: CircularProgressIndicator());
-                  return FeedDetailW(
-                      mq: mq,
-                      feed: feed,
-                      currUser: snapshot.data!,
-                      commentController: _commentController);
-                })));
+            child: FutureProvider<PyUser?>(
+                create: (_) async => ctx.watch<PyAuth>().currUser,
+                initialData: null,
+                child: FeedDetailW(
+                    mq: mq,
+                    feed: feed,
+                    commentController: _commentController))));
   }
 }
 
@@ -51,21 +47,20 @@ class FeedDetailW extends StatelessWidget {
     Key? key,
     required this.mq,
     required this.feed,
-    required PyUser currUser,
     required TextEditingController commentController,
-  })  : _currUser = currUser,
-        _commentController = commentController,
+  })  : _commentController = commentController,
         super(key: key);
 
   final MediaQueryData mq;
   final FeedInfo feed;
-  final PyUser _currUser;
   final TextEditingController _commentController;
 
   @override
   Widget build(BuildContext ctx) {
     const leftPadding = 20.0;
     const iconImgH = 24.0;
+    final U = ctx.watch<PyUser?>();
+    if (U == null) return Center(child: CircularProgressIndicator());
     Map<String, Text> tagMap = {};
     feed.hashTags
         .forEach((tag) => tagMap[tag] = Text(tag, style: tagTextSty(tag, ctx)));
@@ -83,11 +78,10 @@ class FeedDetailW extends StatelessWidget {
                   height: mq.size.height / 2,
                   child: PyCarousel(fs: feed.files)),
               Container(
-                width: mq.size.width,
-                padding: EdgeInsets.only(left: leftPadding),
-                margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
-                child: FeedStatusRow(currUser: _currUser, feed: feed),
-              ),
+                  width: mq.size.width,
+                  padding: EdgeInsets.only(left: leftPadding),
+                  margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
+                  child: FeedStatusRow(feed: feed)),
               if (feed.hashTags.length > 0) ...[
                 _Divider(),
                 Wrap(
@@ -122,8 +116,7 @@ class FeedDetailW extends StatelessWidget {
                       child: Text("댓글 달기"))),
               Padding(
                 padding: const EdgeInsets.only(left: leftPadding),
-                child:
-                    CommentList(feedId: feed.feedId, userId: _currUser.userId),
+                child: CommentList(feedId: feed.feedId, userId: U.userId),
               )
             ],
           ),
@@ -134,7 +127,7 @@ class FeedDetailW extends StatelessWidget {
           bottom: 30,
           child: CommentPost(
             mq: mq,
-            currUser: _currUser,
+            currUser: U,
             commentController: _commentController,
             feed: feed,
           ),

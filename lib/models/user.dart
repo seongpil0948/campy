@@ -47,6 +47,10 @@ class PyUser {
     """;
   }
 
+  bool valid() {
+    return userId.length > 3 && displayName != null && email != null;
+  }
+
   Future<bool> update() {
     updatedAt = DateTime.now();
     final doc = getCollection(c: Collections.Users).doc(userId);

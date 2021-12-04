@@ -93,15 +93,14 @@ class FeedThumnail extends StatelessWidget {
 }
 
 class FeedStatusRow extends StatefulWidget {
+  final ThumnailSize tSize;
   const FeedStatusRow({
     Key? key,
-    required PyUser currUser,
     required this.feed,
+    this.tSize = ThumnailSize.Medium,
     this.iconSize = const {'width': 15.0, 'height': 15.0},
-  })  : _currUser = currUser,
-        super(key: key);
+  }) : super(key: key);
 
-  final PyUser _currUser;
   final FeedInfo feed;
   final Map<String, double> iconSize;
 
@@ -110,16 +109,16 @@ class FeedStatusRow extends StatefulWidget {
 }
 
 class _FeedStatusRowState extends State<FeedStatusRow> {
-  void _updates() {
+  void _updates(PyUser u) {
     setState(() {
-      widget._currUser.update();
+      u.update();
       widget.feed.update();
     });
   }
 
   @override
   Widget build(BuildContext ctx) {
-    final U = widget._currUser;
+    final U = ctx.read<PyUser>();
     final F = widget.feed;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -131,7 +130,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
                     onPressed: () {
                       U.favoriteFeeds.remove(F.feedId);
                       F.likeUserIds.remove(U.userId);
-                      _updates();
+                      _updates(U);
                     },
                     icon: Icon(
                       Icons.favorite,
@@ -141,7 +140,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
                     onPressed: () {
                       U.favoriteFeeds.add(F.feedId);
                       F.likeUserIds.add(U.userId);
-                      _updates();
+                      _updates(U);
                     },
                     icon: Icon(
                       Icons.favorite_border_outlined,
@@ -206,7 +205,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
         //     Text("  ${F.bookmarkedUserIds.length}  "),
         //   ],
         // ),
-        FollowBtn(currUser: widget._currUser, F: F)
+        if (widget.tSize == ThumnailSize.Medium) FollowBtn(currUser: U, F: F)
       ],
     );
   }
