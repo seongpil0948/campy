@@ -1,5 +1,6 @@
 import 'package:campy/components/assets/upload.dart';
 import 'package:campy/components/structs/dot.dart';
+import 'package:campy/models/feed.dart';
 import 'package:campy/utils/io.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -45,15 +46,15 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
 
   @override
   Widget build(BuildContext ctx) {
-    var fs = ctx.watch<List<PyFile>>();
+    var fs = ctx.select((FeedInfo f) => f.files);
     return Column(children: <Widget>[
       CarouselSlider.builder(
           itemCount: fs.length + 1,
           itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
             if (idx == fs.length) {
               return AssetUploadCard(
-                  photoPressed: () => _pressAssetButton(false, ctx),
-                  videoPressed: () => _pressAssetButton(true, ctx));
+                  photoPressed: () => _pressAssetButton(false, fs),
+                  videoPressed: () => _pressAssetButton(true, fs));
             }
             var f = fs[idx];
             return loadFile(f: f, ctx: ctx);
@@ -62,8 +63,7 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
     ]);
   }
 
-  _pressAssetButton(bool isVideo, BuildContext ctx) async {
-    var fs = ctx.read<List<PyFile>>();
+  _pressAssetButton(bool isVideo, List<PyFile> fs) async {
     if (isVideo) {
       final asset = await _picker.pickVideo(source: ImageSource.gallery);
       if (asset != null) {

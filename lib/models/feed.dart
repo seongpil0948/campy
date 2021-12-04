@@ -3,19 +3,10 @@ import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/io.dart';
 import 'package:campy/utils/moment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class FeedInfo {
-  FeedInfo(
-      {required this.writer,
-      required this.feedId,
-      required this.files,
-      required this.title,
-      required this.content,
-      required this.placeAround,
-      required this.placePrice,
-      required this.campKind,
-      required this.hashTags});
-  final PyUser writer;
+  late PyUser writer;
   final String feedId;
   final List<PyFile> files;
   final String title;
@@ -29,6 +20,27 @@ class FeedInfo {
   List<String> bookmarkedUserIds = [];
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();
+
+  FeedInfo(
+      {required this.writer,
+      required this.feedId,
+      required this.files,
+      required this.title,
+      required this.content,
+      required this.placeAround,
+      required this.placePrice,
+      required this.campKind,
+      required this.hashTags});
+
+  FeedInfo.init()
+      : files = [],
+        feedId = const Uuid().v4(),
+        title = '',
+        content = '',
+        placePrice = 0,
+        campKind = '',
+        placeAround = '',
+        hashTags = [];
 
   @override
   String toString() {

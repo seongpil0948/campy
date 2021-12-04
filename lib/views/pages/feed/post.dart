@@ -1,11 +1,11 @@
 import 'package:campy/components/assets/carousel.dart';
 import 'package:campy/components/buttons/pyffold.dart';
 import 'package:campy/components/select/single.dart';
+import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/repositories/sns/feed.dart';
 import 'package:campy/utils/parsers.dart';
-import 'package:campy/utils/io.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
@@ -17,33 +17,12 @@ class FeedPostView extends StatefulWidget {
 }
 
 class _FeedPostViewState extends State<FeedPostView> {
-  String? title;
-  String? content;
-  String? kind;
-  String? price;
-  String? around;
-  // ignore: unused_local_variable
-  List<String> hashTags = [];
-  List<PyFile> files = [];
-
   @override
   Widget build(BuildContext ctx) {
     final mq = MediaQuery.of(ctx);
     return Pyffold(
         body: SingleChildScrollView(
-      child: MultiProvider(
-          providers: [
-            Provider.value(value: title),
-            Provider.value(value: content),
-            Provider.value(value: hashTags),
-            Provider.value(value: files),
-          ],
-          child: FeedPostW(
-            mq: mq,
-            kind: kind,
-            price: price,
-            around: around,
-          )),
+      child: Provider(create: (_) => FeedInfo.init(), child: FeedPostW(mq: mq)),
     ));
   }
 }
@@ -52,18 +31,13 @@ class FeedPostW extends StatelessWidget {
   const FeedPostW({
     Key? key,
     required this.mq,
-    required this.kind,
-    required this.price,
-    required this.around,
   }) : super(key: key);
 
   final MediaQueryData mq;
-  final String? kind;
-  final String? price;
-  final String? around;
 
   @override
   Widget build(BuildContext ctx) {
+    var feed = ctx.read<FeedInfo>();
     return Column(
       children: [
         Container(
@@ -76,10 +50,10 @@ class FeedPostW extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               PySingleSelect(
-                  source: kind,
+                  source: feed.campKind,
                   hint: "캠핑 종류",
                   items: ["__오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
-              PySingleSelect(source: price, hint: "가격 정보", items: [
+              PySingleSelect(source: feed.campKind, hint: "가격 정보", items: [
                 "5만원 이하",
                 "10만원 이하",
                 "15만원 이하 ",
@@ -87,7 +61,7 @@ class FeedPostW extends StatelessWidget {
                 "20만원 이상"
               ]),
               PySingleSelect(
-                  source: around,
+                  source: feed.placeAround,
                   hint: "주변 정보",
                   items: ["마트 없음", "관광코스 없음", "계곡 없음", "산 없음"]),
             ],
@@ -100,7 +74,8 @@ class FeedPostW extends StatelessWidget {
             builder: (ctx, snapshot) {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
-              var writer = snapshot.data!;
+              var feed = ctx.read<FeedInfo>();
+              feed.writer = snapshot.data!;
               return Row(
                 children: [
                   Expanded(
@@ -108,14 +83,7 @@ class FeedPostW extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
                       child: ElevatedButton(
                         onPressed: () {
-                          postFeed(
-                              ctx: ctx,
-                              writer: writer,
-                              files: Provider.of(ctx, listen: false).files,
-                              title: Provider.of(ctx, listen: false).title,
-                              content: Provider.of(ctx, listen: false).content,
-                              price: int.parse(price ?? '-1'),
-                              hashTags: ctx.watch<List<String>>());
+                          postFeed(ctx: ctx, feed: feed);
                         },
                         child: Center(
                           child: Text("올리기"),
@@ -144,8 +112,8 @@ class _PyEditorsState extends State<PyFeedEditors> {
   bool once = false;
 
   void setHashTags(BuildContext ctx, List<String> tags) {
-    var t = ctx.read<List<String>>();
-    t = tags;
+    var feed = ctx.read<FeedInfo>();
+    feed.hashTags = tags;
   }
 
   @override
@@ -241,7 +209,7 @@ class HashList extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final tags = ctx.watch<List<String>>(); // hashTags
+    final tags = ctx.select((FeedInfo f) => f.hashTags);
     return Wrap(
       children: [
         for (var tag in tags)
