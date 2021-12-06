@@ -94,15 +94,16 @@ class FeedThumnail extends StatelessWidget {
 
 class FeedStatusRow extends StatefulWidget {
   final ThumnailSize tSize;
+  final PyUser U;
+  final FeedInfo feed;
+  final Map<String, double> iconSize;
   const FeedStatusRow({
     Key? key,
     required this.feed,
+    required this.U,
     this.tSize = ThumnailSize.Medium,
     this.iconSize = const {'width': 15.0, 'height': 15.0},
   }) : super(key: key);
-
-  final FeedInfo feed;
-  final Map<String, double> iconSize;
 
   @override
   _FeedStatusRowState createState() => _FeedStatusRowState();
@@ -118,7 +119,7 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
 
   @override
   Widget build(BuildContext ctx) {
-    final U = ctx.read<PyUser>();
+    final U = widget.U;
     final F = widget.feed;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:campy/components/assets/carousel.dart';
 import 'package:campy/components/structs/comment/list.dart';
 import 'package:campy/components/structs/comment/post.dart';
+import 'package:campy/components/structs/common/pymap.dart';
 import 'package:campy/components/structs/feed/feed.dart';
 import 'package:campy/components/structs/place/place.dart';
 import 'package:campy/repositories/auth/auth.dart';
@@ -17,7 +16,6 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FeedDetailView extends StatelessWidget {
   FeedDetailView({Key? key}) : super(key: key);
@@ -81,7 +79,10 @@ class FeedDetailW extends StatelessWidget {
                   width: mq.size.width,
                   padding: EdgeInsets.only(left: leftPadding),
                   margin: EdgeInsets.symmetric(vertical: mq.size.height / 100),
-                  child: FeedStatusRow(feed: feed)),
+                  child: FeedStatusRow(
+                    feed: feed,
+                    U: U,
+                  )),
               if (feed.hashTags.length > 0) ...[
                 _Divider(),
                 Wrap(
@@ -105,7 +106,9 @@ class FeedDetailW extends StatelessWidget {
                                     : Theme.of(ctx).textTheme.bodyText2,
                               ))
                           .toList())),
-              Container(height: mq.size.height / 4, child: CampyMap()),
+              Container(
+                  height: mq.size.height / 4,
+                  child: CampyMap(initLat: feed.lat, initLng: feed.lng)),
               _Divider(),
               Consumer<CommentState>(
                   builder: (ctx, cmtState, child) => TextButton(
@@ -147,50 +150,5 @@ class _Divider extends StatelessWidget {
         height: 30,
         margin: EdgeInsets.symmetric(horizontal: 10),
         child: Divider());
-  }
-}
-
-class CampyMap extends StatefulWidget {
-  const CampyMap({Key? key}) : super(key: key);
-
-  @override
-  _CampyMapState createState() => _CampyMapState();
-}
-
-class _CampyMapState extends State<CampyMap> {
-  Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(children: [
-      GoogleMap(
-          mapType: MapType.hybrid,
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          myLocationEnabled: true),
-      ElevatedButton(
-          onPressed: () {
-            _goToTheLake();
-          },
-          child: Text("Go to lake"))
-    ]);
   }
 }

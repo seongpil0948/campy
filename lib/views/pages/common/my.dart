@@ -124,7 +124,10 @@ class _GridFeeds extends StatelessWidget {
                         child: Provider.value(
                             value: _currUser,
                             child: FeedStatusRow(
-                                feed: f, tSize: ThumnailSize.Small))),
+                              feed: f,
+                              tSize: ThumnailSize.Small,
+                              U: _currUser,
+                            ))),
                     Expanded(
                         flex: 3,
                         child: FutureBuilder<List<PyFile>>(

@@ -14,6 +14,9 @@ class FeedInfo {
   final String placeAround;
   final int placePrice;
   final String campKind;
+  String? addr;
+  double? lat;
+  double? lng; // lat lng
   List<String> hashTags = [];
   List<String> likeUserIds = [];
   List<String> sharedUserIds = [];
@@ -30,7 +33,10 @@ class FeedInfo {
       required this.placeAround,
       required this.placePrice,
       required this.campKind,
-      required this.hashTags});
+      required this.hashTags,
+      required this.addr,
+      required this.lat,
+      required this.lng});
 
   FeedInfo.init()
       : files = [],
@@ -44,7 +50,10 @@ class FeedInfo {
 
   @override
   String toString() {
-    return "\n >>>>> User: $writer 's FeedInfo: \n Title$title \n tags: $hashTags \n Files: $files \n <<<<<";
+    var str =
+        "\n >>>>> User: $writer 's FeedInfo: \n Title$title \n tags: $hashTags \n Files: $files \n <<<<<";
+    if (addr != null) str += "Address: $addr";
+    return str;
   }
 
   Future<bool> update() {
@@ -71,7 +80,10 @@ class FeedInfo {
         sharedUserIds = j['sharedUserIds'].cast<String>(),
         bookmarkedUserIds = j['bookmarkedUserIds'].cast<String>(),
         createdAt = timeStamp2DateTime(j['createdAt']),
-        updatedAt = timeStamp2DateTime(j['updatedAt']);
+        updatedAt = timeStamp2DateTime(j['updatedAt']),
+        addr = j['addr'] ?? null,
+        lat = j['lat'] ?? null,
+        lng = j['lng'] ?? null;
 
   Map<String, dynamic> toJson() => {
         'writer': writer.toJson(),
@@ -87,6 +99,9 @@ class FeedInfo {
         'sharedUserIds': sharedUserIds,
         'bookmarkedUserIds': bookmarkedUserIds,
         'updatedAt': updatedAt,
-        'createdAt': createdAt
+        'createdAt': createdAt,
+        'addr': addr,
+        'lat': lat,
+        'lng': lng,
       };
 }

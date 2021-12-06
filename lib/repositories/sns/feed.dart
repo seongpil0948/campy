@@ -31,6 +31,9 @@ Future postFeed({required BuildContext ctx, required FeedInfo feed}) async {
     placePrice: feed.placePrice,
     campKind: feed.campKind,
     hashTags: feed.hashTags,
+    addr: feed.addr,
+    lat: feed.lat,
+    lng: feed.lng,
   );
   // If you don't add a field to the document it will be orphaned.
   doc.set(feed.writer.toJson(), SetOptions(merge: true));

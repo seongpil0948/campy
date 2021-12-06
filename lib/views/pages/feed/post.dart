@@ -1,12 +1,14 @@
 import 'package:campy/components/assets/carousel.dart';
 import 'package:campy/components/buttons/pyffold.dart';
 import 'package:campy/components/select/single.dart';
+import 'package:campy/components/structs/common/pymap.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/repositories/sns/feed.dart';
 import 'package:campy/utils/parsers.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
 
@@ -67,6 +69,15 @@ class FeedPostW extends StatelessWidget {
             ],
           ),
         ),
+        SelectMapW(onPick: (PickResult r) {
+          var feed = ctx.read<FeedInfo>();
+          feed.addr = r.formattedAddress;
+          final l = r.geometry?.location;
+          if (l != null) {
+            feed.lat = l.lat;
+            feed.lng = l.lng;
+          }
+        }),
         PyFeedEditors(),
         HashList(),
         FutureBuilder<PyUser>(
@@ -74,7 +85,7 @@ class FeedPostW extends StatelessWidget {
             builder: (ctx, snapshot) {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
-              var feed = ctx.read<FeedInfo>();
+              var feed = ctx.watch<FeedInfo>();
               feed.writer = snapshot.data!;
               return Row(
                 children: [
