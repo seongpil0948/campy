@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.campy.sns">
    <application
-        android:name="com.campy.sns"
         android:label="campy"
         android:icon="@mipmap/ic_launcher">
         <activity
