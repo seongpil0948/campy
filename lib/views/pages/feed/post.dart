@@ -132,7 +132,7 @@ class _PyEditorsState extends State<PyFeedEditors> {
     var ctx = context;
     if (once == false) {
       _contentController = RichTextController(
-          patternMap: {
+          patternMatchMap: {
             RegExp("#[|ㄱ-ㅎ가-힣a-zA-Z0-9]+"):
                 Theme.of(ctx).primaryTextTheme.bodyText2!,
             RegExp(r"@[|ㄱ-ㅎ가-힣a-zA-Z0-9]+"):
