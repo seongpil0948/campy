@@ -104,7 +104,7 @@ class FeedDetailW extends StatelessWidget {
                               ))
                           .toList())),
               Container(
-                  height: mq.size.height / 4,
+                  height: mq.size.height / 3,
                   child: CampyMap(initLat: feed.lat, initLng: feed.lng)),
               _Divider(),
               Consumer<CommentState>(

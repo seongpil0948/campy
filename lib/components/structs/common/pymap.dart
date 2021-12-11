@@ -10,10 +10,11 @@ const CameraPosition defaultPosition = CameraPosition(
   zoom: defaultZoom,
 );
 
+// ignore: must_be_immutable
 class CampyMap extends StatefulWidget {
   final double? initLat;
   final double? initLng;
-  const CampyMap({Key? key, this.initLat, this.initLng}) : super(key: key);
+  CampyMap({Key? key, this.initLat, this.initLng}) : super(key: key);
 
   @override
   _CampyMapState createState() => _CampyMapState();
@@ -35,25 +36,25 @@ class _CampyMapState extends State<CampyMap> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Stack(children: [
-      GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition:
-              widget.initLat != null && widget.initLng != null
-                  ? CameraPosition(
-                      target: LatLng(widget.initLat!, widget.initLng!),
-                      zoom: defaultZoom)
-                  : defaultPosition,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          myLocationEnabled: true),
-      // ElevatedButton(
-      //     onPressed: () {
-      //       _goToTheLake();
-      //     },
-      //     child: Text("Go to lake"))
-    ]);
+    var _markers = [
+      Marker(
+          markerId: MarkerId("1"),
+          draggable: true,
+          onTap: () => print("Marker!"),
+          position: LatLng(widget.initLat!, widget.initLng!))
+    ];
+    return GoogleMap(
+        mapType: MapType.hybrid,
+        markers: Set.from(_markers),
+        initialCameraPosition: widget.initLat != null && widget.initLng != null
+            ? CameraPosition(
+                target: LatLng(widget.initLat!, widget.initLng!),
+                zoom: defaultZoom)
+            : defaultPosition,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+        myLocationEnabled: true);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:campy/models/feed.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PlaceInfo extends StatelessWidget {
   const PlaceInfo({
@@ -44,9 +45,14 @@ class PlaceInfo extends StatelessWidget {
                   Container(
                     constraints: BoxConstraints(maxWidth: 180),
                     margin: EdgeInsets.only(left: mq.size.width / 80),
-                    child: Text(
-                      "${feed.addr}",
-                      overflow: TextOverflow.ellipsis,
+                    child: TextButton(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: feed.addr));
+                      },
+                      child: Text(
+                        "${feed.addr}",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   )
                 ]),
@@ -60,7 +66,7 @@ class PlaceInfo extends StatelessWidget {
                     "assets/images/won.png",
                     height: iconImgH - 7,
                   ),
-                  Text("  ${feed.placePrice}")
+                  Text("  ${feed.placePrice} 만원")
                 ]),
                 SizedBox(height: 10),
                 Row(children: [
