@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campy/components/buttons/white.dart';
 import 'package:campy/components/structs/common/user.dart';

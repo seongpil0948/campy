@@ -1,5 +1,6 @@
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
+import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/io.dart';
 import 'package:campy/views/router/path.dart';
@@ -10,8 +11,10 @@ import 'package:provider/src/provider.dart';
 
 import '../upload_file.dart';
 
-Future postFeed({required BuildContext ctx, required FeedInfo feed}) async {
+Future postFeed({required BuildContext ctx}) async {
   List<PyFile> paths = [];
+  final feed = ctx.read<FeedInfo>();
+  feed.writer = await ctx.read<PyAuth>().currUser;
   for (var f in feed.files) {
     var info = await uploadFilePathsToFirebase(f, feed.writer.userId);
     if (info != null && info.containsKey('url') && info.containsKey('pymime')) {

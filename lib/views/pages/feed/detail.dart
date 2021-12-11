@@ -12,10 +12,7 @@ import 'package:campy/models/user.dart';
 import 'package:campy/utils/parsers.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
 
 class FeedDetailView extends StatelessWidget {
   FeedDetailView({Key? key}) : super(key: key);
@@ -93,7 +90,7 @@ class FeedDetailW extends StatelessWidget {
                 )
               ],
               _Divider(),
-              PlaceInfo(mq: mq, iconImgH: iconImgH),
+              PlaceInfo(mq: mq, iconImgH: iconImgH, feed: feed),
               RichText(
                   text: TextSpan(
                       children: feed.content

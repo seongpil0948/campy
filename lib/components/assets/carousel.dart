@@ -47,20 +47,18 @@ class _PyAssetCarouselState extends State<PyAssetCarousel> {
   @override
   Widget build(BuildContext ctx) {
     var fs = ctx.select((FeedInfo f) => f.files);
-    return Column(children: <Widget>[
-      CarouselSlider.builder(
-          itemCount: fs.length + 1,
-          itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
-            if (idx == fs.length) {
-              return AssetUploadCard(
-                  photoPressed: () => _pressAssetButton(false, fs),
-                  videoPressed: () => _pressAssetButton(true, fs));
-            }
-            var f = fs[idx];
-            return loadFile(f: f, ctx: ctx);
-          },
-          options: pyCarouselOption),
-    ]);
+    return CarouselSlider.builder(
+        itemCount: fs.length + 1,
+        itemBuilder: (BuildContext ctx, int idx, int pageViewIndex) {
+          if (idx == fs.length) {
+            return AssetUploadCard(
+                photoPressed: () => _pressAssetButton(false, fs),
+                videoPressed: () => _pressAssetButton(true, fs));
+          }
+          var f = fs[idx];
+          return loadFile(f: f, ctx: ctx);
+        },
+        options: pyCarouselOption);
   }
 
   _pressAssetButton(bool isVideo, List<PyFile> fs) async {

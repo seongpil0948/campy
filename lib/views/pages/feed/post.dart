@@ -3,8 +3,6 @@ import 'package:campy/components/buttons/pyffold.dart';
 import 'package:campy/components/select/single.dart';
 import 'package:campy/components/structs/common/pymap.dart';
 import 'package:campy/models/feed.dart';
-import 'package:campy/models/user.dart';
-import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/repositories/sns/feed.dart';
 import 'package:campy/utils/parsers.dart';
 import 'package:flutter/material.dart';
@@ -43,27 +41,40 @@ class FeedPostW extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: mq.size.height / 2.1,
+          height: mq.size.height / 2.5,
+          width: mq.size.width - 20,
           child: PyAssetCarousel(),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               PySingleSelect(
-                  source: feed.campKind,
+                  onChange: (String? v) {
+                    feed.campKind = v ?? "";
+                  },
                   hint: "캠핑 종류",
                   items: ["__오토 캠핑", "차박 캠핑", "글램핑", "트래킹", "카라반"]),
-              PySingleSelect(source: feed.campKind, hint: "가격 정보", items: [
-                "5만원 이하",
-                "10만원 이하",
-                "15만원 이하 ",
-                "20만원 이하",
-                "20만원 이상"
-              ]),
               PySingleSelect(
-                  source: feed.placeAround,
+                  onChange: (String? v) {
+                    feed.placePrice = int.parse(
+                        RegExp(r"\d+", caseSensitive: false, multiLine: false)
+                            .stringMatch(v ?? "0")
+                            .toString());
+                  },
+                  hint: "가격 정보",
+                  items: [
+                    "5만원 이하",
+                    "10만원 이하",
+                    "15만원 이하 ",
+                    "20만원 이하",
+                    "20만원 이상"
+                  ]),
+              PySingleSelect(
+                  onChange: (String? v) {
+                    feed.placeAround = v ?? "";
+                  },
                   hint: "주변 정보",
                   items: ["마트 없음", "관광코스 없음", "계곡 없음", "산 없음"]),
             ],
@@ -80,31 +91,23 @@ class FeedPostW extends StatelessWidget {
         }),
         PyFeedEditors(),
         HashList(),
-        FutureBuilder<PyUser>(
-            future: ctx.watch<PyAuth>().currUser,
-            builder: (ctx, snapshot) {
-              if (!snapshot.hasData)
-                return Center(child: CircularProgressIndicator());
-              var feed = ctx.watch<FeedInfo>();
-              feed.writer = snapshot.data!;
-              return Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          postFeed(ctx: ctx, feed: feed);
-                        },
-                        child: Center(
-                          child: Text("올리기"),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              );
-            })
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(60, 0, 60, 30),
+                child: ElevatedButton(
+                  onPressed: () {
+                    postFeed(ctx: ctx);
+                  },
+                  child: Center(
+                    child: Text("올리기"),
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
       ],
     );
   }

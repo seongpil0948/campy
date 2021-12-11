@@ -38,7 +38,6 @@ class FeedThumnail extends StatelessWidget {
           child: Stack(children: [
             if (img == null || img!.file == null)
               CachedNetworkImage(
-                  // FIXME: 동영상일때는 썸네일을 보여줄 수 있도록
                   fit: BoxFit.cover,
                   width: mq.size.width,
                   height: mq.size.height / 2.1,

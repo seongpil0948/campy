@@ -9,11 +9,11 @@ class FeedInfo {
   late PyUser writer;
   final String feedId;
   final List<PyFile> files;
-  final String title;
-  final String content;
-  final String placeAround;
-  final int placePrice;
-  final String campKind;
+  String title;
+  String content;
+  String placeAround;
+  int placePrice;
+  String campKind;
   String? addr;
   double? lat;
   double? lng; // lat lng

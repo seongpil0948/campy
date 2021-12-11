@@ -1,3 +1,4 @@
+import 'package:campy/models/feed.dart';
 import 'package:flutter/material.dart';
 
 class PlaceInfo extends StatelessWidget {
@@ -5,11 +6,12 @@ class PlaceInfo extends StatelessWidget {
     Key? key,
     required this.mq,
     required this.iconImgH,
+    required this.feed,
   }) : super(key: key);
 
   final MediaQueryData mq;
   final double iconImgH;
-
+  final FeedInfo feed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +30,7 @@ class PlaceInfo extends StatelessWidget {
                     "assets/images/feed_icon_filled.png",
                     height: iconImgH,
                   ),
-                  Text(" 글램핑")
+                  Text(" ${feed.campKind}")
                 ]),
                 SizedBox(height: 10),
                 Row(mainAxisSize: MainAxisSize.min, children: [
@@ -43,7 +45,7 @@ class PlaceInfo extends StatelessWidget {
                     constraints: BoxConstraints(maxWidth: 180),
                     margin: EdgeInsets.only(left: mq.size.width / 80),
                     child: Text(
-                      "경기도 광명시 가림일로",
+                      "${feed.addr}",
                       overflow: TextOverflow.ellipsis,
                     ),
                   )
@@ -58,7 +60,7 @@ class PlaceInfo extends StatelessWidget {
                     "assets/images/won.png",
                     height: iconImgH - 7,
                   ),
-                  Text("  유료 : 1일 10만원")
+                  Text("  ${feed.placePrice}")
                 ]),
                 SizedBox(height: 10),
                 Row(children: [
@@ -67,7 +69,7 @@ class PlaceInfo extends StatelessWidget {
                     height: iconImgH - 7,
                   ),
                   Text(
-                    "  주변 마켓 없음",
+                    "  ${feed.placeAround}",
                     overflow: TextOverflow.ellipsis,
                   ),
                 ]),

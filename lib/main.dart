@@ -6,14 +6,19 @@ import 'package:campy/views/router/parser.dart';
 import 'package:campy/utils/system_ui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:campy/views/router/delegate.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 const USE_FIRESTORE_EMULATOR = false;
 
 void main() {
   handleStatusBar(to: StatusBarTo.Transparent);
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
+  }
   runApp(PyApp());
 }
 
