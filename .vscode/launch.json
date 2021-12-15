@@ -7,7 +7,8 @@
         {
             "name": "campy",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "deviceId": "emulator-5554"
         },
         {
             "name": "campy (profile mode)",
