@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
+// e.key = pageConfig Key
+const backDisbles = ['Unknown', 'Login', 'Splash'];
+
 class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   PyRouterDelegate();
@@ -22,6 +25,9 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
 
   final List<Page> _pages = [];
   List<MaterialPage> get pages => List.unmodifiable(_pages);
+  List<Page> get backAblePages =>
+      _pages.where((e) => !backDisbles.contains(e.key)).toList();
+
   PyPathConfig get currPageConfig => _pages.last.arguments as PyPathConfig;
 
   List<Page> buildPages(BuildContext ctx) {
@@ -76,19 +82,16 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   }
 
   bool _onPopPage(Route<dynamic> route, result) {
-    // If the route can’t handle it internally, it returns false
+    // returns false If the route can’t handle it internally
     final didPop = route.didPop(result);
-    if (!didPop) {
-      return false;
-    }
+    if (!didPop) return false;
     // Otherwise, check to see if we can remove the top page
     // and remove the page from the list of pages.
     if (canPop()) {
       pop();
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   void _removePage(MaterialPage page) {
@@ -102,7 +105,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   }
 
   bool canPop() {
-    return _pages.length > 1;
+    return backAblePages.length > 1;
   }
 
   // These methods ensure there are at least two pages in the list.
@@ -112,9 +115,13 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   // _removePage on the last page of the app, you would see a blank screen.
   @override
   Future<bool> popRoute() {
-    print("====== pop Route : ${canPop()} ===== ");
     if (canPop()) {
-      _removePage(_pages.last as MaterialPage);
+      while (true) {
+        _removePage(_pages.last as MaterialPage);
+        // 페이지가 뒤로가기 불가에 포함되어 있지 않다면 그만 지운다
+        if (!backDisbles.contains(_pages.last.key)) break;
+      }
+
       return Future.value(true);
     }
     return Future.value(false);
