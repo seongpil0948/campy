@@ -20,9 +20,7 @@ class LoginView extends StatelessWidget {
           fit: BoxFit.cover,
           height: mq.size.height,
         ),
-        Center(
-          child: Expanded(
-            child: Column(
+    Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
@@ -58,8 +56,7 @@ class LoginView extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ),
+
       ]),
     );
   }
