@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.campy.sns">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="campy"
         android:icon="@mipmap/ic_launcher">
@@ -51,7 +52,6 @@
           </activity>
     
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- <<< Face Book <<< -->
     <queries>
       <!-- If your app opens https URLs -->
