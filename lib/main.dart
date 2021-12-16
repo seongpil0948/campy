@@ -31,6 +31,9 @@ class PyApp extends StatelessWidget {
       builder: (ctx, snapshot) {
         FirebaseCrashlytics.instance.log("Init Crashlytics");
         if (snapshot.hasData) {
+          final app = snapshot.data as FirebaseApp;
+          print("APP Initialized: ${app.toString()}");
+
           if (USE_FIRESTORE_EMULATOR) {
             FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
           }
