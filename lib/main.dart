@@ -6,6 +6,7 @@ import 'package:campy/views/router/parser.dart';
 import 'package:campy/utils/system_ui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:campy/views/router/delegate.dart';
@@ -28,6 +29,7 @@ class PyApp extends StatelessWidget {
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (ctx, snapshot) {
+        FirebaseCrashlytics.instance.log("Init Crashlytics");
         if (snapshot.hasData) {
           if (USE_FIRESTORE_EMULATOR) {
             FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);

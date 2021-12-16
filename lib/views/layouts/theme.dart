@@ -86,15 +86,9 @@ class PyTheme extends PyThemeInterface {
   }
 
   ThemeData get darkTheme {
-    return ThemeData(
-        primaryColor: Colors.greenAccent,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
-        textTheme: ThemeData.dark().textTheme,
-        buttonTheme: ButtonThemeData(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-          buttonColor: Colors.deepPurple,
-        ));
+    return lightTheme.copyWith(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: Colors.black,
+    );
   }
 }
