@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>campy</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,7 +39,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>385367192962992</string>
 	<key>FacebookClientToken</key>
@@ -71,16 +73,32 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>애플 뮤직을 사용하시겠어요?</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>항상 블루투스 기능을 사용해도 될까요?</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>블루투스 기능을 사용하시겠어요?</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>캘린더 앱을 사용해도 될까요?</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Upload image from camera for screen background</string>
+	<key>NSContactsUsageDescription</key>
+	<string>연락처 데이터를 제공 받아도 될까요?</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>우리 캠피에게 위치를 허용해주세요 쀵!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>우리 캠피에게 위치를 허용해주세요 쀵@</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Post videos to profile</string>
+	<key>NSMotionUsageDescription</key>
+	<string>모션 기능을 사용해도 될까요?</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Upload images for screen background</string>
+	<string>앨범앱을 사용해도 될까요?</string>
+	<key>NSPrincipalClass</key>
+	<string></string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>음성인식 기능을 사용해도 될까요?</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -105,5 +123,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>애플 뮤직을 사용하시겠어요?</string>
 </dict>
 </plist>
