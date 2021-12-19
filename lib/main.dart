@@ -1,6 +1,7 @@
 import 'package:campy/config.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/state.dart';
+import 'package:campy/repositories/push/fcm.dart';
 import 'package:campy/views/pages/common/wrong.dart';
 import 'package:campy/views/router/parser.dart';
 import 'package:campy/utils/system_ui.dart';
@@ -30,6 +31,7 @@ class PyApp extends StatelessWidget {
       future: Firebase.initializeApp(),
       builder: (ctx, snapshot) {
         FirebaseCrashlytics.instance.log("Init Crashlytics");
+        fcmInitialize();
         if (snapshot.hasData) {
           final app = snapshot.data as FirebaseApp;
           print("APP Initialized: ${app.toString()}");
