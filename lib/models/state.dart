@@ -10,12 +10,19 @@ final defaultPage = PageAction.feed();
 class PyState extends ChangeNotifier {
   late PageAction _currPageAction;
   bool endSplash = false;
+  bool _isLoading = false;
   FeedInfo? selectedFeed;
   InheritProduct? selectedProd;
 
   PageAction get currPageAction => _currPageAction;
   set currPageAction(PageAction act) {
     _currPageAction = act;
+    notifyListeners();
+  }
+
+  bool get isLoading => _isLoading;
+  set isLoading(bool l) {
+    _isLoading = l;
     notifyListeners();
   }
 

@@ -1,6 +1,8 @@
+import 'package:campy/models/state.dart';
 import 'package:campy/views/layouts/appbar.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class Pyffold extends StatelessWidget {
   final Widget body;
@@ -25,7 +27,7 @@ class Pyffold extends StatelessWidget {
       drawer: PyDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: fButton,
-      body: body,
+      body: ctx.watch<PyState>().isLoading ? CircularProgressIndicator() : body,
       bottomSheet: bSheet,
     );
   }
