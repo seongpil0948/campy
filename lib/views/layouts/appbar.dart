@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/inputs/appbar_text_field.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/repositories/auth/auth.dart';
@@ -46,15 +47,12 @@ class PyAppBar extends StatelessWidget {
                   builder: (ctx, snapshot) {
                     if (!snapshot.hasData) return CircularProgressIndicator();
                     return GestureDetector(
-                      onTap: () => {
-                        ctx.read<PyState>().currPageAction =
-                            PageAction.my(snapshot.data!)
-                      },
-                      child: CircleAvatar(
-                        backgroundImage: CachedNetworkImageProvider(
-                            snapshot.data!.profileImage),
-                      ),
-                    );
+                        onTap: () => {
+                              ctx.read<PyState>().currPageAction =
+                                  PageAction.my(snapshot.data!)
+                            },
+                        child:
+                            PyUserAvatar(imgUrl: snapshot.data!.profileImage));
                   })
             ],
           ),

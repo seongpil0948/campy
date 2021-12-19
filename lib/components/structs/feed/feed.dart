@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
@@ -41,7 +42,7 @@ class FeedThumnail extends StatelessWidget {
                   fit: BoxFit.cover,
                   width: mq.size.width,
                   height: mq.size.height / 2.1,
-                  imageUrl: img?.url ?? feedInfo.writer.photoURL)
+                  imageUrl: img?.url ?? feedInfo.writer.profileImage)
             else if (img!.file != null)
               loadFile(f: img!, ctx: ctx),
             Positioned(
@@ -53,10 +54,8 @@ class FeedThumnail extends StatelessWidget {
                     if (tSize == ThumnailSize.Medium)
                       Row(
                         children: [
-                          CircleAvatar(
-                              radius: 15,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  feedInfo.writer.photoURL)),
+                          PyUserAvatar(
+                              radius: 15, imgUrl: feedInfo.writer.profileImage),
                           SizedBox(width: 10),
                           Text(
                             feedInfo.writer.email ?? "",

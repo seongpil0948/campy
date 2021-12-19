@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/buttons/white.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/repositories/auth/auth.dart';
@@ -71,11 +72,8 @@ class PyDrawer extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage: CachedNetworkImageProvider(
-                                _currUser.user.photoURL),
-                          ),
+                          PyUserAvatar(
+                              imgUrl: _currUser.user.profileImage, radius: 30),
                           SizedBox(
                             width: 20,
                           ),

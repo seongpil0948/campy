@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/models/comment.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/sns/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:campy/components/buttons/avatar.dart';
 
 class CommentPost extends StatelessWidget {
   const CommentPost(
@@ -43,10 +44,7 @@ class CommentPost extends StatelessWidget {
             flex: 1,
             child: Padding(
               padding: const EdgeInsets.all(1.0),
-              child: CircleAvatar(
-                  radius: 17,
-                  backgroundImage:
-                      CachedNetworkImageProvider(_currUser.profileImage)),
+              child: PyUserAvatar(radius: 17, imgUrl: _currUser.profileImage),
             ),
           ),
           Expanded(

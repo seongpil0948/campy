@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/buttons/fabs.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/components/structs/feed/feed.dart';
@@ -47,10 +48,8 @@ class MyView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(height: 20),
-                        CircleAvatar(
-                            radius: 40,
-                            backgroundImage: CachedNetworkImageProvider(
-                                _currUser.user.profileImage)),
+                        PyUserAvatar(
+                            imgUrl: _currUser.user.profileImage, radius: 40),
                         Container(
                           margin: EdgeInsets.only(top: 10),
                           child: Text(
