@@ -1,8 +1,11 @@
 import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/buttons/white.dart';
 import 'package:campy/models/feed.dart';
+import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
+import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class UserSnsInfo extends StatelessWidget {
   const UserSnsInfo({
@@ -89,6 +92,9 @@ class UserRow extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print("Click User Row");
+        final state = ctx.read<PyState>();
+        state.selectedUser = feedInfo.writer;
+        state.currPageAction = PageAction.my(feedInfo.writer.userId);
       },
       child: Row(
         children: [

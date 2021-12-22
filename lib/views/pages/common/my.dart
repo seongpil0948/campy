@@ -3,7 +3,6 @@ import 'package:campy/components/buttons/fabs.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/components/structs/feed/list.dart';
 import 'package:campy/models/state.dart';
-import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth/user.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +10,18 @@ import 'package:provider/provider.dart';
 // ignore: implementation_imports
 
 class MyView extends StatelessWidget {
-  final PyUser? selectedUser;
-  const MyView({Key? key, this.selectedUser}) : super(key: key);
+  const MyView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
     final body = FutureBuilder<CompleteUser>(
-      future: getCompleteUser(ctx: ctx, selectedUser: selectedUser),
+      future: getCompleteUser(
+          ctx: ctx, selectedUser: ctx.read<PyState>().selectedUser),
       builder: (ctx, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
         final _currUser = snapshot.data!;
+        ctx.read<PyState>().selectedUser = null;
         return _MyViewW(currUser: _currUser);
       },
     );

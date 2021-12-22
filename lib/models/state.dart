@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:campy/models/feed.dart';
+import 'package:campy/models/user.dart';
 import 'package:campy/repositories/store/product.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class PyState extends ChangeNotifier {
   bool _isLoading = false;
   FeedInfo? selectedFeed;
   InheritProduct? selectedProd;
+  PyUser? selectedUser; // Null If Me
 
   PageAction get currPageAction => _currPageAction;
   set currPageAction(PageAction act) {
