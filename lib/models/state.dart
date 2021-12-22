@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 final defaultPage = PageAction.feed();
 
 class PyState extends ChangeNotifier {
-  late PageAction _currPageAction;
+  PageAction _currPageAction = defaultPage;
   bool endSplash = false;
   bool _isLoading = false;
   FeedInfo? selectedFeed;
@@ -32,7 +32,6 @@ class PyState extends ChangeNotifier {
 
   // === Singleton ===
   PyState._onlyOne() {
-    currPageAction = defaultPage;
     Timer(Duration(seconds: 4), () {
       endSplash = true;
       notifyListeners();
