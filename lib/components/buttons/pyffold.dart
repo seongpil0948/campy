@@ -2,6 +2,7 @@ import 'package:campy/models/state.dart';
 import 'package:campy/views/layouts/appbar.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class Pyffold extends StatelessWidget {

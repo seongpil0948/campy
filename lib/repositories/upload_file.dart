@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:campy/utils/io.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-Future<Map?> uploadFilePathsToFirebase(PyFile f, String userId) async {
-  final path = 'clientUploads/$userId/${f.file!.path.split("/").last}';
+Future<PyFile?> uploadFilePathsToFirebase(
+    {required PyFile f, required String path}) async {
   // /uploads/$p
   var storeRef = FirebaseStorage.instance.ref().child(path);
   SettableMetadata metadata = SettableMetadata(
@@ -33,10 +33,13 @@ Future<Map?> uploadFilePathsToFirebase(PyFile f, String userId) async {
   try {
     await task;
     var meta = await storeRef.getMetadata();
-    return {
+    final info = {
       "url": await storeRef.getDownloadURL(),
       "pymime": meta.customMetadata!['pymime']
     };
+    if (info.containsKey('url') && info.containsKey('pymime')) {
+      return PyFile.fromCdn(url: info['url']!, fileType: info['pymime']!);
+    }
   } on FirebaseException catch (e) {
     if (e.code == 'permission-denied') {
       print('User does not have permission to upload to this reference.');

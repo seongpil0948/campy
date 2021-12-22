@@ -5,7 +5,6 @@ import 'package:campy/models/user.dart';
 import 'package:campy/repositories/sns/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:campy/components/buttons/avatar.dart';
 
 class CommentPost extends StatelessWidget {
   const CommentPost(

@@ -20,13 +20,11 @@ Future postFeed({required BuildContext ctx}) async {
     feed.writer = await ctx.read<PyAuth>().currUser;
 
     for (var f in feed.files) {
-      var info = await uploadFilePathsToFirebase(f, feed.writer.userId);
-      if (info != null &&
-          info.containsKey('url') &&
-          info.containsKey('pymime')) {
-        var file = PyFile.fromCdn(url: info['url'], fileType: info['pymime']);
-        paths.add(file);
-      }
+      var file = await uploadFilePathsToFirebase(
+          f: f,
+          path:
+              'clientUploads/${feed.writer.userId}/${f.file!.path.split("/").last}');
+      if (file != null) paths.add(file);
     }
 
     final doc = getCollection(c: Collections.Users).doc(feed.writer.userId);

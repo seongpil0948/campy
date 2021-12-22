@@ -51,13 +51,11 @@ class PyUser {
     return userId.length > 3 && displayName != null && email != null;
   }
 
-  Future<bool> update() {
+  Future<bool> update() async {
     updatedAt = DateTime.now();
     final doc = getCollection(c: Collections.Users).doc(userId);
-    return doc
-        .set(toJson(), SetOptions(merge: true))
-        .then((value) => true)
-        .catchError((e) => false);
+    await doc.set(toJson(), SetOptions(merge: true));
+    return true;
   }
 
   PyUser.fromJson(Map<String, dynamic> j)
