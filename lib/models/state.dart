@@ -16,6 +16,10 @@ class PyState extends ChangeNotifier {
 
   PageAction get currPageAction => _currPageAction;
   set currPageAction(PageAction act) {
+    if (_currPageAction.page.key == act.page.key ||
+        _currPageAction.page.hashCode == act.page.hashCode) {
+      act.state = PageState.replace;
+    }
     _currPageAction = act;
     notifyListeners();
   }
