@@ -1,3 +1,4 @@
+import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/buttons/white.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/user.dart';
@@ -72,5 +73,33 @@ class _FollowBtnState extends State<FollowBtn> {
           followUser(widget.currUser, widget.F.writer, aleady);
         },
         child: Text(txt));
+  }
+}
+
+class UserRow extends StatelessWidget {
+  const UserRow({
+    Key? key,
+    required this.feedInfo,
+  }) : super(key: key);
+
+  final FeedInfo feedInfo;
+
+  @override
+  Widget build(BuildContext ctx) {
+    return GestureDetector(
+      onTap: () {
+        print("Click User Row");
+      },
+      child: Row(
+        children: [
+          PyUserAvatar(radius: 15, imgUrl: feedInfo.writer.profileImage),
+          SizedBox(width: 10),
+          Text(
+            feedInfo.writer.email ?? "",
+            style: Theme.of(ctx).textTheme.bodyText1,
+          )
+        ],
+      ),
+    );
   }
 }

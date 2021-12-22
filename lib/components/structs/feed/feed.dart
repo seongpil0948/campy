@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/models/state.dart';
@@ -28,7 +27,7 @@ class FeedThumnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    return GestureDetector(
+    final thumnail = GestureDetector(
       onTap: () {
         final state = ctx.read<PyState>();
         state.currPageAction = PageAction.feedDetail(feedInfo.feedId);
@@ -52,17 +51,7 @@ class FeedThumnail extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (tSize == ThumnailSize.Medium)
-                      Row(
-                        children: [
-                          PyUserAvatar(
-                              radius: 15, imgUrl: feedInfo.writer.profileImage),
-                          SizedBox(width: 10),
-                          Text(
-                            feedInfo.writer.email ?? "",
-                            style: Theme.of(ctx).textTheme.bodyText1,
-                          )
-                        ],
-                      ),
+                      UserRow(feedInfo: feedInfo),
                     SizedBox(height: 10),
                     Text(
                       feedInfo.content,
@@ -87,6 +76,7 @@ class FeedThumnail extends StatelessWidget {
                 ))
           ])),
     );
+    return thumnail;
   }
 }
 

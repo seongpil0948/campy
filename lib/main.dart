@@ -30,9 +30,9 @@ class PyApp extends StatelessWidget {
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (ctx, snapshot) {
-        FirebaseCrashlytics.instance.log("Init Crashlytics");
-        fcmInitialize();
         if (snapshot.hasData) {
+          FirebaseCrashlytics.instance.log("Init Crashlytics");
+          fcmInitialize();
           final app = snapshot.data as FirebaseApp;
           print("APP Initialized: ${app.toString()}");
 
