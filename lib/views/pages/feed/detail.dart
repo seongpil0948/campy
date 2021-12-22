@@ -103,9 +103,10 @@ class FeedDetailW extends StatelessWidget {
                                     : Theme.of(ctx).textTheme.bodyText2,
                               ))
                           .toList())),
-              Container(
-                  height: mq.size.height / 3,
-                  child: CampyMap(initLat: feed.lat, initLng: feed.lng)),
+              if (feed.lat != null && feed.lng != null)
+                Container(
+                    height: mq.size.height / 3,
+                    child: CampyMap(initLat: feed.lat, initLng: feed.lng)),
               _Divider(),
               Consumer<CommentState>(
                   builder: (ctx, cmtState, child) => TextButton(

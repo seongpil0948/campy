@@ -1,84 +1,28 @@
 import 'package:campy/components/buttons/avatar.dart';
 import 'package:campy/components/buttons/fabs.dart';
 import 'package:campy/components/structs/common/user.dart';
-import 'package:campy/components/structs/feed/feed.dart';
-import 'package:campy/models/feed.dart';
+import 'package:campy/components/structs/feed/list.dart';
 import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth/user.dart';
-import 'package:campy/utils/feed.dart';
-import 'package:campy/utils/io.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: implementation_imports
 
 class MyView extends StatelessWidget {
-  const MyView({Key? key}) : super(key: key);
+  final PyUser? selectedUser;
+  const MyView({Key? key, this.selectedUser}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
-    final mq = MediaQuery.of(ctx);
     final body = FutureBuilder<CompleteUser>(
-      future: getCompleteUser(ctx: ctx),
+      future: getCompleteUser(ctx: ctx, selectedUser: selectedUser),
       builder: (ctx, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
         final _currUser = snapshot.data!;
-        return Column(children: [
-          Container(
-            height: mq.size.height / 2.3,
-            width: mq.size.width,
-            child: Stack(children: [
-              Image.asset(
-                "assets/images/splash_back_1.png",
-                width: mq.size.width,
-                fit: BoxFit.cover,
-              ),
-              Opacity(
-                  opacity: 0.4,
-                  child: Container(color: Theme.of(ctx).primaryColor)),
-              Container(
-                width: mq.size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 20),
-                    PyUserAvatar(
-                        imgUrl: _currUser.user.profileImage,
-                        radius: 40,
-                        profileEditable: true,
-                        userId: _currUser.user.userId),
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: Text(
-                        "@${_currUser.user.email!.split('@')[0]}",
-                        style: Theme.of(ctx).textTheme.bodyText1,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      width: mq.size.width / 1.5,
-                      child: UserSnsInfo(
-                          currUser: _currUser.user,
-                          numUserFeeds: _currUser.feeds.length),
-                    ),
-                    Text("이 시대 진정한 인싸 캠핑러 \n 정보 공유 DM 환영 ",
-                        style: Theme.of(ctx).textTheme.bodyText1),
-                  ],
-                ),
-              )
-            ]),
-          ),
-          Container(
-              height: mq.size.height - (mq.size.height / 2.3),
-              child: Stack(
-                children: [
-                  _GridFeeds(
-                      feeds: _currUser.feeds, mq: mq, currUser: _currUser.user),
-                ],
-              ))
-        ]);
+        return _MyViewW(currUser: _currUser);
       },
     );
     return Scaffold(
@@ -93,63 +37,72 @@ class MyView extends StatelessWidget {
   }
 }
 
-class _GridFeeds extends StatelessWidget {
-  const _GridFeeds({
+class _MyViewW extends StatelessWidget {
+  const _MyViewW({
     Key? key,
-    required this.feeds,
-    required this.mq,
-    required PyUser currUser,
+    required CompleteUser currUser,
   })  : _currUser = currUser,
         super(key: key);
 
-  final List<FeedInfo> feeds;
-  final MediaQueryData mq;
-  final PyUser _currUser;
+  final CompleteUser _currUser;
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-        itemCount: feeds.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemBuilder: (ctx, idx) {
-          final f = feeds[idx];
-          return Card(
-              elevation: 4.0,
-              child: Container(
-                width: mq.size.width / 2.5,
-                height: mq.size.height / 3,
-                child: Column(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: Provider.value(
-                            value: _currUser,
-                            child: FeedStatusRow(
-                              feed: f,
-                              tSize: ThumnailSize.Small,
-                              U: _currUser,
-                            ))),
-                    Expanded(
-                        flex: 3,
-                        child: FutureBuilder<List<PyFile>>(
-                            future: imgsOfFeed(f: f, limit: 1),
-                            builder: (ctx, snapshot) {
-                              if (!snapshot.hasData)
-                                return CircularProgressIndicator();
-                              final imgs = snapshot.data!;
-                              return FeedThumnail(
-                                  mq: mq,
-                                  img: imgs.first,
-                                  feedInfo: f,
-                                  tSize: ThumnailSize.Small);
-                            }))
-                  ],
+  Widget build(BuildContext ctx) {
+    final mq = MediaQuery.of(ctx);
+
+    return Column(children: [
+      Container(
+        height: mq.size.height / 2.3,
+        width: mq.size.width,
+        child: Stack(children: [
+          Image.asset(
+            "assets/images/splash_back_1.png",
+            width: mq.size.width,
+            fit: BoxFit.cover,
+          ),
+          Opacity(
+              opacity: 0.4,
+              child: Container(color: Theme.of(ctx).primaryColor)),
+          Container(
+            width: mq.size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 20),
+                PyUserAvatar(
+                    imgUrl: _currUser.user.profileImage,
+                    radius: 40,
+                    profileEditable: true,
+                    userId: _currUser.user.userId),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Text(
+                    "@${_currUser.user.email!.split('@')[0]}",
+                    style: Theme.of(ctx).textTheme.bodyText1,
+                  ),
                 ),
-              ));
-        });
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 15),
+                  width: mq.size.width / 1.5,
+                  child: UserSnsInfo(
+                      currUser: _currUser.user,
+                      numUserFeeds: _currUser.feeds.length),
+                ),
+                Text("이 시대 진정한 인싸 캠핑러 \n 정보 공유 DM 환영 ",
+                    style: Theme.of(ctx).textTheme.bodyText1),
+              ],
+            ),
+          )
+        ]),
+      ),
+      Container(
+          height: mq.size.height - (mq.size.height / 2.3),
+          child: Stack(
+            children: [
+              GridFeeds(
+                  feeds: _currUser.feeds, mq: mq, currUser: _currUser.user),
+            ],
+          ))
+    ]);
   }
 }

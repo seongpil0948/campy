@@ -34,28 +34,29 @@ class PlaceInfo extends StatelessWidget {
                   Text(" ${feed.campKind}")
                 ]),
                 SizedBox(height: 10),
-                Row(mainAxisSize: MainAxisSize.min, children: [
-                  SizedBox(
-                    width: 1,
-                  ),
-                  Image.asset(
-                    "assets/images/map_marker.png",
-                    height: iconImgH - 3,
-                  ),
-                  Container(
-                    constraints: BoxConstraints(maxWidth: 180),
-                    margin: EdgeInsets.only(left: mq.size.width / 80),
-                    child: TextButton(
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(text: feed.addr));
-                      },
-                      child: Text(
-                        "${feed.addr}",
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                if (feed.addr != null)
+                  Row(mainAxisSize: MainAxisSize.min, children: [
+                    SizedBox(
+                      width: 1,
                     ),
-                  )
-                ]),
+                    Image.asset(
+                      "assets/images/map_marker.png",
+                      height: iconImgH - 3,
+                    ),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 180),
+                      margin: EdgeInsets.only(left: mq.size.width / 80),
+                      child: TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: feed.addr));
+                        },
+                        child: Text(
+                          "${feed.addr}",
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    )
+                  ]),
               ],
             ),
             Column(

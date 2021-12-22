@@ -12,8 +12,9 @@ class CompleteUser {
   CompleteUser({required this.user, required this.feeds});
 }
 
-Future<CompleteUser> getCompleteUser({required BuildContext ctx}) async {
-  final user = await ctx.watch<PyAuth>().currUser;
+Future<CompleteUser> getCompleteUser(
+    {required BuildContext ctx, PyUser? selectedUser}) async {
+  final user = selectedUser ?? await ctx.watch<PyAuth>().currUser;
   final feeds = await getFeeds([user.userId]);
   return CompleteUser(feeds: feeds, user: user);
 }
