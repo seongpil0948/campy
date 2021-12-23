@@ -28,7 +28,9 @@ class Pyffold extends StatelessWidget {
       drawer: PyDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: fButton,
-      body: ctx.watch<PyState>().isLoading ? CircularProgressIndicator() : body,
+      body: ctx.watch<PyState>().isLoading
+          ? Center(child: CircularProgressIndicator())
+          : body,
       bottomSheet: bSheet,
     );
   }

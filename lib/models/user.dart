@@ -13,6 +13,7 @@ class PyUser {
   String photoURL;
   List<UserInfo>? providerData;
   String? refreshToken;
+  String? messageToken;
   String? tenantId;
   int hash;
   String get profileImage => photoURL;
@@ -22,7 +23,7 @@ class PyUser {
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();
 
-  PyUser({required User user, required this.userId})
+  PyUser({required User user, required this.userId, this.messageToken})
       : displayName = user.displayName,
         email = user.email,
         emailVerified = user.emailVerified,
@@ -66,6 +67,7 @@ class PyUser {
         phoneNumber = j['phoneNumber'],
         photoURL = j['photoURL'],
         refreshToken = j['refreshToken'],
+        messageToken = j['messageToken'],
         tenantId = j['tenantId'],
         hash = j['hash'],
         favoriteFeeds = List<String>.from(j['favoriteFeeds']),
@@ -83,6 +85,7 @@ class PyUser {
         'phoneNumber': phoneNumber,
         'photoURL': photoURL,
         'refreshToken': refreshToken,
+        'messageToken': messageToken,
         'tenantId': tenantId,
         'hash': hash,
         'favoriteFeeds': favoriteFeeds,

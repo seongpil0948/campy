@@ -2,6 +2,7 @@ import 'package:campy/repositories/auth_repository.dart';
 import 'package:campy/repositories/init.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:campy/models/user.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class PyAuth extends ChangeNotifier {
@@ -9,6 +10,9 @@ class PyAuth extends ChangeNotifier {
   AuthRepository authRepo = AuthRepository();
   FirebaseAuth _fireAuth = FirebaseAuth.instance;
   PyUser? _currUser;
+  // Even if auth changed, the device token is same,
+  // so it's initialized once per divice
+  String? messageToken;
 
   bool get isAuthentic => _isAuthentic;
 
@@ -20,6 +24,7 @@ class PyAuth extends ChangeNotifier {
   }
 
   Future<void> setUser(User user) async {
+    print("====== set User ====== ");
     // FIXME: 이거 왤케 많이 호출되냐
     final userId = user.providerData[0].uid!;
     var ref = getCollection(c: Collections.Users).doc(userId);
@@ -27,6 +32,12 @@ class PyAuth extends ChangeNotifier {
     _currUser = docSnapthot.exists
         ? PyUser.fromJson(docSnapthot.data() as Map<String, dynamic>)
         : PyUser(user: user, userId: userId);
+    var u = _currUser!;
+    if (u.messageToken != messageToken) {
+      print("====== set messageToken ====== $messageToken");
+      u.messageToken = messageToken;
+      u.update();
+    }
   }
 
   void _updateLoginStatus(bool dest) {
@@ -39,11 +50,15 @@ class PyAuth extends ChangeNotifier {
     _currUser = null;
   }
 
-  void handleAuthChange(User? user) {
+  Future<void> handleAuthChange(User? user) async {
+    // device user auth changed
     if (user == null) {
       logout();
     } else {
       if (_currUser != null) return;
+      if (messageToken == null) {
+        messageToken = await FirebaseMessaging.instance.getToken();
+      }
       setUser(user);
       _updateLoginStatus(true);
     }

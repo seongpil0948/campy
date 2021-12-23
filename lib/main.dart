@@ -58,7 +58,7 @@ class PyApp extends StatelessWidget {
         } else if (snapshot.hasError) {
           return WrongView(key: ValueKey("Wrong"));
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );
