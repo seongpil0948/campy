@@ -3,6 +3,7 @@ import 'package:campy/models/state.dart';
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/my.dart';
 import 'package:campy/views/pages/common/splash.dart';
+import 'package:campy/views/pages/common/wrong.dart';
 import 'package:campy/views/pages/feed/detail.dart';
 import 'package:campy/views/pages/feed/index.dart';
 import 'package:campy/views/pages/feed/post.dart';
@@ -24,19 +25,17 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
 
   final List<Page> _pages = [];
-  List<MaterialPage> get pages => List.unmodifiable(_pages);
-  List<Page> get backAblePages =>
-      _pages.where((e) => !backDisbles.contains(e.key)).toList();
-
+  List<MaterialPage> get pages =>
+      List.unmodifiable(_pages.where((e) => !backDisbles.contains(e.key)));
   PyPathConfig get currPageConfig => _pages.last.arguments as PyPathConfig;
 
   List<Page> buildPages(BuildContext ctx) {
     final state = ctx.watch<PyState>();
     final auth = ctx.watch<PyAuth>();
     if (!state.endSplash) {
-      _addPageData(SplashView(key: ValueKey("_splash_")), splashPathConfig);
+      _addPageData(SplashView(key: ValueKey("Splash")), splashPathConfig);
     } else if (!auth.isAuthentic) {
-      _addPageData(LoginView(key: ValueKey("_login_")), loginPathConfig);
+      _addPageData(LoginView(key: ValueKey("Login")), loginPathConfig);
     } else {
       switch (state.currPageAction.state) {
         case PageState.none:
@@ -105,7 +104,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   }
 
   bool canPop() {
-    return backAblePages.length > 1;
+    return pages.length > 1;
   }
 
   // These methods ensure there are at least two pages in the list.
@@ -147,25 +146,27 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
 
     switch (pageConfig.uiCtgr) {
       case Views.FeedCategory:
-        _addPageData(FeedCategoryView(key: ValueKey("_feed_")), feedPathConfig);
+        _addPageData(FeedCategoryView(key: ValueKey("Feed")), feedPathConfig);
         break;
       case Views.FeedPost:
         _addPageData(
-            FeedPostView(key: ValueKey("_feed_post_")), feedPostPathConfig);
+            FeedPostView(key: ValueKey("FeedPost")), feedPostPathConfig);
         break;
       case Views.FeedDetail:
-        _addPageData(
-            FeedDetailView(key: ValueKey("_feed_detail_")), pageConfig);
+        _addPageData(FeedDetailView(key: ValueKey("FeedDetail")), pageConfig);
         break;
       case Views.StoreCategory:
-        _addPageData(StoreCategoryView(key: ValueKey("_store_")), pageConfig);
+        _addPageData(StoreCategoryView(key: ValueKey("Store")), pageConfig);
         break;
       case Views.ProductDetail:
         _addPageData(
-            ProductDetailView(key: ValueKey("_prod_detail_")), pageConfig);
+            ProductDetailView(key: ValueKey("ProductDetail")), pageConfig);
         break;
       case Views.My:
-        _addPageData(MyView(key: ValueKey("_my_")), pageConfig);
+        _addPageData(MyView(key: ValueKey("My")), pageConfig);
+        break;
+      case Views.UnknownPage:
+        _addPageData(WrongView(key: ValueKey("Unknown")), pageConfig);
         break;
       default:
         break;

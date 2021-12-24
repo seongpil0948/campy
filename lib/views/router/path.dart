@@ -22,36 +22,30 @@ enum Views {
 }
 
 class PageAction {
-  late PageState state;
+  late PageState state = PageState.addPage;
   late PyPathConfig page;
   late List<PyPathConfig> pages;
   PageAction.my(userId) {
-    state = PageState.addPage;
     page = PyPathConfig.my();
     pages = [PyPathConfig.my()];
   }
   PageAction.feed() {
-    state = PageState.addPage;
     page = feedPathConfig;
     pages = [feedPathConfig];
   }
   PageAction.store() {
-    state = PageState.addPage;
     page = storePathConfig;
     pages = [storePathConfig];
   }
   PageAction.productDetail(productId) {
-    state = PageState.addPage;
     page = PyPathConfig.productDetail(productId: productId);
     pages = [PyPathConfig.productDetail(productId: productId)];
   }
   PageAction.feedDetail(feedId) {
-    state = PageState.addPage;
     page = PyPathConfig.feedDetail(feedId: feedId);
     pages = [PyPathConfig.feedDetail(feedId: feedId)];
   }
   PageAction.feedPost() {
-    state = PageState.addPage;
     page = feedPostPathConfig;
     pages = [feedPostPathConfig];
   }

@@ -120,7 +120,12 @@ class PyDrawer extends StatelessWidget {
         ),
         ListTile(
           title: Text("로그아웃", style: tileT),
-          onTap: () => ctx.read<PyAuth>().logout(),
+          onTap: () {
+            ctx.read<PyAuth>().logout();
+            var d = defaultPage;
+            d.state = PageState.addAll;
+            appState.currPageAction = defaultPage;
+          },
         ),
       ],
     ));

@@ -23,9 +23,10 @@ class PyUser {
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();
 
-  PyUser({required User user, required this.userId, this.messageToken})
+  PyUser({required User user, this.messageToken})
       : displayName = user.displayName,
         email = user.email,
+        userId = user.uid,
         emailVerified = user.emailVerified,
         phoneNumber = user.phoneNumber,
         metadata = user.metadata,

@@ -24,17 +24,13 @@ class PyAuth extends ChangeNotifier {
   }
 
   Future<void> setUser(User user) async {
-    print("====== set User ====== ");
-    // FIXME: 이거 왤케 많이 호출되냐
-    final userId = user.providerData[0].uid!;
-    var ref = getCollection(c: Collections.Users).doc(userId);
+    var ref = getCollection(c: Collections.Users).doc(user.uid);
     var docSnapthot = await ref.get();
     _currUser = docSnapthot.exists
         ? PyUser.fromJson(docSnapthot.data() as Map<String, dynamic>)
-        : PyUser(user: user, userId: userId);
+        : PyUser(user: user);
     var u = _currUser!;
     if (u.messageToken != messageToken) {
-      print("====== set messageToken ====== $messageToken");
       u.messageToken = messageToken;
       u.update();
     }
@@ -55,12 +51,14 @@ class PyAuth extends ChangeNotifier {
     if (user == null) {
       logout();
     } else {
-      if (_currUser != null) return;
+      // if (_currUser != null) return;
       if (messageToken == null) {
         messageToken = await FirebaseMessaging.instance.getToken();
       }
-      setUser(user);
-      _updateLoginStatus(true);
+      if (user.uid != _currUser?.userId) setUser(user);
+      if (_isAuthentic == false) {
+        _updateLoginStatus(true);
+      }
     }
   }
 
