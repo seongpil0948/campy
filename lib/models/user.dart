@@ -53,6 +53,11 @@ class PyUser {
     return userId.length > 3 && displayName != null && email != null;
   }
 
+  // ignore: hash_and_equals
+  bool operator ==(otherId) {
+    return userId == otherId;
+  }
+
   Future<bool> update() async {
     updatedAt = DateTime.now();
     final doc = getCollection(c: Collections.Users).doc(userId);

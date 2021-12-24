@@ -194,7 +194,11 @@ class _FeedStatusRowState extends State<FeedStatusRow> {
         //     Text("  ${F.bookmarkedUserIds.length}  "),
         //   ],
         // ),
-        if (widget.tSize == ThumnailSize.Medium) FollowBtn(currUser: U, F: F)
+        if (widget.tSize == ThumnailSize.Medium)
+          FollowBtn(
+            currUser: U,
+            targetUser: F.writer,
+          )
       ],
     );
   }

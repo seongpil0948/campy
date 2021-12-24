@@ -3,6 +3,8 @@ import 'package:campy/components/buttons/fabs.dart';
 import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/components/structs/feed/list.dart';
 import 'package:campy/models/state.dart';
+import 'package:campy/models/user.dart';
+import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/repositories/auth/user.dart';
 import 'package:campy/views/layouts/drawer.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +22,9 @@ class MyView extends StatelessWidget {
       builder: (ctx, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
-        final _currUser = snapshot.data!;
+        final targetUser = snapshot.data!;
         ctx.read<PyState>().selectedUser = null;
-        return _MyViewW(currUser: _currUser);
+        return _MyViewW(currUser: targetUser);
       },
     );
     return Scaffold(
@@ -41,10 +43,10 @@ class _MyViewW extends StatelessWidget {
   const _MyViewW({
     Key? key,
     required CompleteUser currUser,
-  })  : _currUser = currUser,
+  })  : targetUser = currUser,
         super(key: key);
 
-  final CompleteUser _currUser;
+  final CompleteUser targetUser;
 
   @override
   Widget build(BuildContext ctx) {
@@ -70,23 +72,38 @@ class _MyViewW extends StatelessWidget {
               children: [
                 SizedBox(height: 20),
                 PyUserAvatar(
-                    imgUrl: _currUser.user.profileImage,
+                    imgUrl: targetUser.user.profileImage,
                     radius: 40,
                     profileEditable: true,
-                    userId: _currUser.user.userId),
+                    userId: targetUser.user.userId),
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  child: Text(
-                    "@${_currUser.user.email!.split('@')[0]}",
-                    style: Theme.of(ctx).textTheme.bodyText1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "@${targetUser.user.email!.split('@')[0]}",
+                        style: Theme.of(ctx).textTheme.bodyText1,
+                      ),
+                      SizedBox(width: 5),
+                      FutureBuilder<PyUser>(
+                          future: ctx.read<PyAuth>().currUser,
+                          builder: (ctx, snapshot) {
+                            if (!snapshot.hasData)
+                              return CircularProgressIndicator();
+                            return FollowBtn(
+                                currUser: snapshot.data!,
+                                targetUser: targetUser.user);
+                          })
+                    ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 15),
                   width: mq.size.width / 1.5,
                   child: UserSnsInfo(
-                      currUser: _currUser.user,
-                      numUserFeeds: _currUser.feeds.length),
+                      currUser: targetUser.user,
+                      numUserFeeds: targetUser.feeds.length),
                 ),
                 Text("이 시대 진정한 인싸 캠핑러 \n 정보 공유 DM 환영 ",
                     style: Theme.of(ctx).textTheme.bodyText1),
@@ -100,7 +117,7 @@ class _MyViewW extends StatelessWidget {
           child: Stack(
             children: [
               GridFeeds(
-                  feeds: _currUser.feeds, mq: mq, currUser: _currUser.user),
+                  feeds: targetUser.feeds, mq: mq, currUser: targetUser.user),
             ],
           ))
     ]);

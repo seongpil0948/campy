@@ -42,8 +42,8 @@ class UserSnsInfo extends StatelessWidget {
 
 class FollowBtn extends StatefulWidget {
   final PyUser currUser;
-  final FeedInfo F;
-  FollowBtn({Key? key, required this.currUser, required this.F})
+  final PyUser targetUser;
+  FollowBtn({Key? key, required this.currUser, required this.targetUser})
       : super(key: key);
 
   @override
@@ -68,12 +68,12 @@ class _FollowBtnState extends State<FollowBtn> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.F.writer == widget.currUser) return Container();
-    final aleady = widget.F.writer.followers.contains(widget.currUser);
+    if (widget.targetUser == widget.currUser) return Container();
+    final aleady = widget.targetUser.followers.contains(widget.currUser);
     final txt = aleady ? "팔로우 취소" : "팔로우";
     return ElevatedButton(
         onPressed: () {
-          followUser(widget.currUser, widget.F.writer, aleady);
+          followUser(widget.currUser, widget.targetUser, aleady);
         },
         child: Text(txt));
   }
