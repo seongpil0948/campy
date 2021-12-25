@@ -104,4 +104,34 @@ class FeedInfo {
         'lat': lat,
         'lng': lng,
       };
+
+  static Iterable<FeedInfo> mocks(int n) {
+    final users = PyUser.mocks(n).toList();
+    return Iterable.generate(
+        n,
+        (i) => FeedInfo.fromJson({
+              'writer': users[i].toJson(),
+              'feedId': "mock feed $i",
+              'files': [
+                PyFile.fromCdn(
+                        url: "https://picsum.photos/250?image=$i",
+                        fileType: "Image")
+                    .toJson()
+              ],
+              'title': "mock Feed Title",
+              'content': "mock Feed Content",
+              'placeAround': "mock around",
+              'placePrice': 300000,
+              'campKind': "mock kind",
+              'hashTags': [],
+              'likeUserIds': [],
+              'sharedUserIds': [],
+              'bookmarkedUserIds': [],
+              'addr': "대한민국 경기도 광명시 철산동 66-36",
+              'lat': 37.4860982,
+              'lng': 126.8656208,
+              'createdAt': Timestamp.now(),
+              'updatedAt': Timestamp.now(),
+            }));
+  }
 }

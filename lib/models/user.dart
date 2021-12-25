@@ -78,8 +78,12 @@ class PyUser {
         followers =
             j['followers'].map<PyUser>((f) => PyUser.fromJson(f)).toList(),
         follows = j['follows'].map<PyUser>((f) => PyUser.fromJson(f)).toList(),
-        createdAt = timeStamp2DateTime(j['createdAt']),
-        updatedAt = timeStamp2DateTime(j['updatedAt']);
+        createdAt = j['createdAt'] is DateTime
+            ? j['createdAt']
+            : timeStamp2DateTime(j['createdAt']),
+        updatedAt = j['updatedAt'] is DateTime
+            ? j['updatedAt']
+            : timeStamp2DateTime(j['updatedAt']);
 
   Map<String, dynamic> toJson() => {
         'userId': userId,

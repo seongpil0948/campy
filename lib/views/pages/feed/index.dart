@@ -24,6 +24,7 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
     if (!mounted) return;
     setState(() {
       this.feeds = feeds;
+      this.feeds.addAll(FeedInfo.mocks(20));
       isLoading = false;
     });
   }
