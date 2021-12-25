@@ -53,10 +53,8 @@ class PyUser {
     return userId.length > 3 && displayName != null && email != null;
   }
 
-  // ignore: hash_and_equals
-  bool operator ==(otherId) {
-    return userId == otherId;
-  }
+  // ignore: hash_and_equals, test_types_in_equals
+  bool operator ==(other) => this.userId == (other as PyUser).userId;
 
   Future<bool> update() async {
     updatedAt = DateTime.now();
@@ -100,4 +98,8 @@ class PyUser {
         'createdAt': createdAt,
         'updatedAt': updatedAt,
       };
+
+  static Iterable<PyUser> mocks(int n) {
+    return Iterable.generate(n, (i) => PyUser.fromJson({}));
+  }
 }

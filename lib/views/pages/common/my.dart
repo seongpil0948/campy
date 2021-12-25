@@ -31,11 +31,7 @@ class MyView extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FeedFab(),
         drawer: PyDrawer(),
-        body: ctx.watch<PyState>().isLoading
-            ? Stack(
-                children: [body, Center(child: CircularProgressIndicator())],
-              )
-            : body);
+        body: body);
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:campy/models/state.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class UserSnsInfo extends StatelessWidget {
