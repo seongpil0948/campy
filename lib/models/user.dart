@@ -100,6 +100,24 @@ class PyUser {
       };
 
   static Iterable<PyUser> mocks(int n) {
-    return Iterable.generate(n, (i) => PyUser.fromJson({}));
+    return Iterable.generate(
+        n,
+        (i) => PyUser.fromJson({
+              'userId': "spsp$i",
+              'displayName': "spspspsp",
+              'email': "seongpil0948@gmail.com",
+              'emailVerified': i % 2 == 0 ? true : false,
+              'phoneNumber': i % 2 == 0 ? "010-7184-0948" : null,
+              'photoURL': "https://picsum.photos/250?image=$i",
+              'refreshToken': "asdasfasfasfasfgadg",
+              'messageToken': "asdasfasfasfasfgadg",
+              'tenantId': "asdasfasfasfasfgadg",
+              'hash': 1010012312412,
+              'favoriteFeeds': [],
+              'followers': [],
+              'follows': [],
+              'createdAt': Timestamp.now(),
+              'updatedAt': Timestamp.now(),
+            }));
   }
 }

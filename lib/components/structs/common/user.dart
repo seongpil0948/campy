@@ -20,25 +20,53 @@ class UserSnsInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
+    final sty = TextStyle(
+        color: Theme.of(ctx).primaryColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 12);
     return PyWhiteButton(
         widget: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        for (var i in [
+        Text(
           "포스팅 ${numUserFeeds.toString()}",
-          "팔로워 ${currUser.followers.length}",
-          "팔로우 ${currUser.follows.length}"
-        ])
-          Text(
-            i,
-            style: TextStyle(
-                color: Theme.of(ctx).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 12),
-          )
+          style: sty,
+        ),
+        TextButton(
+          onPressed: () => showFollow(ctx: ctx, users: currUser.followers),
+          child: Text(
+            "팔로워 ${currUser.followers.length}",
+            style: sty,
+          ),
+        ),
+        TextButton(
+          onPressed: () => showFollow(ctx: ctx, users: currUser.follows),
+          child: Text(
+            "팔로우 ${currUser.follows.length}",
+            style: sty,
+          ),
+        )
       ],
     ));
   }
+}
+
+void showFollow({required BuildContext ctx, required List<PyUser> users}) {
+  showDialog(
+      context: ctx,
+      builder: (ctx) => Dialog(
+          insetPadding: EdgeInsets.all(10),
+          child: ListView.separated(
+              itemBuilder: (ctx, idx) => ListTile(
+                    leading: PyUserAvatar(
+                        imgUrl: users[idx].profileImage,
+                        userId: users[idx].userId,
+                        profileEditable: true),
+                    title: Text(users[idx].displayName ?? ""),
+                    subtitle: Text(users[idx].email ?? ""),
+                  ),
+              separatorBuilder: (ctx, idx) => Divider(),
+              itemCount: users.length)));
 }
 
 class FollowBtn extends StatefulWidget {
