@@ -1,3 +1,4 @@
+import 'package:campy/components/inputs/text_controller.dart';
 import 'package:campy/config.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/state.dart';
@@ -44,7 +45,8 @@ class PyApp extends StatelessWidget {
               ChangeNotifierProvider(
                 create: (ctx) => PyState(),
               ),
-              ChangeNotifierProvider(create: (ctx) => PyAuth())
+              ChangeNotifierProvider(create: (ctx) => PyAuth()),
+              ChangeNotifierProvider(create: (ctx) => FeedSearchVal())
             ],
             child: MaterialApp.router(
               title: 'Camping & Piknic',

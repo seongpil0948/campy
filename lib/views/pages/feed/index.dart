@@ -1,5 +1,6 @@
 import 'package:campy/components/buttons/fabs.dart';
 import 'package:campy/components/buttons/pyffold.dart';
+import 'package:campy/components/inputs/text_controller.dart';
 import 'package:campy/components/structs/feed/list.dart';
 import 'package:campy/models/feed.dart';
 import 'package:campy/repositories/place/feed.dart';
@@ -17,14 +18,16 @@ class FeedCategoryView extends StatefulWidget {
 class _FeedCategoryViewState extends State<FeedCategoryView> {
   bool isLoading = false;
   List<FeedInfo> feeds = [];
+  List<FeedInfo> allFeeds = [];
   Throttling thr = Throttling(duration: const Duration(seconds: 5));
 
   Future _loadData() async {
-    final feeds = await getAllFeeds();
+    final allFeeds = await getAllFeeds();
     if (!mounted) return;
     setState(() {
-      this.feeds = feeds;
-      this.feeds.addAll(FeedInfo.mocks(20));
+      this.allFeeds = allFeeds;
+      this.allFeeds.addAll(FeedInfo.mocks(20));
+      feeds = this.allFeeds;
       isLoading = false;
     });
   }
@@ -39,6 +42,35 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
   void dispose() {
     this.thr.close();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    thr.throttle(() {
+      super.didChangeDependencies();
+      final searchVal = Provider.of<FeedSearchVal>(context);
+      if (searchVal.text.length < 2) {
+        this.feeds = allFeeds;
+      } else {
+        this.feeds = allFeeds.where((element) {
+          final t = searchVal.text;
+          if (element.addr != null && element.addr!.contains(t))
+            return true;
+          else if (element.title.contains(t))
+            return true;
+          else if (element.hashTags.join(" ").contains(t))
+            return true;
+          else if (element.placeAround.contains(t))
+            return true;
+          else if (element.campKind.contains(t))
+            return true;
+          else if (element.content.contains(t))
+            return true;
+          else
+            return false;
+        }).toList();
+      }
+    });
   }
 
   @override

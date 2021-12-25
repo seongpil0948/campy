@@ -1,17 +1,13 @@
+import 'package:campy/components/inputs/text_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
-class PyAppBarTextField extends StatefulWidget {
+class PyAppBarTextField extends StatelessWidget {
   const PyAppBarTextField({Key? key}) : super(key: key);
 
   @override
-  _PyAppBarTextFieldState createState() => _PyAppBarTextFieldState();
-}
-
-class _PyAppBarTextFieldState extends State<PyAppBarTextField> {
-  TextEditingController searchVal = TextEditingController();
-
-  @override
   Widget build(BuildContext ctx) {
+    final searchVal = ctx.read<FeedSearchVal>();
     return TextField(
       textAlign: TextAlign.center,
       style: Theme.of(ctx).textTheme.caption,
