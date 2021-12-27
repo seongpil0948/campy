@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 
 // e.key = pageConfig Key
-const backDisbles = ['Unknown', 'Login', 'Splash'];
+const backDisbles = ['/login', '/unknown', '/splash'];
 
 class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
@@ -25,8 +25,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
 
   final List<Page> _pages = [];
-  List<MaterialPage> get pages =>
-      List.unmodifiable(_pages.where((e) => !backDisbles.contains(e.key)));
+  List<MaterialPage> get pages => List.unmodifiable(_pages);
   PyPathConfig get currPageConfig => _pages.last.arguments as PyPathConfig;
 
   List<Page> buildPages(BuildContext ctx) {
@@ -37,6 +36,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     } else if (!auth.isAuthentic) {
       _addPageData(LoginView(key: ValueKey("Login")), loginPathConfig);
     } else {
+      rmInBackables();
       switch (state.currPageAction.state) {
         case PageState.none:
           break;
@@ -63,7 +63,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
           break;
       }
     }
-    return List.of(_pages);
+    return pages;
   }
 
   @override
@@ -117,11 +117,7 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   @override
   Future<bool> popRoute() {
     if (canPop()) {
-      while (true) {
-        _removePage(_pages.last as MaterialPage);
-        // 페이지가 뒤로가기 불가에 포함되어 있지 않다면 그만 지운다
-        if (!backDisbles.contains(_pages.last.key)) break;
-      }
+      _removePage(_pages.last as MaterialPage);
 
       return Future.value(true);
     }
