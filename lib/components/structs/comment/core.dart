@@ -20,10 +20,9 @@ class CommentW extends StatelessWidget {
     return Wrap(children: [
       Column(children: [AvartarIdRow(c: c)]),
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(
-            padding: EdgeInsets.only(top: 5),
-            width: mq.size.width / 1.8,
-            child: Text(c.content, maxLines: 2)),
+        Padding(
+            padding: EdgeInsets.only(top: 10, left: 10),
+            child: Text(c.content)),
         Column(
           children: [
             Padding(
@@ -36,14 +35,12 @@ class CommentW extends StatelessWidget {
                           cmtState.setTargetCmt = c;
                           cmtState.showPostCmtWidget = true;
                         },
-                        child: Text(
-                          "답글달기",
-                          style: Theme.of(ctx)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis,
-                        )))
+                        child: Text("답글달기",
+                            style: Theme.of(ctx)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis)))
               ]),
             ),
             // ReplyList(c: c, feedId: widget.feedId)

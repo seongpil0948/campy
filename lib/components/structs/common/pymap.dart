@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
@@ -14,6 +16,7 @@ const CameraPosition defaultPosition = CameraPosition(
 class CampyMap extends StatefulWidget {
   final double? initLat;
   final double? initLng;
+  MapType mapType = MapType.normal;
   CampyMap({Key? key, this.initLat, this.initLng}) : super(key: key);
 
   @override
@@ -40,21 +43,47 @@ class _CampyMapState extends State<CampyMap> {
       Marker(
           markerId: MarkerId("1"),
           draggable: true,
-          onTap: () => print("Marker!"),
+          onTap: () {},
           position: LatLng(widget.initLat!, widget.initLng!))
     ];
-    return GoogleMap(
-        mapType: MapType.hybrid,
-        markers: Set.from(_markers),
-        initialCameraPosition: widget.initLat != null && widget.initLng != null
-            ? CameraPosition(
-                target: LatLng(widget.initLat!, widget.initLng!),
-                zoom: defaultZoom)
-            : defaultPosition,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        myLocationEnabled: true);
+    return Stack(children: [
+      GoogleMap(
+          mapType: widget.mapType,
+          markers: Set.from(_markers),
+          gestureRecognizers: Set()
+            ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+            ..add(
+                Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
+            ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+            ..add(
+              Factory<VerticalDragGestureRecognizer>(
+                  () => VerticalDragGestureRecognizer()),
+            ),
+          initialCameraPosition:
+              widget.initLat != null && widget.initLng != null
+                  ? CameraPosition(
+                      target: LatLng(widget.initLat!, widget.initLng!),
+                      zoom: defaultZoom)
+                  : defaultPosition,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          myLocationEnabled: true),
+      Positioned(
+        right: 10,
+        bottom: 70,
+        child: FloatingActionButton(
+            child: Icon(Icons.switch_camera),
+            mini: true,
+            onPressed: () {
+              setState(() {
+                widget.mapType = widget.mapType == MapType.normal
+                    ? MapType.hybrid
+                    : MapType.normal;
+              });
+            }),
+      )
+    ]);
   }
 }
 
