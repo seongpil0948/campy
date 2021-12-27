@@ -9,7 +9,7 @@ Future<List<FeedInfo>> getFeeds(Iterable<String> userIds) async {
     var feeds = await userC
         .doc(_id)
         .collection(FeedCollection)
-        .orderBy('createdAt', descending: true)
+        .orderBy('updatedAt', descending: true)
         .get();
     var feedInfos = feeds.docs.map((f) => FeedInfo.fromJson(f.data()));
     allFeeds.addAll(feedInfos);

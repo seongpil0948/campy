@@ -33,14 +33,16 @@ class UserSnsInfo extends StatelessWidget {
           style: sty,
         ),
         TextButton(
-          onPressed: () => showFollow(ctx: ctx, users: currUser.followers),
+          onPressed: () async => showFollow(
+              ctx: ctx, users: await currUser.usersByIds(currUser.followers)),
           child: Text(
             "팔로워 ${currUser.followers.length}",
             style: sty,
           ),
         ),
         TextButton(
-          onPressed: () => showFollow(ctx: ctx, users: currUser.follows),
+          onPressed: () async => showFollow(
+              ctx: ctx, users: await currUser.usersByIds(currUser.follows)),
           child: Text(
             "팔로우 ${currUser.follows.length}",
             style: sty,
@@ -81,18 +83,18 @@ class FollowBtn extends StatefulWidget {
 
 class _FollowBtnState extends State<FollowBtn> {
   Future<void> followUser(PyUser s, PyUser target, bool unFollow) async {
-    setState(() {
-      if (unFollow) {
-        s.follows.remove(target);
-        target.followers.remove(s);
-      } else {
-        s.follows.add(target);
-        target.followers.add(s);
-      }
-    });
-
+    if (s == target) return;
     await s.update();
     await target.update();
+    setState(() {
+      if (unFollow) {
+        s.follows.remove(target.userId);
+        target.followers.remove(s.userId);
+      } else {
+        s.follows.add(target.userId);
+        target.followers.add(s.userId);
+      }
+    });
   }
 
   @override

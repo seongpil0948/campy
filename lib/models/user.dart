@@ -18,8 +18,8 @@ class PyUser {
   int hash;
   String get profileImage => photoURL;
   List<String> favoriteFeeds = [];
-  List<PyUser> followers = [];
-  List<PyUser> follows = [];
+  List<String> followers = [];
+  List<String> follows = [];
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();
 
@@ -63,6 +63,15 @@ class PyUser {
     return true;
   }
 
+  Future<List<PyUser>> usersByIds(List<String> userIds) async {
+    final users = await getCollection(c: Collections.Users)
+        .where('userId', arrayContainsAny: userIds)
+        .get();
+    return users.docs
+        .map((e) => PyUser.fromJson(e.data() as Map<String, dynamic>))
+        .toList(growable: false);
+  }
+
   PyUser.fromJson(Map<String, dynamic> j)
       : userId = j['userId'],
         displayName = j['displayName'],
@@ -75,9 +84,8 @@ class PyUser {
         tenantId = j['tenantId'],
         hash = j['hash'],
         favoriteFeeds = List<String>.from(j['favoriteFeeds']),
-        followers =
-            j['followers'].map<PyUser>((f) => PyUser.fromJson(f)).toList(),
-        follows = j['follows'].map<PyUser>((f) => PyUser.fromJson(f)).toList(),
+        followers = List<String>.from(j['followers']),
+        follows = List<String>.from(j['follows']),
         createdAt = j['createdAt'] is DateTime
             ? j['createdAt']
             : timeStamp2DateTime(j['createdAt']),
@@ -97,8 +105,8 @@ class PyUser {
         'tenantId': tenantId,
         'hash': hash,
         'favoriteFeeds': favoriteFeeds,
-        'followers': followers.map((f) => f.toJson()).toList(),
-        'follows': follows.map((f) => f.toJson()).toList(),
+        'followers': followers,
+        'follows': follows,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
       };
