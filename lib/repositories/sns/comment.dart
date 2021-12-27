@@ -3,6 +3,7 @@ import 'package:campy/models/feed.dart';
 import 'package:campy/models/reply.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/init.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:uuid/uuid.dart';
 
 Future<List<Comment>> loadComment(String userId, String feedId) async {
@@ -19,7 +20,6 @@ void postComment(String txt, PyUser writer, FeedInfo feed) {
   final commentId = Uuid().v4();
   final comment = Comment(id: commentId, writer: writer, content: txt);
   final cj = comment.toJson();
-  print("In Submit Comment: $cj");
   getCollection(
           c: Collections.Comments, userId: writer.userId, feedId: feed.feedId)
       .doc(commentId)
@@ -28,6 +28,8 @@ void postComment(String txt, PyUser writer, FeedInfo feed) {
     print("Post Comment is Successed ");
   }).catchError((e) {
     print("Post Comment is Restricted: $e");
+    FirebaseCrashlytics.instance
+        .recordError(e, null, reason: 'Post Comment Error', fatal: true);
   });
 }
 
@@ -45,5 +47,7 @@ void postReply(String txt, PyUser writer, String feedId, String commentId) {
     print("Post Reply is Successed ");
   }).catchError((e) {
     print("Post Reply is Restricted: $e");
+    FirebaseCrashlytics.instance
+        .recordError(e, null, reason: 'Post Reply Error', fatal: true);
   });
 }

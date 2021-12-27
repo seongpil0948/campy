@@ -5,6 +5,7 @@ import 'package:campy/repositories/init.dart';
 import 'package:campy/utils/io.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
@@ -55,6 +56,8 @@ Future postFeed({required BuildContext ctx}) async {
   } catch (e, s) {
     print(
         '!!!Failed to add Feed!!! Exception details:\n $e \n Stack trace:\n $s');
+    FirebaseCrashlytics.instance
+        .recordError(e, s, reason: 'Post Feed Error', fatal: true);
   } finally {
     state.isLoading = false;
   }

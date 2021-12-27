@@ -145,7 +145,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				B5FF8BCA912C0EA96E8128A7 /* [CP] Embed Pods Frameworks */,
 				9831C25F55A7562C27E6D7DC /* [CP] Copy Pods Resources */,
-				F3465FD2276B8EC200E69976 /* ShellScript */,
+				F3465FD2276B8EC200E69976 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -289,7 +289,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F3465FD2276B8EC200E69976 /* ShellScript */ = {
+		F3465FD2276B8EC200E69976 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -298,13 +298,14 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:881986361143:ios:d9c414d739934724dbecb2\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:881986361143:ios:d9c414d739934724dbecb2\n";
+			shellScript = "$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai 1:881986361143:ios:d9c414d739934724dbecb2\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai 1:881986361143:ios:d9c414d739934724dbecb2\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -463,6 +464,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -513,6 +515,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;

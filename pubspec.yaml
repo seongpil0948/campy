@@ -36,6 +36,7 @@ dependencies:
   google_maps_place_picker: ^2.1.0-nullsafety.3
   firebase_messaging: ^11.2.4
   firebase_crashlytics: ^2.4.3
+  firebase_analytics: ^9.0.4
 
 dev_dependencies:
   flutter_test:

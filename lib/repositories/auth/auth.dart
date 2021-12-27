@@ -1,5 +1,6 @@
 import 'package:campy/repositories/auth_repository.dart';
 import 'package:campy/repositories/init.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:campy/models/user.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -57,6 +58,7 @@ class PyAuth extends ChangeNotifier {
       }
       if (user.uid != _currUser?.userId) setUser(user);
       if (_isAuthentic == false) {
+        FirebaseAnalytics.instance.logLogin(loginMethod: "pyLogin");
         _updateLoginStatus(true);
       }
     }

@@ -42,7 +42,7 @@
               "client_id": "881986361143-0jja88mfhkkaj8dqlpomdq46jdc7k4qg.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.campy"
+                "bundle_id": "com.campy.sns"
               }
             }
           ]

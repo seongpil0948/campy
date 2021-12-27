@@ -24,6 +24,9 @@ class _FeedCategoryViewState extends State<FeedCategoryView> {
   Future _loadData() async {
     final allFeeds = await getAllFeeds();
     if (!mounted) return;
+    final searchVal = Provider.of<FeedSearchVal>(context, listen: false);
+    if (searchVal.text.isNotEmpty) searchVal.clear();
+
     setState(() {
       this.allFeeds = allFeeds;
       this.allFeeds.addAll(FeedInfo.mocks(20));
