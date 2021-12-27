@@ -83,7 +83,9 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
   bool _onPopPage(Route<dynamic> route, result) {
     // returns false If the route can’t handle it internally
     final didPop = route.didPop(result);
-    if (!didPop) return false;
+    if (!didPop) {
+      return false;
+    }
     // Otherwise, check to see if we can remove the top page
     // and remove the page from the list of pages.
     if (canPop()) {
@@ -103,9 +105,9 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
     }
   }
 
-  bool canPop() {
-    return pages.length > 1;
-  }
+  bool canPop() => pages.length > 1;
+  void rmInBackables() =>
+      _pages.removeWhere((element) => backDisbles.contains(element.name));
 
   // These methods ensure there are at least two pages in the list.
   // Both pop and popRoute will call _removePage to remove a page and

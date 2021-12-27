@@ -2,6 +2,7 @@ import 'package:campy/models/state.dart';
 import 'package:flutter/material.dart';
 import 'path.dart';
 
+/// 현재 루트정보를 받아, PyPathConfig 로서 파싱 및 반환한다.
 class PyPathParser extends RouteInformationParser<PyPathConfig> {
   @override
   Future<PyPathConfig> parseRouteInformation(
@@ -25,6 +26,7 @@ class PyPathParser extends RouteInformationParser<PyPathConfig> {
     }
   }
 
+  /// 역으로 현재 argument 데이터 타입이 어떤 루트와 매핑되는지 정의한다.
   @override
   RouteInformation restoreRouteInformation(PyPathConfig configuration) {
     return RouteInformation(location: configuration.path);
