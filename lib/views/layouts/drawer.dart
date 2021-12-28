@@ -119,6 +119,11 @@ class PyDrawer extends StatelessWidget {
           onTap: () => appState.currPageAction = PageAction.store(),
         ),
         ListTile(
+          title: Text("커뮤니케이션", style: tileT),
+          onTap: () => appState.currPageAction = PageAction.chat(),
+        ),
+        Spacer(),
+        ListTile(
           title: Text("로그아웃", style: tileT),
           onTap: () {
             ctx.read<PyAuth>().logout();

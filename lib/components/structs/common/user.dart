@@ -68,24 +68,46 @@ void showFollow(
           child: SizedBox(
             height: MediaQuery.of(ctx).size.height / 2,
             child: ListView.separated(
-                itemBuilder: (ctx, idx) => ListTile(
-                      leading: PyUserAvatar(
-                          imgUrl: users[idx].profileImage,
-                          userId: users[idx].userId,
-                          profileEditable: true),
-                      title: Text(users[idx].displayName ??
-                          // users[idx].email?.split('@').first ??
-                          users[idx].email ??
-                          ""),
-                      subtitle: Text(users[idx].email ?? ""),
-                      trailing: FollowBtn(
-                        currUser: currUser,
-                        targetUser: users[idx],
-                      ),
-                    ),
+                itemBuilder: (ctx, idx) => UserList(
+                    targetUser: users[idx],
+                    currUser: currUser,
+                    profileEditable: true),
                 separatorBuilder: (ctx, idx) => Divider(),
                 itemCount: users.length),
           )));
+}
+
+class UserList extends StatelessWidget {
+  final PyUser targetUser;
+  final PyUser? currUser;
+  final bool profileEditable;
+  UserList({
+    required this.targetUser,
+    this.currUser,
+    required this.profileEditable,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext ctx) {
+    return ListTile(
+      leading: PyUserAvatar(
+          imgUrl: targetUser.profileImage,
+          userId: targetUser.userId,
+          profileEditable: profileEditable),
+      title: Text(targetUser.displayName ??
+          // targetUser.email?.split('@').first ??
+          targetUser.email ??
+          ""),
+      subtitle: Text(targetUser.email ?? ""),
+      trailing: profileEditable == true
+          ? FollowBtn(
+              currUser: currUser!,
+              targetUser: targetUser,
+            )
+          : null,
+    );
+  }
 }
 
 class FollowBtn extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'package:campy/repositories/store/product.dart';
 import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 
-final defaultPage = PageAction.feed();
+final defaultPage = PageAction.chat();
 
 class PyState extends ChangeNotifier {
   PageAction _currPageAction = defaultPage;

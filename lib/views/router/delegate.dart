@@ -1,5 +1,6 @@
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/models/state.dart';
+import 'package:campy/views/pages/chat/list.dart';
 import 'package:campy/views/pages/common/login.dart';
 import 'package:campy/views/pages/common/my.dart';
 import 'package:campy/views/pages/common/splash.dart';
@@ -165,6 +166,9 @@ class PyRouterDelegate extends RouterDelegate<PyPathConfig>
         break;
       case Views.UnknownPage:
         _addPageData(WrongView(key: ValueKey("Unknown")), pageConfig);
+        break;
+      case Views.ChatPage:
+        _addPageData(ChatCategoryView(key: ValueKey("Chat")), pageConfig);
         break;
       default:
         break;

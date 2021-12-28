@@ -6,6 +6,7 @@ const String LoginPath = '/login';
 const String UnKnownPath = '/unknown';
 const String RootPath = "/";
 const String UserPath = "/users";
+const String ChatPath = "/chat";
 
 enum PageState { none, addPage, addAll, pop, replace, replaceAll }
 
@@ -19,6 +20,7 @@ enum Views {
   SplashPage,
   LoginPage,
   My,
+  ChatPage
 }
 
 class PageAction {
@@ -48,6 +50,10 @@ class PageAction {
   PageAction.feedPost() {
     page = feedPostPathConfig;
     pages = [feedPostPathConfig];
+  }
+  PageAction.chat() {
+    page = chatPathConfig;
+    pages = [chatPathConfig];
   }
 }
 
@@ -120,4 +126,10 @@ PyPathConfig unknownPathConfig = PyPathConfig(
     key: 'Unknown',
     path: UnKnownPath,
     uiCtgr: Views.UnknownPage,
+    currentPageAction: null);
+
+PyPathConfig chatPathConfig = PyPathConfig(
+    key: 'Chat',
+    path: ChatPath,
+    uiCtgr: Views.ChatPage,
     currentPageAction: null);
