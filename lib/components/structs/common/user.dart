@@ -34,7 +34,9 @@ class UserSnsInfo extends StatelessWidget {
         ),
         TextButton(
           onPressed: () async => showFollow(
-              ctx: ctx, users: await currUser.usersByIds(currUser.followers)),
+              ctx: ctx,
+              currUser: currUser,
+              users: await currUser.usersByIds(currUser.followers)),
           child: Text(
             "팔로워 ${currUser.followers.length}",
             style: sty,
@@ -42,7 +44,9 @@ class UserSnsInfo extends StatelessWidget {
         ),
         TextButton(
           onPressed: () async => showFollow(
-              ctx: ctx, users: await currUser.usersByIds(currUser.follows)),
+              ctx: ctx,
+              currUser: currUser,
+              users: await currUser.usersByIds(currUser.follows)),
           child: Text(
             "팔로우 ${currUser.follows.length}",
             style: sty,
@@ -53,22 +57,35 @@ class UserSnsInfo extends StatelessWidget {
   }
 }
 
-void showFollow({required BuildContext ctx, required List<PyUser> users}) {
+void showFollow(
+    {required BuildContext ctx,
+    required PyUser currUser,
+    required List<PyUser> users}) {
   showDialog(
       context: ctx,
       builder: (ctx) => Dialog(
-          insetPadding: EdgeInsets.all(10),
-          child: ListView.separated(
-              itemBuilder: (ctx, idx) => ListTile(
-                    leading: PyUserAvatar(
-                        imgUrl: users[idx].profileImage,
-                        userId: users[idx].userId,
-                        profileEditable: true),
-                    title: Text(users[idx].displayName ?? ""),
-                    subtitle: Text(users[idx].email ?? ""),
-                  ),
-              separatorBuilder: (ctx, idx) => Divider(),
-              itemCount: users.length)));
+          insetPadding: EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            height: MediaQuery.of(ctx).size.height / 2,
+            child: ListView.separated(
+                itemBuilder: (ctx, idx) => ListTile(
+                      leading: PyUserAvatar(
+                          imgUrl: users[idx].profileImage,
+                          userId: users[idx].userId,
+                          profileEditable: true),
+                      title: Text(users[idx].displayName ??
+                          // users[idx].email?.split('@').first ??
+                          users[idx].email ??
+                          ""),
+                      subtitle: Text(users[idx].email ?? ""),
+                      trailing: FollowBtn(
+                        currUser: currUser,
+                        targetUser: users[idx],
+                      ),
+                    ),
+                separatorBuilder: (ctx, idx) => Divider(),
+                itemCount: users.length),
+          )));
 }
 
 class FollowBtn extends StatefulWidget {
