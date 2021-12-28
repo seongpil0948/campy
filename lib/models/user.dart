@@ -64,12 +64,21 @@ class PyUser {
   }
 
   Future<List<PyUser>> usersByIds(List<String> userIds) async {
-    final users = await getCollection(c: Collections.Users)
-        .where('userId', arrayContainsAny: userIds)
-        .get();
-    return users.docs
-        .map((e) => PyUser.fromJson(e.data() as Map<String, dynamic>))
-        .toList(growable: false);
+    final uCol = getCollection(c: Collections.Users);
+    const chunkSize = 9;
+    List<Future<QuerySnapshot<Object?>>> futures = [];
+    for (var i = 0; i < userIds.length; i += chunkSize) {
+      final chunkIds = userIds.sublist(
+          i, i + chunkSize > userIds.length ? userIds.length : i + chunkSize);
+      futures.add(uCol.where('userId', whereIn: chunkIds).get());
+    }
+    final queryResults = await Future.wait(futures);
+    List<PyUser> users = [];
+    for (var j in queryResults) {
+      users.addAll(
+          j.docs.map((e) => PyUser.fromJson(e.data() as Map<String, dynamic>)));
+    }
+    return users;
   }
 
   PyUser.fromJson(Map<String, dynamic> j)
