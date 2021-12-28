@@ -36,9 +36,6 @@ class PyApp extends StatelessWidget {
           fcmInitialize();
           crasher.log(
               "Crahser is Initialiazed ${crasher.isCrashlyticsCollectionEnabled}");
-          // crasher.recordError(null, null,
-          //     reason: 'APP OPEN Error', fatal: true);
-          // crasher.crash();
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(

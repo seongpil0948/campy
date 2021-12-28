@@ -84,8 +84,6 @@ class FollowBtn extends StatefulWidget {
 class _FollowBtnState extends State<FollowBtn> {
   Future<void> followUser(PyUser s, PyUser target, bool unFollow) async {
     if (s == target) return;
-    await s.update();
-    await target.update();
     setState(() {
       if (unFollow) {
         s.follows.remove(target.userId);
@@ -95,12 +93,14 @@ class _FollowBtnState extends State<FollowBtn> {
         target.followers.add(s.userId);
       }
     });
+    await s.update();
+    await target.update();
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.targetUser == widget.currUser) return Container();
-    final aleady = widget.targetUser.followers.contains(widget.currUser);
+    final aleady = widget.targetUser.followers.contains(widget.currUser.userId);
     final txt = aleady ? "팔로우 취소" : "팔로우";
     return ElevatedButton(
         onPressed: () {
