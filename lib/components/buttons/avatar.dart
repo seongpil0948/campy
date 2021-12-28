@@ -4,10 +4,33 @@ import 'package:campy/models/user.dart';
 import 'package:campy/repositories/init.dart';
 import 'package:campy/repositories/upload_file.dart';
 import 'package:campy/utils/io.dart';
+import 'package:campy/views/router/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
+
+Widget getAvatar(double? radius, String imgUrl) => CircleAvatar(
+    radius: radius, backgroundImage: CachedNetworkImageProvider(imgUrl));
+
+class GoMyAvatar extends StatelessWidget {
+  final double? radius;
+  final PyUser user;
+  const GoMyAvatar({Key? key, required this.user, this.radius})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext ctx) {
+    return InkWell(
+      onTap: () {
+        final state = ctx.read<PyState>();
+        state.selectedUser = user;
+        state.currPageAction = PageAction.my(user.userId);
+      },
+      child: getAvatar(radius, user.photoURL),
+    );
+  }
+}
 
 class PyUserAvatar extends StatelessWidget {
   final String imgUrl;
@@ -24,11 +47,10 @@ class PyUserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final avatar = CircleAvatar(
-        radius: radius, backgroundImage: CachedNetworkImageProvider(imgUrl));
+    final avatar = getAvatar(radius, imgUrl);
     var state = ctx.read<PyState>();
     return profileEditable && userId != null
-        ? GestureDetector(
+        ? InkWell(
             onTap: () async {
               final doc =
                   await getCollection(c: Collections.Users).doc(userId!).get();

@@ -45,7 +45,7 @@ class PyAppBar extends StatelessWidget {
                   future: auth.currUser,
                   builder: (ctx, snapshot) {
                     if (!snapshot.hasData) return CircularProgressIndicator();
-                    return GestureDetector(
+                    return InkWell(
                         onTap: () => {
                               ctx.read<PyState>().currPageAction =
                                   PageAction.my(snapshot.data!)

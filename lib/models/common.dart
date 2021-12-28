@@ -18,3 +18,16 @@ ContentType contentTypeFromString(String ftype) {
       return ContentType.Comment;
   }
 }
+
+class Time {
+  DateTime createdAt = DateTime.now();
+  DateTime updatedAt = DateTime.now();
+  Time();
+
+  Time.fromJson(Map<String, dynamic> j)
+      : createdAt = j['createdAt'],
+        updatedAt = j['updatedAt'];
+
+  Map<String, dynamic> toJson() =>
+      {'createdAt': createdAt, 'updatedAt': updatedAt};
+}

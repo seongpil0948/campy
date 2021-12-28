@@ -29,7 +29,7 @@ class PyDrawer extends StatelessWidget {
               if (!snapshot.hasData)
                 return Center(child: CircularProgressIndicator());
               final _currUser = snapshot.data!;
-              return GestureDetector(
+              return InkWell(
                 onTap: () {
                   appState.currPageAction =
                       PageAction.my(_currUser.user.userId);

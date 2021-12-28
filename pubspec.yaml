@@ -37,6 +37,7 @@ dependencies:
   firebase_messaging: ^11.2.4
   firebase_crashlytics: ^2.4.4
   firebase_analytics: ^9.0.4
+  flutter_slidable: ^1.1.0
 
 dev_dependencies:
   flutter_test:

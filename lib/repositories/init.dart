@@ -4,6 +4,7 @@ enum Collections {
   Feeds,
   Users,
   Comments,
+  Messages,
 }
 
 CollectionReference getCollection(
@@ -30,6 +31,8 @@ CollectionReference getCollection(
           .collection(CommentCollection);
     case Collections.Users:
       return store.collection(UserCollection);
+    case Collections.Messages:
+      return store.collection(MessagesCollection);
   }
 }
 
@@ -37,3 +40,4 @@ const UserCollection = 'users';
 const FeedCollection = 'feeds';
 const CommentCollection = 'comments';
 const ReplyCollection = 'replies';
+const MessagesCollection = 'messages';
