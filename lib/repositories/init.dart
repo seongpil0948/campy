@@ -8,7 +8,7 @@ enum Collections {
 }
 
 CollectionReference getCollection(
-    {required Collections c, String? userId, String? feedId}) {
+    {required Collections c, String? userId, String? feedId, String? roomId}) {
   FirebaseFirestore store = FirebaseFirestore.instance;
   switch (c) {
     case Collections.Feeds:
@@ -32,7 +32,13 @@ CollectionReference getCollection(
     case Collections.Users:
       return store.collection(UserCollection);
     case Collections.Messages:
-      return store.collection(MessagesCollection);
+      if (roomId == null)
+        throw ArgumentError(
+            "If you want a Comment collection, please enter your Room ID.");
+      return store
+          .collection(MessagesCollection)
+          .doc(roomId)
+          .collection("msgs");
   }
 }
 

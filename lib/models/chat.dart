@@ -36,7 +36,7 @@ class Msg extends Time {
               "id": uuid.v4(),
               "writer": users[i].toJson(),
               "content": "asdasdl;vlx;cvldksfoakfoqkf;lkasdfl;kqo",
-              "createdAt": DateTime.now(),
+              "createdAt": DateTime.now().add(const Duration(days: -1)),
               "updatedAt": DateTime.now()
             }));
   }

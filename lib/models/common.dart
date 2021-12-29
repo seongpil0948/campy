@@ -1,3 +1,5 @@
+import 'package:campy/utils/moment.dart';
+
 enum ContentType { Feed, Store, Comment, Reply }
 
 extension ParseToString on ContentType {
@@ -25,8 +27,12 @@ class Time {
   Time();
 
   Time.fromJson(Map<String, dynamic> j)
-      : createdAt = j['createdAt'],
-        updatedAt = j['updatedAt'];
+      : createdAt = j['createdAt'] is DateTime
+            ? j['createdAt']
+            : timeStamp2DateTime(j['createdAt']),
+        updatedAt = j['updatedAt'] is DateTime
+            ? j['updatedAt']
+            : timeStamp2DateTime(j['updatedAt']);
 
   Map<String, dynamic> toJson() =>
       {'createdAt': createdAt, 'updatedAt': updatedAt};
