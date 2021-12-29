@@ -3,7 +3,9 @@ import 'package:campy/components/structs/common/user.dart';
 import 'package:campy/models/user.dart';
 import 'package:campy/repositories/auth/auth.dart';
 import 'package:campy/repositories/auth/users.dart';
+import 'package:campy/repositories/init.dart';
 import 'package:campy/views/pages/chat/room.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 // ignore: implementation_imports
@@ -34,49 +36,52 @@ class ChatRoomList extends StatelessWidget {
           final List<PyUser> users =
               snapshot.data![0].where((e) => e != currUser).toList();
           return ListView.builder(
-              itemBuilder: (ctx, idx) => Slidable(
-                    child: InkWell(
-                      onTap: () {
-                        showGeneralDialog(
-                            context: ctx,
-                            pageBuilder: (BuildContext ctx2,
-                                    Animation animation,
-                                    Animation secondaryAnimation) =>
-                                Scaffold(
-                                  body: SafeArea(
-                                    child: ChatRoom(
-                                      targetUser: users[idx],
-                                      currUser: currUser,
-                                    ),
+              itemBuilder: (ctx, idx) {
+                final roomId = currUser.userId + users[idx].userId;
+                return Slidable(
+                  child: InkWell(
+                    onTap: () {
+                      showGeneralDialog(
+                          context: ctx,
+                          pageBuilder: (BuildContext ctx2, Animation animation,
+                                  Animation secondaryAnimation) =>
+                              Scaffold(
+                                body: SafeArea(
+                                  child: ChatRoom(
+                                    roomId: roomId,
+                                    targetUser: users[idx],
+                                    currUser: currUser,
                                   ),
-                                ));
-                      },
-                      child: UserList(
-                          targetUser: users[idx], profileEditable: false),
-                    ),
-                    endActionPane: ActionPane(
-                      motion: const ScrollMotion(),
-                      children: [
-                        SlidableAction(
-                          key: ValueKey("1"),
-                          // flex: 2,
-                          onPressed: (ctx) {},
-                          backgroundColor: Color(0xFF7BC043),
-                          foregroundColor: Colors.white,
-                          icon: Icons.archive,
-                          label: 'Archive',
-                        ),
-                        SlidableAction(
-                          key: ValueKey("2"),
-                          onPressed: (ctx) {},
-                          backgroundColor: Color(0xFF0392CF),
-                          foregroundColor: Colors.white,
-                          icon: Icons.save,
-                          label: 'Save',
-                        ),
-                      ],
-                    ),
+                                ),
+                              ));
+                    },
+                    child: UserList(
+                        targetUser: users[idx], profileEditable: false),
                   ),
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        key: ValueKey("1"),
+                        onPressed: (ctx) {
+                          try {
+                            getCollection(c: Collections.Messages)
+                                .doc(roomId)
+                                .delete();
+                          } catch (e) {
+                            FirebaseCrashlytics.instance
+                                .recordError(e, null, reason: 'a fatal error');
+                          }
+                        },
+                        backgroundColor: Colors.redAccent,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: '삭제하기',
+                      ),
+                    ],
+                  ),
+                );
+              },
               itemCount: users.length);
         });
   }

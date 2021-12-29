@@ -11,9 +11,12 @@ class ChatRoom extends StatelessWidget {
   final PyUser currUser;
   final String roomId;
 
-  ChatRoom({Key? key, required this.targetUser, required this.currUser})
-      : roomId = currUser.userId + targetUser.userId,
-        super(key: key);
+  ChatRoom(
+      {Key? key,
+      required this.roomId,
+      required this.targetUser,
+      required this.currUser})
+      : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -43,8 +46,6 @@ class ChatRoomBody extends StatelessWidget {
   final String roomId;
   final PyUser currUser;
 
-  // TODO: 채팅 룸 닫을때 삭제 되도록
-  // TODO: 채팅 룸 풀 사이즈로 해서 뒤로 가기 할 수 있게
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(

@@ -32,13 +32,9 @@ CollectionReference getCollection(
     case Collections.Users:
       return store.collection(UserCollection);
     case Collections.Messages:
-      if (roomId == null)
-        throw ArgumentError(
-            "If you want a Comment collection, please enter your Room ID.");
-      return store
-          .collection(MessagesCollection)
-          .doc(roomId)
-          .collection("msgs");
+      final c = store.collection(MessagesCollection);
+      if (roomId == null) return c;
+      return c.doc(roomId).collection("msgs");
   }
 }
 
