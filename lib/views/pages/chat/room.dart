@@ -157,13 +157,19 @@ class ChatW extends StatelessWidget {
   Widget build(BuildContext ctx) {
     final s = MediaQuery.of(ctx).size;
     return Container(
-      height: 40,
-      width: s.width / 2,
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Row(
         mainAxisAlignment:
             fromMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (fromMe == false) GoMyAvatar(user: msg.writer),
+          if (fromMe == false) ...[
+            GoMyAvatar(user: msg.writer),
+            SizedBox(width: 5)
+          ],
           Text(msg.content)
         ],
       ),

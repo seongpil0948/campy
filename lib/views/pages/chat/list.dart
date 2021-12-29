@@ -37,7 +37,9 @@ class ChatRoomList extends StatelessWidget {
               snapshot.data![0].where((e) => e != currUser).toList();
           return ListView.builder(
               itemBuilder: (ctx, idx) {
-                final roomId = currUser.userId + users[idx].userId;
+                final roomIds = (currUser.userId + users[idx].userId).split("");
+                roomIds.sort();
+                final roomId = roomIds.join();
                 return Slidable(
                   child: InkWell(
                     onTap: () {

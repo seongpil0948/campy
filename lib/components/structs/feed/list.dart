@@ -87,7 +87,8 @@ class GridFeeds extends StatelessWidget {
                             future: imgsOfFeed(f: f, limit: 1),
                             builder: (ctx, snapshot) {
                               if (!snapshot.hasData)
-                                return CircularProgressIndicator();
+                                return Center(
+                                    child: CircularProgressIndicator());
                               final imgs = snapshot.data!;
                               return FeedThumnail(
                                   mq: mq,
